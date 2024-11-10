@@ -1,14 +1,91 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model calendar {
+  calendarID     Int    @id @default(autoincrement())
+  userID         Int
+  eventID        Int
+  linked_account String @db.VarChar(255)
+  event          event  @relation(fields: [eventID], references: [eventID], map: "Calendar_eventID_fkey")
+  user           user   @relation(fields: [userID], references: [userID], map: "Calendar_userID_fkey")
+
+  @@index([eventID], map: "Calendar_eventID_fkey")
+  @@index([userID], map: "Calendar_userID_fkey")
+}
+
+model event {
+  eventID           Int             @id @default(autoincrement())
+  userID            Int
+  categoryID        Int
+  event_title       String          @db.VarChar(255)
+  event_description String          @db.VarChar(255)
+  event_date        DateTime        @default(now())
+  created_at        DateTime        @default(now())
+  calendar          calendar[]
+  eventcategory     eventcategory   @relation(fields: [categoryID], references: [categoryID], map: "Event_categoryID_fkey")
+  user              user            @relation(fields: [userID], references: [userID], map: "Event_userID_fkey")
+  notifications     notifications[]
+  rsvp              rsvp[]
+
+  @@index([categoryID], map: "Event_categoryID_fkey")
+  @@index([userID], map: "Event_userID_fkey")
+}
+
+model eventcategory {
+  categoryID           Int     @id @default(autoincrement())
+  category_name        String  @db.VarChar(255)
+  category_description String  @db.VarChar(255)
+  event                event[]
+}
+
+model notifications {
+  notificationID Int      @id @default(autoincrement())
+  userID         Int
+  eventID        Int
+  message        String   @db.VarChar(255)
+  time_sent      DateTime @default(now())
+  event          event    @relation(fields: [eventID], references: [eventID], map: "Notifications_eventID_fkey")
+  user           user     @relation(fields: [userID], references: [userID], map: "Notifications_userID_fkey")
+
+  @@index([eventID], map: "Notifications_eventID_fkey")
+  @@index([userID], map: "Notifications_userID_fkey")
+}
+
+model rsvp {
+  rsvpID      Int         @id @default(autoincrement())
+  userID      Int
+  eventID     Int
+  status      rsvp_status
+  created_at  DateTime    @default(now())
+  last_edited DateTime    @default(now())
+  event       event       @relation(fields: [eventID], references: [eventID], map: "RSVP_eventID_fkey")
+  user        user        @relation(fields: [userID], references: [userID], map: "RSVP_userID_fkey")
+
+  @@index([eventID], map: "RSVP_eventID_fkey")
+  @@index([userID], map: "RSVP_userID_fkey")
+}
+
+model user {
+  userID        Int             @id @default(autoincrement())
+  username      String          @db.VarChar(255)
+  first_name    String          @db.VarChar(255)
+  last_name     String          @db.VarChar(255)
+  email_address String          @db.VarChar(255)
+  password      String          @db.VarChar(50)
+  calendar      calendar[]
+  event         event[]
+  notifications notifications[]
+  rsvp          rsvp[]
+}
+
+enum rsvp_status {
+  ACTIVE
+  CANCELLED
+  COMPLETED
 }
