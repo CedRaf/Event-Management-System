@@ -48,7 +48,6 @@ const registerNewUser = async (req, res)=>{
                 last_name: newUser.last_name,
                 email_address: newUser.email_address,
             },
-            accessToken: token,
         })
 
     }catch(e){

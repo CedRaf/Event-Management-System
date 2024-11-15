@@ -76,8 +76,8 @@ model user {
   username      String          @db.VarChar(255)
   first_name    String          @db.VarChar(255)
   last_name     String          @db.VarChar(255)
-  email_address String          @db.VarChar(255)
-  password      String          @db.VarChar(50)
+  email_address String          @db.VarChar(255)                  @unique
+  password      String          @db.VarChar(255)
   calendar      calendar[]
   event         event[]
   notifications notifications[]
