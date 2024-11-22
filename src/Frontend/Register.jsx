@@ -22,7 +22,7 @@ function Register(){
         e.preventDefault();
         try { 
             const {data} = await axios.post('http://localhost:3000/register', newUser);
-            setNewEmployee({
+            setNewUser({
                 username: '',
                 first_name: '',
                 last_name: '',
@@ -30,7 +30,7 @@ function Register(){
                 password: ''
             });
             if(data && data.message){
-                navigate('/login');
+                navigate('/');
             }    
 
         } catch(error){
@@ -44,11 +44,12 @@ function Register(){
                 <input type="text" placeholder="Username" value= {newUser.username} onChange={(e) => {setNewUser({...newUser, username: e.target.value}) }}/>
                 <input type="text" placeholder="first_name" value= {newUser.first_name} onChange={(e) => {setNewUser({...newUser, first_name: e.target.value}) }}/>
                 <input type="text" placeholder="last_name" value= {newUser.last_name} onChange={(e) => {setNewUser({...newUser, last_name: e.target.value}) }}/>
-                <input type="text" placeholder="email_address" value= {newUser.email_address} onChange={(e) => {setNewUser({...newUser, email_address: e.target.value}) }}/>
+                <input type="email" placeholder="EMAIL" value= {newUser.email_address} onChange={(e) => {setNewUser({...newUser, email_address: e.target.value}) }}/>
                 <input type="text" placeholder="password" value= {newUser.password} onChange={(e) => {setNewUser({...newUser, password: e.target.value}) }}/>
                 
-                <button type={submit}/>   
+                <button type="submit">REGISTER</button>   
             </form>
         </div>
     )
 }
+export default Register;

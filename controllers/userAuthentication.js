@@ -8,7 +8,7 @@ const saltRounds = 10;
 
 
 const registerNewUser = async (req, res)=>{
-
+    console.log(req.body) //for testing purposes
     const {error} = registerSchema.validate(req.body); 
     if(error){
         return res.status(400).json({message: error.details[0].message});
@@ -63,7 +63,7 @@ const loginAccount = async (req, res) => {
     }
 
     const {email_address, password} = req.body;
-    
+
     try{
         const existingUser = await prisma.user.findUnique({
             where: {

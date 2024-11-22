@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Login(){
-    const [username, setUsername]= useState('');
+    const [email, setEmail]= useState('');
     const [password, setPassword]= useState('');
     const navigate = useNavigate();
 
@@ -18,10 +18,13 @@ function Login(){
         e.preventDefault();
         try { 
             const {data} = await axios.post('http://localhost:3000/login', {
-                email: userName,
+                email_address: email,
                 password: password
             });
-        
+            
+            setEmail('');
+            setPassword('');
+
             if(data.accessToken){//check if the token exists
                 localStorage.setItem('token', data.accessToken);
                 const user = {
@@ -42,9 +45,9 @@ function Login(){
     return(
         <div>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Username or Email" value= {username} onChange={(e) => {setUsername(e.target.value)}}/>
+                <input type="email" placeholder="Email" value= {email} onChange={(e) => {setEmail(e.target.value)}}/>
                 <input type="text" placeholder="Password" value= {password} onChange={(e) => {setPassword(e.target.value)}}/>
-                <button type={submit}/>   
+                <button type="submit">LOGIN</button>   
             </form>
         </div>
 

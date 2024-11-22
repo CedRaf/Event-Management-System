@@ -4,7 +4,9 @@ const app = express();
 const port = process.env.PORT || 3000; 
 const rateLimiter = require("./middlewares/rateLimiter");
 const loggingMiddleware = require("./middlewares/loggingMiddleware");
+const cors = require('cors');
 
+app.use(cors());
 app.use(express.json()); 
 app.use(rateLimiter);
 app.use(loggingMiddleware);
