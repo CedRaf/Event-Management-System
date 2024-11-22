@@ -1,12 +1,13 @@
 const express = require("express");
 const eventController = require("../controllers/eventsController"); 
+const authMiddleware = require("../middlewares/authenticateToken"); 
 
 const eventsRouter = express.Router(); 
-eventsRouter.post("/create", eventController.createEvent);
-eventsRouter.delete("/delete", eventController.deleteEvent);
-eventsRouter.patch("/edit/:eventID", eventController.editEvent); 
-eventsRouter.get("/find/:event_title", eventController.findEvent); 
-eventsRouter.get("/findAll", eventController.getAllEvents); 
+eventsRouter.post("/create", authMiddleware, eventController.createEvent);
+eventsRouter.delete("/delete", authMiddleware, eventController.deleteEvent);
+eventsRouter.patch("/edit/:eventID", authMiddleware, eventController.editEvent); 
+eventsRouter.get("/find/:event_title", authMiddleware, eventController.findEvent); 
+eventsRouter.get("/findAll", authMiddleware, eventController.getAllEvents); 
 
 
 module.exports = eventsRouter;
