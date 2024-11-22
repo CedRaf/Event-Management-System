@@ -17,7 +17,7 @@ function Login(){
     const handleSubmit = async(e) =>{
         e.preventDefault();
         try { 
-            const {data} = await axios.post('http://localhost:3000/login', {
+            const {data} = await axios.post('http://localhost:3000/authenticate/login', {
                 email_address: email,
                 password: password
             });

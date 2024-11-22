@@ -3,8 +3,8 @@ const eventCategory = require("../controllers/eventCategory");
 
 const eventCategoryRouter = express.Router(); 
 eventCategoryRouter.post("/create", eventCategory.createCategory); 
-eventCategoryRouter.get("/find", eventCategory.findCategory);
+eventCategoryRouter.get("/find/:category_name", eventCategory.findCategory);
 eventCategoryRouter.delete("/delete", eventCategory.deleteCategory);
-eventCategoryRouter.patch("/edit", eventCategory.editCategory); 
+eventCategoryRouter.patch("/edit/:categoryID", eventCategory.editCategory); 
 
 module.exports = eventCategoryRouter;

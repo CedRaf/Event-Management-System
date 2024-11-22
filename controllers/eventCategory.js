@@ -40,7 +40,7 @@ const createCategory = async (req, res) =>{
 const deleteCategory = async (req, res) =>{
     try{
         const {category_name} = req.body;
-        const existingCategory = await prisma.event.findFirst({
+        const existingCategory = await prisma.eventcategory.findFirst({
             where:{
                 category_name: category_name,
             }
@@ -65,22 +65,23 @@ const deleteCategory = async (req, res) =>{
 
 const editCategory = async(req, res) =>{
 
+    const {categoryID} = req.params; 
+    const {category_name, category_description} = req.body;
+
     const {error} = newCategorySchema.validate(req.body);
     if(error){
         return res.status(400).json({message: error.details[0].message}); 
     }
 
-    const {category_name, category_description} = req.body;
-
     try{
         const existingCategory = await prisma.eventcategory.findFirst({
             where:{
-                category_name: category_name
+                categoryID: Number(categoryID)
             }
         })
 
         if(!existingCategory){
-            return res.status(400).json({message:"Unbale to delete category, it does not exist"}); 
+            return res.status(400).json({message:"Unable to delete category, it does not exist"}); 
         }
 
         const updatedCategory = await prisma.eventcategory.update({
@@ -102,31 +103,28 @@ const editCategory = async(req, res) =>{
 
 }
 
-const findCategory = async (req, res) =>{
-    
-    const {category_name} = req.params;
-    
-    try{
-        const existingCategory = prisma.eventcategory.findMany({
-            where:{
-                category_name:{
-                    contains: category_name,
-                    mode: "insensitive", 
-                }  
-            }
+const findCategory = async (req, res) => {
+    const { category_name } = req.params;
+
+    try {
+        const existingCategory = await prisma.eventcategory.findMany({
+            where: {
+                category_name: {
+                    contains: category_name, 
+                },
+            },
         });
 
-        if(existingCategory.length === 0){
-            return res.status(404).json({message: "Category not found"});
+        if (existingCategory.length === 0) {
+            return res.status(404).json({ message: "Category not found" });
         }
 
-        return res.status(200).json({existingCategory})
-
-    }catch(e){
+        return res.status(200).json({ message: "Category Found", existingCategory });
+    } catch (e) {
         console.error("Error finding category:", e);
         return res.status(500).json({ message: "Server error" });
     }
-}
+};
 
 module.exports = {
     createCategory,

@@ -21,7 +21,7 @@ function Register(){
     const handleSubmit = async(e) => {
         e.preventDefault();
         try { 
-            const {data} = await axios.post('http://localhost:3000/register', newUser);
+            const {data} = await axios.post('http://localhost:3000/authenticate/register', newUser);
             setNewUser({
                 username: '',
                 first_name: '',
