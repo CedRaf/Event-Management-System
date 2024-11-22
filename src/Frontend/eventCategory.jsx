@@ -20,7 +20,7 @@ function eventCategory(){
         const parsedUser = JSON.parse(storedUser);
         if(parsedUser && storedToken){
             setToken(storedToken);
-            setUser(paresedUser);
+            setUser(parsedUser);
         }
 
     }, [])
@@ -28,13 +28,25 @@ function eventCategory(){
     useEffect(()=>{
         const getCategories = async () => {
             try{
-                const response = await axios.get('http://localhost:3000/eventCategory/', newUser);
+                const response = await axios.get('http://localhost:3000/eventCategory/findAll', user.userID);
+                if(response){
+                    setCategories(response.data)
+                }
             } catch(error){
                 console.error('Error retrieving categories:', error);
             }
         }
     },[token])
 
+    const findCategory = async(categoryName) =>{
+
+    }
+    const createCategory = async(newCategory) =>{
+        try{
+            const response = await axios.post('http://localhost:3000/eventCategory/create', newCategory);
+            if(response.status==)
+        }
+    }
 
 
     
