@@ -32,7 +32,7 @@ const createCategory = async (req, res) =>{
 
 
     }catch(e){
-        console.error('Error creating new event: ', e);
+        console.error('Error creating new category: ', e);
         return res.status(500).json({message:"Server Error"}); 
     }
 }
@@ -66,12 +66,12 @@ const deleteCategory = async (req, res) =>{
 const editCategory = async(req, res) =>{
 
     const {categoryID} = req.params; 
-    const {category_name, category_description} = req.body;
-
     const {error} = newCategorySchema.validate(req.body);
     if(error){
         return res.status(400).json({message: error.details[0].message}); 
     }
+
+    const {category_name, category_description} = req.body;
 
     try{
         const existingCategory = await prisma.eventcategory.findFirst({
@@ -94,7 +94,7 @@ const editCategory = async(req, res) =>{
             },
         });
         
-        return res.status(200).json({message:"Successfully updated category"}); 
+        return res.status(200).json({message:"Successfully updated category", updatedCategory}); 
 
         }catch(e){
             console.error("Error updating category:", e);
@@ -126,9 +126,25 @@ const findCategory = async (req, res) => {
     }
 };
 
+const getAllCategories = async(req, res) =>{
+
+    try{
+        const categoryList = await prisma.eventcategory.findMany();
+        if(categoryList === 0){
+            return res.status(400).json({message:"No categories found"});
+        }
+        return res.status(200).json(categoryList); 
+    }catch(e){
+        console.error("Error finding events:", e);
+        return res.status(500).json({ message: "Server error" });
+    }
+}
+
+
 module.exports = {
     createCategory,
     deleteCategory,
     editCategory,
     findCategory,
+    getAllCategories
 }

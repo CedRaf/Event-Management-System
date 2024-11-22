@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const newEventSchema = Joi.object({
+const newCategorySchema = Joi.object({
     category_name: Joi.string().min(3).max(255).required().messages({
         "string.min" : "The category should be at least 3 characters",
         "string.max" : "The category should be less than 256 characters",
@@ -13,4 +13,4 @@ const newEventSchema = Joi.object({
     
 });
 
-module.exports = newEventSchema;
+module.exports = newCategorySchema;
