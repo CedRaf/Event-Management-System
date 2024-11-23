@@ -32,6 +32,7 @@ model event {
   user              user            @relation(fields: [userID], references: [userID], map: "Event_userID_fkey")
   notifications     notifications[]
   rsvp              rsvp[]
+  
 
   @@index([categoryID], map: "Event_categoryID_fkey")
   @@index([userID], map: "Event_userID_fkey")
@@ -39,10 +40,11 @@ model event {
 
 model eventcategory {
   categoryID           Int     @id @default(autoincrement())
-  userID         Int
+  userID               Int
   category_name        String  @db.VarChar(255)
   category_description String  @db.VarChar(255)
   event                event[]
+  user                 user    @relation(fields: [userID], references: [userID], name: "UserEventCategories") 
 
   @@index([userID], map: "Event_userID_fkey")
 }
@@ -85,7 +87,7 @@ model user {
   calendar      calendar[]
   event         event[]
   notifications notifications[]
-  event_category eventcategory[]
+   eventcategory eventcategory[] @relation("UserEventCategories")
   rsvp          rsvp[]
 }
 
