@@ -1,5 +1,6 @@
 const prisma = require("../prisma/database");
 const newCategorySchema = require("../schemas/newCategorySchema");
+const editCategorySchema = require("../schemas/editCategorySchema"); 
 
 const createCategory = async (req, res) =>{
 
@@ -8,7 +9,7 @@ const createCategory = async (req, res) =>{
     if(error){
         return res.status(400).json({message: error.details[0].message});
     }
-    const {category_name, category_description} = req.body;
+    const {category_name, category_description, userID} = req.body;
 
     try{
         const existingCategory = await prisma.eventcategory.findFirst({
@@ -25,6 +26,7 @@ const createCategory = async (req, res) =>{
             data:{
                 category_name,
                 category_description,
+                userID
             }
         })
 
@@ -39,9 +41,10 @@ const createCategory = async (req, res) =>{
 
 const deleteCategory = async (req, res) =>{
     try{
-        const {category_name} = req.body;
+        const {category_name, userID} = req.body;
         const existingCategory = await prisma.eventcategory.findFirst({
             where:{
+                userID: Number(userID),
                 category_name: category_name,
             }
         });
@@ -66,7 +69,7 @@ const deleteCategory = async (req, res) =>{
 const editCategory = async(req, res) =>{
 
     const {categoryID} = req.params; 
-    const {error} = newCategorySchema.validate(req.body);
+    const {error} = editCategorySchema.validate(req.body);
     if(error){
         return res.status(400).json({message: error.details[0].message}); 
     }
@@ -105,10 +108,12 @@ const editCategory = async(req, res) =>{
 
 const findCategory = async (req, res) => {
     const { category_name } = req.params;
+    const {userID} = req.body;
 
     try {
         const existingCategory = await prisma.eventcategory.findMany({
             where: {
+                userID: userID,
                 category_name: {
                     contains: category_name, 
                 },
@@ -128,8 +133,13 @@ const findCategory = async (req, res) => {
 
 const getAllCategories = async(req, res) =>{
 
+    const {userID} = req.body;
     try{
-        const categoryList = await prisma.eventcategory.findMany();
+        const categoryList = await prisma.eventcategory.findMany({
+            where:{
+                userID: userID
+            }
+        });
         if(categoryList === 0){
             return res.status(400).json({message:"No categories found"});
         }

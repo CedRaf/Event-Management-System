@@ -87,7 +87,7 @@ model user {
   calendar      calendar[]
   event         event[]
   notifications notifications[]
-   eventcategory eventcategory[] @relation("UserEventCategories")
+  eventcategory eventcategory[] @relation("UserEventCategories")
   rsvp          rsvp[]
 }
 
