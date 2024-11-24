@@ -8,7 +8,7 @@ eventsRouter.delete("/delete", authMiddleware, eventController.deleteEvent);
 eventsRouter.patch("/edit/:eventID", authMiddleware, eventController.editEvent); 
 eventsRouter.get("/find/:event_title", authMiddleware, eventController.findEvent); 
 eventsRouter.get("/findAll", authMiddleware, eventController.getAllEvents); 
-eventsRouter.get("findByCategory", authMiddleware, eventController.getEventsByCategory);
+eventsRouter.get("/findByCategory/:categoryID", authMiddleware, eventController.getEventsByCategory);
 eventsRouter.get("/sort/:sortBy/:orderBy?", authMiddleware, eventController.sortEvents);
 
 
