@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Login from './Frontend/Login.jsx'
-import Register from './Frontend/Register.jsx'
-import EventCategory from './Frontend/eventCategory.jsx'
+import Login from './Frontend/Pages/Login.jsx'
+import Register from './Frontend/Pages/Register.jsx'
+import EventCategory from './Frontend/Pages/EventCategoryList.jsx'
+import CreateEvent from './Frontend/Add/CreateEvent.jsx'
+import EventList from './Frontend/Pages/EventList.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import './index.css'
@@ -20,8 +22,16 @@ const router = createBrowserRouter([
 {
   path: '/event-category',
   element: <EventCategory/>
-}
+},
 
+{
+  path:'/createEvent',
+  element:<CreateEvent/>
+},
+{
+  path:'/eventList',
+  element:<EventList/>
+}
 
 ])
 
