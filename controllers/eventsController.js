@@ -37,7 +37,7 @@ const createEvent = async (req, res) =>{
 const deleteEvent = async(req, res) =>{
 
     try{
-        const{eventID} = req.body;
+        const{eventID} = req.params;
         const existingEvent = await prisma.event.findUnique({
             where:{
                 eventID : eventID

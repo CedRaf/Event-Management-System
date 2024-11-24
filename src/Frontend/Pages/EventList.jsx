@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getAllEvents, deleteEvent } from '../../components/Api';
+import { getAllEvents, deleteEvent } from '../components/EventAPI';
 
 function EventList () {
   const [token, setToken] = useState('');
   const [user, setUser] = useState('');
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
+  const [filteredEvents, setFilteredEvents] = useState(null);
+  const [newEvent, setNewEvent] = useState('');
 
 
   useEffect(() =>{
@@ -23,7 +25,7 @@ function EventList () {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await getAllEvents();
+        const response = await getAllEvents(user.userID);
         setEvents(response.data);
       } catch (err) {
         setError('Error fetching the Event');
@@ -33,7 +35,40 @@ function EventList () {
     fetchEvents();
   }, [token, user]);
 
-  
+    const createCategory = async(newEvent) =>{
+      setNewEvent(prev => ({
+          ...prev, // Preserve existing fields
+          userID: user.userID, // Set the userID
+      }));
+
+      try{
+          console.log(newEvent);
+          const response = await axios.post(`http://localhost:3000/events/create`, newEvent, {
+              headers: {
+                  Authorization: `Bearer: ${token}`
+                      }}); 
+          if(response){
+              setError(response.data.message);
+              window.location.reload();
+          }
+      }catch(e){
+          setError('Could not register category. Please try again later.');
+      }
+  }
+
+  const searchEvent = (searchTerm) =>{
+    if(searchTerm){
+    const results = events.filter((event) =>
+      event.event_title
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) // Case-insensitive search
+    );
+        setFilteredEvents(results);
+    }
+    else{
+      setFilteredEvents(events);
+    }
+}
 
   const handleDelete = async (eventID) => {
     try {
@@ -49,7 +84,7 @@ function EventList () {
       <h2>Event List</h2>
       {error && <p className="error">{error}</p>}
       <ul>
-        {events.map((event) => (
+        {filteredEvents.map((event) => (
           <li key={event.eventID}>
             <h3>{event.event_title}</h3>
             <p>{event.event_description}</p>
@@ -58,6 +93,10 @@ function EventList () {
           </li>
         ))}
       </ul>
+        <button onClick={()=> setAddToggle((prevState) => !prevState)}> ADD </button>
+                  {addtoggle && <div> 
+                      <CreateEvent createCategory= {createCategory} newCategory= {newCategory} setNewCategory = {setNewCategory}/>                    
+                  </div>}
     </div>
   );
 };
