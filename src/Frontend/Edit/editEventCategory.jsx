@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 
 
-function AddEventCategory({createCategory, newCategory, setNewCategory}){
+function EditEventCategory({editCategory, newCategory, setNewCategory}){
    
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -20,4 +20,4 @@ function AddEventCategory({createCategory, newCategory, setNewCategory}){
         </div>
     )
 }
-export default AddEventCategory;
+export default EditEventCategory;
