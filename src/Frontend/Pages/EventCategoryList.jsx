@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import AddEventCategory from './Add/addEventCategory';
+import AddEventCategory from '../Add/addEventCategory';
 // import editEventCategory from './Edit/editEventCategory';
 
 
@@ -16,7 +16,7 @@ function EventCategory(){
     const [addtoggle, setAddToggle]= useState(false);
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
-    const [responseMessage, setResponseMessage] = useState('');
+    const [error, setError] = useState('');
     const [filteredCategories, setFilteredCategories]= useState([]);
     const [editToggle, setEditToggle] = useState(false);
     const navigate= useNavigate();
@@ -87,11 +87,11 @@ function EventCategory(){
                     Authorization: `Bearer: ${token}`
                         }}); 
             if(response){
-                setResponseMessage(response.data.message);
+                setError(response.data.message);
                 window.location.reload();
             }
         }catch(e){
-            setResponseMessage('Could not register category. Please try again later.');
+            setError('Could not register category. Please try again later.');
         }
     }
 
@@ -108,12 +108,8 @@ function EventCategory(){
                     userID: user.userID
                  }}); 
                  window.location.reload();
-            if(response){
-                setResponseMessage("TUBOL ITLOG");
-                
-            }
         }catch(e){
-            setResponseMessage('Could not delete category. Please try again later.')
+            setError('Could not delete category. Please try again later.')
         }
     }
 

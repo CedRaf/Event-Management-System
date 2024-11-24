@@ -1,9 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { getAllEvents, deleteEvent } from '../components/Api';
+import { getAllEvents, deleteEvent } from '../../components/Api';
 
-const EventList = () => {
+function EventList () {
+  const [token, setToken] = useState('');
+  const [user, setUser] = useState('');
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
+
+
+  useEffect(() =>{
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+    const parsedUser = JSON.parse(storedUser);
+    if(parsedUser && storedToken){
+        setToken(storedToken);
+        setUser(parsedUser);
+    }
+
+}, [])
+
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -16,7 +31,9 @@ const EventList = () => {
     };
 
     fetchEvents();
-  }, []);
+  }, [token, user]);
+
+  
 
   const handleDelete = async (eventID) => {
     try {

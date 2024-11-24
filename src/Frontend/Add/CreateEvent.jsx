@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createEvent } from '../components/Api'; 
+import { createEvent } from '../'; 
 
 const EventCreation = () => {
   const [eventData, setEventData] = useState({
