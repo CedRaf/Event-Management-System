@@ -86,6 +86,12 @@ const editRSVP = async (req, res) =>{
             return res.status(400).json({message:"RSVP does not exist"});
         }
 
+        await prisma.recipient.deleteMany({
+            where: {
+                rsvpID: existingRSVP.rsvpID,
+            },
+        });
+
         const editedRSVP = await prisma.rsvp.update({
             where:{
                 rsvpID: existingRSVP.rsvpID
@@ -110,8 +116,147 @@ const editRSVP = async (req, res) =>{
     }
 }
 
+const getRSVPRecipients = async(req, res) =>{
+    
+    const {rsvpID} = req.params;
+
+    try{
+        
+        const recipients = await prisma.recipient.findMany({
+            where:{
+                rsvpID: Number(rsvpID)
+            },
+            select:{
+                userID: true,
+                user:{
+                    select:{
+                        first_name: true,
+                        last_name: true,
+                        email_address: true
+                    }
+                }
+            }
+        });
+
+        if(recipients.length === 0){
+            return res.status(400).json({message:"No recipients found for this RSVP"});
+        }
+
+        return res.status(200).json(recipients)
+
+    }catch(e){
+        console.error("Error fetching recipients:", e);
+        return res.status(500).json({ message: "Server Error" });
+    }
+}
+
+const getRSVPDetails = async (req, res) => {
+    try {
+        const { rsvpID } = req.params;
+
+        const rsvpDetails = await prisma.rsvp.findUnique({
+            where: {
+                rsvpID: Number(rsvpID)
+            },
+            select: {
+                senderUserID: true,
+                sender: {
+                    select: {
+                        first_name: true,
+                        last_name: true,
+                        email_address: true
+                    }
+                },
+                status: true,
+                eventID: true,
+                event: {
+                    select: {
+                        event_title: true,
+                        event_description: true,
+                        event_date: true
+                    }
+                },
+                recipients: {
+                    select: {
+                        user: {
+                            select: {
+                                first_name: true,
+                                last_name: true,
+                                email_address: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!rsvpDetails) {
+            return res.status(400).json({ message: "RSVP not found" });
+        }
+
+        return res.status(200).json({ rsvpDetails });
+
+    } catch (e) {
+        console.error("Error fetching RSVP details:", e);
+        return res.status(500).json({ message: "Server Error" });
+    }
+};
+
+const getUserRSVPs = async (req, res) => {
+    const { userID } = req.params;
+    try {
+        const userRSVPs = await prisma.rsvp.findMany({
+            where: {
+                OR: [
+                    { senderUserID: Number(userID) }, 
+                    { recipients: { some: { userID: Number(userID) } } },
+                ],
+            },
+            include: {
+                event: {
+                    select: {
+                        event_title: true,
+                        event_description: true,
+                        event_date: true,
+                    },
+                },
+                recipients: {
+                    select: {
+                        user: {
+                            select: {
+                                first_name: true,
+                                last_name: true,
+                                email_address: true,
+                            },
+                        },
+                    },
+                },
+                sender: {
+                    select: {
+                        first_name: true,
+                        last_name: true,
+                        email_address: true,
+                    },
+                },
+            },
+        });
+
+        if (userRSVPs.length === 0) {
+            return res.status(404).json({ message: "No RSVPs associated with this user." });
+        }
+
+        return res.status(200).json({ message: "User RSVPs retrieved successfully", userRSVPs });
+    } catch (e) {
+        console.error("Error fetching RSVPs: ", e);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
 module.exports = {
     createRSVP,
     deleteRSVP,
-    editRSVP
+    editRSVP,
+    getRSVPRecipients,
+    getRSVPDetails,
+    getUserRSVPs
 }

@@ -102,10 +102,12 @@ const editEvent = async(req, res) =>{
 
 const findEvent = async(req, res) =>{
 
-    const{event_title} = req.params;
+    const{userID} = req.params;
     try{
+        const {event_title} = req.body;
         const existingEvent = await prisma.event.findMany({
             where:{
+                userID: userID,
                 event_title:{
                     contains: event_title
                 } 
@@ -122,13 +124,18 @@ const findEvent = async(req, res) =>{
         console.error("Error finding event:", e);
         return res.status(500).json({ message: "Server error" });
     }
-
 }
 
 const getAllEvents = async(req, res) =>{
 
+    const {userID} = req.params;
+
     try{
-        const eventList = await prisma.event.findMany();
+        const eventList = await prisma.event.findMany({
+            where:{
+                userID: userID
+            }
+        });
         if(eventList === 0){
             return res.status(400).json({message:"No events found"});
         }
@@ -139,7 +146,59 @@ const getAllEvents = async(req, res) =>{
         console.error("Error finding events:", e);
         return res.status(500).json({ message: "Server error" });
     }
+}
 
+const getEventsByCategory = async(req, res) =>{
+    const{categoryID} = req.params;
+    const existingCategory = await prisma.eventcategory.findUnique({
+        where:{
+            categoryID: categoryID
+        }
+    });
+
+    if(!existingCategory){
+        return res.status(400).json({message:"Category does not exist"}); 
+    }
+
+    try{
+        const eventsByCategory = await prisma.event.findMany({
+            where:{
+                categoryID: existingCategory.categoryID
+            }
+        });
+
+        if(eventsByCategory === 0){
+            return res.status(400).json({message:"This category has no events"});
+        }
+
+        return res.status(200).json({eventsByCategory}); 
+
+    }catch(e){
+        console.error("Error fetching events by category", e);
+        return res.status(500).json({message:"Server Error"}); 
+    }
+}
+
+const sortEvents = async(req, res) =>{
+    const{sortBy, orderBy = 'asc'} = req.params;
+    const validFields = ['event_title', 'event_date', 'created_at'];
+    
+    if(!validFields.includes(sortBy)){
+        return res.status(400).json({message:`Invalid order: ${orderBy}`});
+    }
+
+    try{
+        const sortedData = await prisma.event.findMany({
+            orderBy:{
+                [sortBy]: orderBy === 'asc' ? 'asc' : 'desc'
+            }
+        });
+
+        return res.status(200).json({data:sortedData}); 
+    }catch(e){
+        console.error("Error fetching sorted data:", e);
+        return res.status(500).json({ message: "Server Error" });
+    }
 }
 
 module.exports = {
@@ -147,5 +206,7 @@ module.exports = {
     deleteEvent,
     editEvent,
     findEvent,
-    getAllEvents
+    getAllEvents,
+    getEventsByCategory,
+    sortEvents
 }

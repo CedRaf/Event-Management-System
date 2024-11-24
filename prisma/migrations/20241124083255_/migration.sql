@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `recipient` ADD COLUMN `response` ENUM('ACCEPTED', 'PENDING', 'DECLINED') NOT NULL DEFAULT 'PENDING';

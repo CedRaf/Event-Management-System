@@ -150,11 +150,33 @@ const getAllCategories = async(req, res) =>{
     }
 }
 
+const sortCategories = async(req, res) =>{
+    const{orderBy = 'asc'} = req.params;
+    const validFields = ['asc', 'desc'];
+    
+    if(!validFields.includes(orderBy)){
+        return res.status(400).json({message:`Invalid order: ${orderBy}`});
+    }
+
+    try{
+        const sortedData = await prisma.eventcategory.findMany({
+            orderBy:{
+                category_name: orderBy
+            }
+        });
+
+        return res.status(200).json({data:sortedData}); 
+    }catch(e){
+        console.error("Error fetching sorted data:", e);
+        return res.status(500).json({ message: "Server Error" });
+    }
+}
 
 module.exports = {
     createCategory,
     deleteCategory,
     editCategory,
     findCategory,
-    getAllCategories
+    getAllCategories,
+    sortCategories
 }

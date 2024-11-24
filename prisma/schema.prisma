@@ -80,12 +80,16 @@ model rsvp {
 }
 
 model recipient {
-  id         Int    @id @default(autoincrement())
-  rsvpID     Int
-  userID     Int
+  id          Int            @id @default(autoincrement())
+  rsvpID      Int
+  userID      Int
+  response    rsvp_response  @default(PENDING)
+  canceled    Boolean        @deafault(false)
+  canceled_at DateTime?       
 
   rsvp       rsvp   @relation(fields: [rsvpID], references: [rsvpID], map: "Recipient_RSVP_fkey", onDelete: Cascade)
   user       user   @relation(fields: [userID], references: [userID], map: "Recipient_User_fkey")
+  
 
   @@index([rsvpID], map: "Recipient_RSVP_fkey")
   @@index([userID], map: "Recipient_User_fkey")
@@ -111,5 +115,11 @@ enum rsvp_status {
   ACTIVE
   CANCELLED
   COMPLETED
+}
+
+enum rsvp_response{
+  ACCEPTED
+  PENDING
+  DECLINED
 }
 
