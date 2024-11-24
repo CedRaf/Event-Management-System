@@ -34,7 +34,7 @@ function Login(){
                 };
                 localStorage.setItem('user', JSON.stringify(user)); //what 
                 //redirect to dashboard page
-                navigate('/dashboard');
+                navigate('/event-category');
             }
 
         } catch(error){
