@@ -51,7 +51,7 @@ model eventcategory {
 
 model notifications {
   notificationID Int      @id @default(autoincrement())
-  status         Boolean  @default(false)
+  opened         Boolean  @default(false)
   userID         Int
   eventID        Int
   message        String   @db.VarChar(255)
@@ -64,17 +64,31 @@ model notifications {
 }
 
 model rsvp {
-  rsvpID      Int         @id @default(autoincrement())
-  userID      Int
-  eventID     Int
-  status      rsvp_status
-  created_at  DateTime    @default(now())
-  last_edited DateTime    @default(now())
-  event       event       @relation(fields: [eventID], references: [eventID], map: "RSVP_eventID_fkey")
-  user        user        @relation(fields: [userID], references: [userID], map: "RSVP_userID_fkey")
+  rsvpID       Int         @id @default(autoincrement())
+  senderUserID Int
+  eventID      Int
+  status       rsvp_status @default(ACTIVE)
+  created_at   DateTime    @default(now())
+  last_edited  DateTime    @default(now())
+
+  event        event       @relation(fields: [eventID], references: [eventID], map: "RSVP_eventID_fkey")
+  sender       user        @relation("RSVP_Sender", fields: [senderUserID], references: [userID], map: "RSVP_senderUserID_fkey")
+  recipients   recipient[] 
 
   @@index([eventID], map: "RSVP_eventID_fkey")
-  @@index([userID], map: "RSVP_userID_fkey")
+  @@index([senderUserID], map: "RSVP_senderUserID_fkey")
+}
+
+model recipient {
+  id         Int    @id @default(autoincrement())
+  rsvpID     Int
+  userID     Int
+
+  rsvp       rsvp   @relation(fields: [rsvpID], references: [rsvpID], map: "Recipient_RSVP_fkey", onDelete: Cascade)
+  user       user   @relation(fields: [userID], references: [userID], map: "Recipient_User_fkey")
+
+  @@index([rsvpID], map: "Recipient_RSVP_fkey")
+  @@index([userID], map: "Recipient_User_fkey")
 }
 
 model user {
@@ -88,7 +102,9 @@ model user {
   event         event[]
   notifications notifications[]
   eventcategory eventcategory[] @relation("UserEventCategories")
-  rsvp          rsvp[]
+
+  sentRSVPs     rsvp[]          @relation("RSVP_Sender")
+  receivedRSVPs recipient[]     
 }
 
 enum rsvp_status {
