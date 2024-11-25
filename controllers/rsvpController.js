@@ -2,41 +2,55 @@ const prisma = require("../prisma/database");
 const rsvpController = require("../schemas/createRSVPSchema");
 const editRSVPController = require("../schemas/editRSVPSchema");
 
-const createRSVP = async(req, res) =>{
-
-    const {error} = rsvpController.validate(req.body);
-    if(error){
-        return res.status(400).json({message: error.details[0].message});
+const createRSVP = async (req, res) => {
+    const { error } = rsvpController.validate(req.body);
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
     }
 
-    const {senderUserID, eventID, recipients} = req.body;
+    const { senderUserID, eventID, recipients } = req.body;
 
-    try{
+    try {
+        const users = await prisma.user.findMany({
+            where: {
+                email_address: { in: recipients }
+            },
+            select: {
+                userID: true, 
+                email_address: true 
+            }
+        });
+
+        const fetchedEmails = users.map(user => user.email_address);
+        const invalidEmails = recipients.filter(email => !fetchedEmails.includes(email));
+        if (invalidEmails.length > 0) {
+            return res.status(400).json({message: `The following email addresses do not exist: ${invalidEmails.join(", ")}`});
+        }
+
         const newRSVP = await prisma.rsvp.create({
-            data:{
+            data: {
                 senderUserID,
                 eventID,
-                recipients : {
-                    create: recipients.map(userID => ({
-                        userID,
+                recipients: {
+                    create: users.map(user => ({
+                        userID: user.userID
                     }))
                 }
             }
-        })
+        });
 
         const associatedEvent = await prisma.event.findUnique({
-            where:{
-                eventID: eventID,
+            where: {
+                eventID: eventID
             }
-        })
+        });
 
-        return res.status(201).json({message:"RSVP Successfully created and sent!", rsvp:newRSVP, associatedEvent});
-
-    }catch(e){
-        console.error('Error creating new RSVP: ', e);
-        return res.status(500).json({message:"Server Error"});
+        return res.status(201).json({message: "RSVP Successfully created and sent!", rsvp: newRSVP, associatedEvent});
+    } catch (e) {
+        console.error("Error creating new RSVP: ", e);
+        return res.status(500).json({ message: "Server Error" });
     }
-}
+};
 
 const deleteRSVP = async (req,res) =>{
 
@@ -251,6 +265,8 @@ const getUserRSVPs = async (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 };
+
+
 
 module.exports = {
     createRSVP,

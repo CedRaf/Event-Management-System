@@ -84,8 +84,8 @@ model recipient {
   rsvpID      Int
   userID      Int
   response    rsvp_response  @default(PENDING)
-  canceled    Boolean        @default(false)
-  canceled_at DateTime?       
+  cancelled    Boolean        @default(false)
+  cancelled_at DateTime?       
 
   rsvp       rsvp   @relation(fields: [rsvpID], references: [rsvpID], map: "Recipient_RSVP_fkey", onDelete: Cascade)
   user       user   @relation(fields: [userID], references: [userID], map: "Recipient_User_fkey")
