@@ -53,14 +53,17 @@ model notifications {
   notificationID Int      @id @default(autoincrement())
   opened         Boolean  @default(false)
   userID         Int
-  eventID        Int
+  eventID        Int?
+  rsvpID         Int?
   message        String   @db.VarChar(255)
   time_sent      DateTime @default(now())
-  event          event    @relation(fields: [eventID], references: [eventID], map: "Notifications_eventID_fkey")
   user           user     @relation(fields: [userID], references: [userID], map: "Notifications_userID_fkey")
+  event          event?    @relation(fields: [eventID], references: [eventID], map: "Notifications_eventID_fkey", onDelete: Cascade)
+  rsvp           rsvp?     @relation(fields: [rsvpID], references: [rsvpID], map: "Notifications_rsvpID_fkey", onDelete: Cascade)
 
   @@index([eventID], map: "Notifications_eventID_fkey")
   @@index([userID], map: "Notifications_userID_fkey")
+  @@index([rsvpID], map: "Notifications_rsvpID_fkey")
 }
 
 model rsvp {
@@ -74,6 +77,7 @@ model rsvp {
   event        event       @relation(fields: [eventID], references: [eventID], map: "RSVP_eventID_fkey")
   sender       user        @relation("RSVP_Sender", fields: [senderUserID], references: [userID], map: "RSVP_senderUserID_fkey")
   recipients   recipient[] 
+  notifications notifications[]
 
   @@index([eventID], map: "RSVP_eventID_fkey")
   @@index([senderUserID], map: "RSVP_senderUserID_fkey")

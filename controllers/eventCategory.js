@@ -133,7 +133,7 @@ const findCategory = async (req, res) => {
 
 const getAllCategories = async(req, res) =>{
 
-    const {userID} = req.body;
+    const {userID} = req.params;
     try{
         const categoryList = await prisma.eventcategory.findMany({
             where:{
