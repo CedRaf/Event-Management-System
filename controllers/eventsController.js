@@ -40,7 +40,7 @@ const deleteEvent = async(req, res) =>{
         const{eventID} = req.params;
         const existingEvent = await prisma.event.findUnique({
             where:{
-                eventID : eventID
+                eventID : Number(eventID)
             }
         });
 
@@ -54,7 +54,7 @@ const deleteEvent = async(req, res) =>{
             }
         });
 
-        return res.status(200).json({message:"Event successfully deleted!"}); 
+        return res.status(200).json({message:"Event successfully deleted!", deletedEvent}); 
 
     }catch(e){
         console.error("Error deleting event: ", e);
@@ -133,7 +133,7 @@ const getAllEvents = async(req, res) =>{
     try{
         const eventList = await prisma.event.findMany({
             where:{
-                userID: userID
+                userID: Number(userID)
             }
         });
         if(eventList === 0){

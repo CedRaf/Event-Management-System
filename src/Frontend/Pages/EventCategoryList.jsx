@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import AddEventCategory from '../Add/addEventCategory';
+import AddEventCategory from '../Add/AddEventCategory.jsx';
 // import editEventCategory from './Edit/editEventCategory';
+//import getByCategoryAPI from '../components/EventAPI.jsx'
 
 
 function EventCategory(){
@@ -16,7 +17,7 @@ function EventCategory(){
     const [addtoggle, setAddToggle]= useState(false);
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
     const [filteredCategories, setFilteredCategories]= useState([]);
     const [editToggle, setEditToggle] = useState(false);
     const navigate= useNavigate();
@@ -65,16 +66,18 @@ function EventCategory(){
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()) // Case-insensitive search
         );
-            setFilteredCategories(results);
+            setCategories(results);
         }
         else{
-            setFilteredCategories(categories);
+            setCategories(categories);
         }
        
     }
 
     
     const createCategory = async(newCategory) =>{
+        //category_name, category_description, userID body
+        //returns newCategory
         setNewCategory(prev => ({
             ...prev, // Preserve existing fields
             userID: user.userID, // Set the userID
@@ -86,9 +89,9 @@ function EventCategory(){
                  headers: {
                     Authorization: `Bearer: ${token}`
                         }}); 
-            if(response){
-                setError(response.data.message);
-                window.location.reload();
+            if(response && response.date.newCategory){
+                setCategories((prevCategories) => [...prevCategories, response.data.newCategory]);
+                
             }
         }catch(e){
             setError('Could not register category. Please try again later.');
@@ -96,7 +99,8 @@ function EventCategory(){
     }
 
     const deleteCategory =async(category_name)=>{
-        const PAYLOAD = {category_name: category_name, userID: user.userID};
+        //category_name, userID body
+        //returns deletedCategory
         try{
 
             const response = await axios.delete(`http://localhost:3000/eventCategory/delete`, {
@@ -107,14 +111,18 @@ function EventCategory(){
                     category_name: category_name,
                     userID: user.userID
                  }}); 
-                 window.location.reload();
+                 if(response && response.data){
+                    setCategories((prevCategories) => prevCategories.filter((category) => category.categoryID !== response.data.deletedCategory.categoryID));
+    
+                 }
         }catch(e){
             setError('Could not delete category. Please try again later.')
         }
     }
 
     const editCategory = async(categoryID) =>{
-
+        //categoryID params, category_name, category_description body
+        //returns updatedCategory
     }
 
 
@@ -125,7 +133,7 @@ function EventCategory(){
             <input type="text" placeholder="Find Category" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
             <button onClick={() => searchCategory(searchTerm)}> Search </button>
             <ul>
-                {filteredCategories.map((category) => (
+                {categories.map((category) => (
                 <li key={category.categoryID}>
                         <button>{category.category_name}</button>  
                         <button onClick={()=> setEditToggle((prevState) => !prevState)}>EDIT</button>  

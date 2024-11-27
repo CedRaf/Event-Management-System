@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import Login from './Frontend/Pages/Login.jsx'
 import Register from './Frontend/Pages/Register.jsx'
 import EventCategory from './Frontend/Pages/EventCategoryList.jsx'
-import CreateEvent from './Frontend/Add/CreateEvent.jsx'
+import CreateEvent from './Frontend/Add/AddEvent.jsx'
 import EventList from './Frontend/Pages/EventList.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 

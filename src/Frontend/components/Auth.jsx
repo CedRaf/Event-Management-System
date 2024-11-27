@@ -18,7 +18,7 @@ function Auth({ setGoogleToken }) {
         options: {
           scopes: 'https://www.googleapis.com/auth/calendar',
         },
-      });git checkout categories-branch
+      });
       if (error) {
         alert('Error signing in with Google.');
         console.error(error);

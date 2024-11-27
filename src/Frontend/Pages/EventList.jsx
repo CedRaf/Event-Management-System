@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { getAllEvents, deleteEvent } from '../components/EventAPI';
+import { getAllAPI, deleteAPI } from '../components/EventAPI';
+import AddEvent from '../Add/AddEvent'
+import axios from 'axios';
 
 function EventList () {
   const [token, setToken] = useState('');
   const [user, setUser] = useState('');
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
-  const [filteredEvents, setFilteredEvents] = useState(null);
-  const [newEvent, setNewEvent] = useState('');
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [newEvent, setNewEvent] = useState({
+    event_title: '',
+    event_description: '',
+    event_date: '',
+
+
+  });
+  const [addtoggle, setAddToggle]= useState(false);
+  const [searchTerm, setSearchTerm]= useState('');
 
 
   useEffect(() =>{
@@ -23,79 +33,109 @@ function EventList () {
 
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const getEvents = async () => {
+      if(!token && !user){ //because these arent initialized right away
+        return;
+      }
       try {
-        const response = await getAllEvents(user.userID);
-        setEvents(response.data);
+        
+        const response = await axios.get(`http://localhost:3000/events/findAll/${user.userID}`, {
+          headers: {
+            Authorization: `Bearer: ${token}`
+              }});
+        if(response){
+          setEvents(response.data);
+          setFilteredEvents(response.data);
+        }
+        
       } catch (err) {
         setError('Error fetching the Event');
       }
     };
 
-    fetchEvents();
+    getEvents();
   }, [token, user]);
 
-    const createCategory = async(newEvent) =>{
-      setNewEvent(prev => ({
-          ...prev, // Preserve existing fields
-          userID: user.userID, // Set the userID
-      }));
+    const createEvent = async(newEvent) =>{
+      //new Event body
+      //returns newEvent
+        const eventData = {
+          ...newEvent,
+          userID: user.userID, // Make sure userID is set
+          categoryID: 12, // Set categoryID
+      };
 
       try{
-          console.log(newEvent);
-          const response = await axios.post(`http://localhost:3000/events/create`, newEvent, {
+          console.log(eventData, token);
+          const response = await axios.post(`http://localhost:3000/events/create`, eventData, {
               headers: {
                   Authorization: `Bearer: ${token}`
                       }}); 
-          if(response){
-              setError(response.data.message);
-              window.location.reload();
+          if(response && response.data){
+              setEvents((prevEvents) => [...prevEvents, response.data.newEvent]);
           }
       }catch(e){
           setError('Could not register category. Please try again later.');
       }
   }
 
+  const deleteEvent = async (eventID) => {
+    //eventID params
+    //returns deletedEvent
+    try {
+      const response = await axios.delete(`http://localhost:3000/events/delete/${eventID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if(response && response.data){
+        setError(response.data.message);
+        setEvents((prevEvents) => prevEvents.filter((event) => event.eventID !== response.data.deletedEvent.eventID));
+    }
+    } catch (err) {
+      alert('Error deleting the Event', error);
+    }
+  };
+
   const searchEvent = (searchTerm) =>{
+
     if(searchTerm){
     const results = events.filter((event) =>
       event.event_title
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) // Case-insensitive search
     );
-        setFilteredEvents(results);
+        setEvents(results);
     }
     else{
-      setFilteredEvents(events);
+      setEvents(events);
     }
-}
+  }
 
-  const handleDelete = async (eventID) => {
-    try {
-      await deleteEvent(eventID);
-      setEvents((prev) => prev.filter((event) => event.eventID !== eventID));
-    } catch (err) {
-      alert('Error deleting the Event');
-    }
-  };
+  const editEvent = (editedEvent)=>{
+    //eventID params
+    //editedEvent entity body
+    //returns updatedEvent , may be removed
+  }
 
   return (
     <div className="event-list">
       <h2>Event List</h2>
-      {error && <p className="error">{error}</p>}
+      <input type="text" placeholder="Find Event" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
+            <button onClick={() => searchEvent(searchTerm)}> SEARCH </button>
       <ul>
-        {filteredEvents.map((event) => (
+        {events.map((event) => (
           <li key={event.eventID}>
-            <h3>{event.event_title}</h3>
-            <p>{event.event_description}</p>
+            <button>{event.event_title}</button>
             <p>Date: {new Date(event.event_date).toLocaleDateString()}</p>
-            <button onClick={() => handleDelete(event.eventID)}>Delete</button>
+            {/* <button onClick={() => editEvent(event.eventID)}>EDIT</button> */}
+            <button onClick={() => deleteEvent(event.eventID)}>DELETE</button>
           </li>
         ))}
       </ul>
         <button onClick={()=> setAddToggle((prevState) => !prevState)}> ADD </button>
                   {addtoggle && <div> 
-                      <CreateEvent createCategory= {createCategory} newCategory= {newCategory} setNewCategory = {setNewCategory}/>                    
+                      <AddEvent createEvent= {createEvent} newEvent= {newEvent} setNewEvent = {setNewEvent}/>                    
                   </div>}
     </div>
   );

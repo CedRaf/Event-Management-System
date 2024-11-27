@@ -30,7 +30,7 @@ const createCategory = async (req, res) =>{
             }
         })
 
-        return res.status(200).json({message:"Successfully created a new category!"}); 
+        return res.status(200).json({message:"Successfully created a new category!", newCategory}); 
 
 
     }catch(e){
