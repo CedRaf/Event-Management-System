@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AddEventCategory from '../Add/AddEventCategory.jsx';
-// import editEventCategory from './Edit/editEventCategory';
+
+
 //import getByCategoryAPI from '../components/EventAPI.jsx'
 
 
@@ -15,11 +16,12 @@ function EventCategory(){
       const [searchTerm, setSearchTerm] = useState('');
     const [categories, setCategories]= useState([]);
     const [addtoggle, setAddToggle]= useState(false);
+    const [editedCategory, setEditedCategory] = useState('');
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
     const [error, setError] = useState(null);
     const [filteredCategories, setFilteredCategories]= useState([]);
-    const [editToggle, setEditToggle] = useState(false);
+
     const navigate= useNavigate();
     
     useEffect(() =>{
@@ -127,6 +129,7 @@ function EventCategory(){
 
 
 
+
     
     return(
         <div>
@@ -136,10 +139,18 @@ function EventCategory(){
                 {categories.map((category) => (
                 <li key={category.categoryID}>
                         <button>{category.category_name}</button>  
-                        <button onClick={()=> setEditToggle((prevState) => !prevState)}>EDIT</button>  
-                        {editToggle && <div> 
+                        <button onClick={()=> { 
+                            setEditedCategory(category);
+                            navigate("/EditEventCategory", { 
+                                state: { 
+                                  category,
+                                  user                                 
+                                } 
+                            });
+                        }}>EDIT</button>  
+                        {/* {editToggle && <div> 
                             <EditEventCategory editCategory= {editCategory} newCategory= {newCategory} setNewCategory = {setNewCategory}/>                    
-                        </div>}
+                        </div>} */}
                         <button onClick={()=> deleteCategory(category.category_name)}>DELETE</button> 
                 </li>
                 ))}

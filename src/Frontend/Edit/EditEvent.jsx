@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 
-function EditEventCategory(){
+function EditEvent(){
     const navigate = useNavigate();
     const location = useLocation();
     const {category} = location.state || {};
@@ -65,4 +65,4 @@ function EditEventCategory(){
         </div>
     )
 }
-export default EditEventCategory;
+export default EditEvent;
