@@ -1,6 +1,7 @@
 const prisma = require("../prisma/database");
 const rsvpController = require("../schemas/createRSVPSchema");
 const editRSVPController = require("../schemas/editRSVPSchema");
+const notifications = require("../controllers/notificationsController");
 
 const createRSVP = async (req, res) => {
     const { error } = rsvpController.validate(req.body);
@@ -20,6 +21,8 @@ const createRSVP = async (req, res) => {
                 email_address: true 
             }
         });
+
+        const userIDs = users.map(user => user.userID);
 
         const fetchedEmails = users.map(user => user.email_address);
         const invalidEmails = recipients.filter(email => !fetchedEmails.includes(email));
@@ -45,7 +48,9 @@ const createRSVP = async (req, res) => {
             }
         });
 
-        return res.status(201).json({message: "RSVP Successfully created and sent!", rsvp: newRSVP, associatedEvent});
+        const notification = await notifications.generateRSVPNotification(newRSVP, senderUserID, eventID, userIDs);
+
+        return res.status(201).json({message: "RSVP Successfully created and sent!", rsvp: newRSVP, associatedEvent, notification});
     } catch (e) {
         console.error("Error creating new RSVP: ", e);
         return res.status(500).json({ message: "Server Error" });
@@ -135,7 +140,6 @@ const getRSVPRecipients = async(req, res) =>{
     const {rsvpID} = req.params;
 
     try{
-        
         const recipients = await prisma.recipient.findMany({
             where:{
                 rsvpID: Number(rsvpID)
@@ -265,8 +269,6 @@ const getUserRSVPs = async (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 };
-
-
 
 module.exports = {
     createRSVP,

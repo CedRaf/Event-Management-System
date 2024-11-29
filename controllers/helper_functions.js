@@ -3,7 +3,7 @@ const prisma = require("../prisma/database");
 const checkIfExistingUser = async(userID, res) =>{
     const existingUser = await prisma.user.findUnique({
         where:{
-            userID: userID
+            userID: Number(userID)
         }
     });
 
@@ -17,7 +17,7 @@ const checkIfExistingUser = async(userID, res) =>{
 const checkIfExistingNotification = async(notificationID, res) =>{
     const existingNotification = await prisma.notifications.findUnique({
         where:{
-            notificationID: notificationID
+            notificationID: Number(notificationID)
         }
     });
     if(!existingNotification){

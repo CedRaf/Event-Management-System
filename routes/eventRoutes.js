@@ -9,7 +9,7 @@ eventsRouter.patch("/edit/:eventID", authMiddleware, eventController.editEvent);
 eventsRouter.get("/find/:userID", authMiddleware, eventController.findEvent);  //event_title
 eventsRouter.get("/findAll/:userID", authMiddleware, eventController.getAllEvents); 
 eventsRouter.get("/findByCategory/:categoryID", authMiddleware, eventController.getEventsByCategory);
-eventsRouter.get("/sort/:sortBy/:orderBy?", authMiddleware, eventController.sortEvents);
+eventsRouter.get("/sort/:userID/:sortBy/:orderBy?", authMiddleware, eventController.sortEvents);
 
 
 module.exports = eventsRouter;

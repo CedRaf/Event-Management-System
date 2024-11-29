@@ -151,7 +151,7 @@ const getAllCategories = async(req, res) =>{
 }
 
 const sortCategories = async(req, res) =>{
-    const{orderBy = 'asc'} = req.params;
+    const{userID, orderBy = 'asc'} = req.params;
     const validFields = ['asc', 'desc'];
     
     if(!validFields.includes(orderBy)){
@@ -160,6 +160,9 @@ const sortCategories = async(req, res) =>{
 
     try{
         const sortedData = await prisma.eventcategory.findMany({
+            where:{
+                userID: Number(userID)
+            },
             orderBy:{
                 category_name: orderBy
             }
