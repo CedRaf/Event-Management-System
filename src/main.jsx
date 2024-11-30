@@ -7,8 +7,9 @@ import CreateEvent from './Frontend/Add/AddEvent.jsx'
 import EventList from './Frontend/Pages/EventList.jsx'
 import EditEventCategory from './Frontend/Edit/EditEventCategory.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import './index.css'
+
 
 const router = createBrowserRouter([
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <GoogleOAuthProvider clientId="769574372190-iko3inrr1e3r6ttdh9ogtigf3dm8ubs4.apps.googleusercontent.com">
     <RouterProvider router={router}/>
+    </GoogleOAuthProvider>
+    
   </React.StrictMode>,
 )
+
