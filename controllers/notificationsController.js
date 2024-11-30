@@ -35,9 +35,8 @@ const markAsRead = async(req, res) =>{
     const {notificationID} = req.params;
 
     try{
-        // const existingUser = await helperFunc.checkIfExistingUser(userID, res);
-        // const existingNotification =  await helperFunc.checkIfExistingNotification(notificationID, res);
-        // if(!existingUser || !existingNotification) return
+        const existingNotification =  await helperFunc.checkIfExistingNotification(notificationID, res);
+        if(!existingNotification) return
 
         const updatedNotification = await prisma.notifications.update({
             where:{   
@@ -60,9 +59,8 @@ const deleteNotification = async(req, res) =>{
     const{notificationID} = req.params;
 
     try{
-        // const existingUser = await helperFunc.checkIfExistingUser(userID, res);
-        // const existingNotification =  await helperFunc.checkIfExistingNotification(notificationID, res);
-        // if(!existingUser || !existingNotification) return
+        const existingNotification =  await helperFunc.checkIfExistingNotification(notificationID, res);
+        if(!existingNotification) return
 
         const deletedNotification = await prisma.notifications.delete({
             where:{  
@@ -84,6 +82,9 @@ const filterNotifications = async(req, res) =>{
     const validFields = ['true', 'false'];
 
     try{
+        const existingUser = await helperFunc.checkIfExistingUser(userID, res);
+        if(!existingUser) return
+
         if (!validFields.includes(opened)) {
             return res.status(400).json({ message: "Invalid value for 'opened'. Use 'true' or 'false'." });
         }
@@ -113,16 +114,8 @@ const filterNotifications = async(req, res) =>{
 
 const generateRSVPNotification = async (newRSVP, senderUserID, eventID, users) => {
     try {
-        const sender = await prisma.user.findUnique({
-            where: {
-                userID: Number(senderUserID)
-            }
-        });
-
-        if (!sender) {
-            throw new Error("Sender user not found.");
-        }
-
+        const sender = await helperFunc.getUserDetails(senderUserID);
+    
         const notificationData = users.filter(userID => !isNaN(Number(userID))).map(userID => ({
                 userID: Number(userID),  
                 eventID: Number(eventID), 
@@ -149,23 +142,11 @@ const generateRSVPNotification = async (newRSVP, senderUserID, eventID, users) =
 
 const rsvpResponseNotification = async(rsvpID, userID, response) =>{
     try{
-        const rsvp = await prisma.rsvp.findUnique({
-            where:{
-                rsvpID: Number(rsvpID)
-            }
-        });
+        const rsvp = await helperFunc.getRSVPDetails(rsvpID);
 
-        const recipient = await prisma.user.findUnique({
-            where:{
-                userID: Number(userID)
-            }
-        });
+        const recipient = await helperFunc.getUserDetails(userID);
 
-        const eventDetails = await prisma.event.findUnique({
-            where:{
-                eventID: rsvp.eventID
-            }
-        })
+        const eventDetails = await helperFunc.getEventDetails(rsvp.eventID);
 
         const notification = await prisma.notifications.create({
             data:{
@@ -188,23 +169,11 @@ const rsvpResponseNotification = async(rsvpID, userID, response) =>{
 const cancelRSVPNotification = async(rsvpID, userID) =>{
 
     try{
-        const rsvp = await prisma.rsvp.findUnique({
-            where:{
-                rsvpID: Number(rsvpID)
-            }
-        });
+        const rsvp = await helperFunc.getRSVPDetails(rsvpID);
 
-        const recipient = await prisma.user.findUnique({
-            where:{
-                userID: Number(userID)
-            }
-        });
+        const recipient = await helperFunc.getUserDetails(userID);
 
-        const eventDetails = await prisma.event.findUnique({
-            where:{
-                eventID: rsvp.eventID
-            }
-        });
+        const eventDetails = await helperFunc.getEventDetails(rsvp.eventID);
 
         const notification = await prisma.notifications.create({
             data:{
@@ -221,7 +190,34 @@ const cancelRSVPNotification = async(rsvpID, userID) =>{
         console.error("Error sending rsvp cancellation notification", e);
         throw new Error(e.message); 
     }
+}
 
+const editedEventNotification = async(eventID) =>{
+
+    try{
+        const eventHasRSVP = await helperFunc.checkIfEventHasRSVP(eventID);
+        if(!eventHasRSVP) return
+
+        const sender = await helperFunc.getUserDetails(eventHasRSVP.senderUserID);
+
+        const eventDetails = await helperFunc.getEventDetails(rsvp.eventID);
+
+        const userIDs = await helperFunc.getRSVPRecipientIDs(eventID);
+
+        const notification = await prisma.notifications.createMany({
+            data: userIDs.map(userID=>({
+                userID: userID,
+                eventID: eventID,
+                message: `RSVP for event "${eventDetails.event_title}" has been edited by ${sender.first_name} ${sender.last_name}`,
+                time_sent: new Date()
+            }))
+        });
+
+        return {notification}
+    }catch(e){
+        console.error("Error generating notifications for edited event");
+        throw new Error(e.message);
+    }
 }
 
 module.exports = {
@@ -231,5 +227,6 @@ module.exports = {
     filterNotifications,
     generateRSVPNotification,
     rsvpResponseNotification,
-    cancelRSVPNotification
+    cancelRSVPNotification,
+    editedEventNotification
 }

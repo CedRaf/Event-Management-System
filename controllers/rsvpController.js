@@ -2,6 +2,7 @@ const prisma = require("../prisma/database");
 const rsvpController = require("../schemas/createRSVPSchema");
 const editRSVPController = require("../schemas/editRSVPSchema");
 const notifications = require("../controllers/notificationsController");
+const helperFunc = require("../controllers/helper_functions");
 
 const createRSVP = async (req, res) => {
     const { error } = rsvpController.validate(req.body);
@@ -60,14 +61,7 @@ const createRSVP = async (req, res) => {
 const deleteRSVP = async (req,res) =>{
 
     const {rsvpID} = req.body;
-    const existingRSVP = await prisma.rsvp.findUnique({
-        where:{
-            rsvpID: Number(rsvpID),
-        }
-    });
-    if(!existingRSVP){
-        return res.status(400).json({message:"RSVP does not exist"});
-    }
+    const existingRSVP = await helperFunc.checkIfExistingRSVP(rsvpID);
 
     try{
         const deletedRSVP = await prisma.rsvp.delete({
@@ -95,15 +89,7 @@ const editRSVP = async (req, res) =>{
     const {eventID, status, recipients} = req.body;
 
     try{
-        const existingRSVP = await prisma.rsvp.findUnique({
-            where:{
-                rsvpID: Number(rsvpID),
-            }
-        });
-    
-        if(!existingRSVP){
-            return res.status(400).json({message:"RSVP does not exist"});
-        }
+        const existingRSVP = await helperFunc.checkIfExistingRSVP(rsvpID);
 
         await prisma.recipient.deleteMany({
             where: {

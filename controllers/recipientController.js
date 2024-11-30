@@ -1,6 +1,7 @@
 const prisma = require("../prisma/database"); 
 const recipientSchema = require("../schemas/recipientSchema");
 const notifications = require("../controllers/notificationsController");
+const helperFunc = require("../controllers/helper_functions");
 
 const rsvpResponse = async(req, res) =>{
     
@@ -12,15 +13,7 @@ const rsvpResponse = async(req, res) =>{
     const {response} = req.body;
 
     try{
-        const existingRSVP = await prisma.rsvp.findUnique({
-            where:{
-                rsvpID: Number(rsvpID)
-            }
-        });
-    
-        if(!existingRSVP){
-            return res.status(400).json({message:"RSVP does not exist"});
-        }
+        await helperFunc.checkIfExistingRSVP(rsvpID);
     
         const recipient = await prisma.recipient.findFirst({
             where:{
@@ -55,15 +48,7 @@ const rsvpResponse = async(req, res) =>{
 const cancelRSVP = async(req, res) =>{
     const{rsvpID, userID} = req.params;
     try{
-        const existingRSVP = await prisma.rsvp.findUnique({
-            where:{
-                rsvpID: Number(rsvpID)
-            }
-        });
-    
-        if(!existingRSVP){
-            return res.status(400).json({message:"RSVP does not exist"});
-        }
+        await helperFunc.checkIfExistingRSVP(rsvpID);
     
         const recipient = await prisma.recipient.findFirst({
             where:{

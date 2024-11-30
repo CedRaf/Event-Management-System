@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const registerSchema = require("../schemas/registerSchema"); 
 const loginSchema = require("../schemas/loginSchema"); 
 const saltRounds = 10;
-
+const {OAuth2Client} = require('google-auth-library');
 
 const registerNewUser = async (req, res)=>{
     console.log(req.body) //for testing purposes
@@ -99,8 +99,63 @@ const loginAccount = async (req, res) => {
     }
 }
 
+const token = googleUser.getAuthResponse().id_token;
+
+const googleSignIn = async(req, res) =>{
+    
+    const {idToken, client_id} = req.body;
+
+    if(!idToken || !client_id){
+        return res.status(400).json({message:"Missing client ID or token"});
+    }
+
+    try{
+        const client = new OAuth2Client(client_id); 
+
+        const ticket = await client.verifyIdToken({
+            idToken,
+            audience: client_id
+        });
+
+        const payload = ticket.getPayload();
+        const googleID = payload.sub;
+
+        let user = await prisma.user.findFirst({
+            where:{
+                OR:[
+                    {googleID: googleID},
+                    {email_address: payload.email}
+                ]
+            }
+        });
+
+        if(!user){
+            user = await prisma.user.create({
+                data:{
+                    googleID: googleID,
+                    email_address: payload.email,
+                    first_name: payload.given_name,
+                    last_name: payload.family_name,
+                    username: null,
+                    password: null,
+                }
+            })
+        }
+
+        const token = jwt.sign({userID: user.userID, email: user.email_address}, process.env.TOKEN, {expiresIn: '1h'});
+
+        return res.status(200).json({message:"Successfully signed in with Google", token, user}); 
+
+    }catch(e){
+        console.error("Error verifying Google token", e);
+        return res.status(500).json({message:"Server Error"}); 
+    }
+}
+
+
 module.exports = {
     registerNewUser,
     loginAccount,
+    googleSignIn
 }
 
