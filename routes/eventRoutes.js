@@ -3,7 +3,7 @@ const eventController = require("../controllers/eventsController");
 const authMiddleware = require("../middlewares/authenticateToken"); 
 
 const eventsRouter = express.Router(); 
-eventsRouter.post("/create", eventController.createEvent); //new event entity
+eventsRouter.post("/create", authMiddleware, eventController.createEvent); //new event entity
 eventsRouter.delete("/delete/:eventID", authMiddleware, eventController.deleteEvent); //no body
 eventsRouter.patch("/edit/:eventID", authMiddleware, eventController.editEvent);  //body: updated event entity
 eventsRouter.get("/find/:userID", authMiddleware, eventController.findEvent);  //event_title

@@ -156,11 +156,11 @@ const getRSVPRecipients = async(req, res) =>{
 
 const getRSVPDetails = async (req, res) => {
     try {
-        const { rsvpID } = req.params;
+        const { eventID } = req.params;
 
         const rsvpDetails = await prisma.rsvp.findUnique({
             where: {
-                rsvpID: Number(rsvpID)
+                eventID: Number(eventID)
             },
             select: {
                 senderUserID: true,

@@ -119,7 +119,7 @@ const getAllCategories = async(req, res) =>{
     try{
         const categoryList = await prisma.eventcategory.findMany({
             where:{
-                userID: userID
+                userID: Number(userID)
             }
         });
         if(categoryList === 0){

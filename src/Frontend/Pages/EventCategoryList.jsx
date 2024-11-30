@@ -42,13 +42,10 @@ function EventCategory(){
             }
             try{
                 console.log(user, token);
-                const response = await axios.get(`http://localhost:3000/eventCategory/findAll`,  {
+                const response = await axios.get(`http://localhost:3000/eventCategory/findAll/${user.userID}`,  {
                     headers: {
-                       Authorization: `Bearer: ${token}`
-                           },
-                    data: {
-                        userID: user.userID
-                    } }); 
+                       Authorization: `Bearer ${token}`
+                           } }); 
                     
                 if(response){
                     setCategories(response.data)
@@ -143,8 +140,7 @@ function EventCategory(){
                             setEditedCategory(category);
                             navigate("/EditEventCategory", { 
                                 state: { 
-                                  category,
-                                  user                                 
+                                  category                                
                                 } 
                             });
                         }}>EDIT</button>  

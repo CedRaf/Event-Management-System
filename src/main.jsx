@@ -6,6 +6,8 @@ import EventCategory from './Frontend/Pages/EventCategoryList.jsx'
 import CreateEvent from './Frontend/Add/AddEvent.jsx'
 import EventList from './Frontend/Pages/EventList.jsx'
 import EditEventCategory from './Frontend/Edit/EditEventCategory.jsx'
+import EditEvent from './Frontend/Edit/EditEvent.jsx'
+import Event from './Frontend/Pages/Event.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import './index.css'
@@ -36,6 +38,14 @@ const router = createBrowserRouter([
 {
   path:'/editEventCategory',
   element:<EditEventCategory/>
+},
+{
+  path:'/editEvent',
+  element:<EditEvent/>
+},
+{
+  path:'/event',
+  element:<Event/>
 }
 
 ])
