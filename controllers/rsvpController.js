@@ -43,11 +43,7 @@ const createRSVP = async (req, res) => {
             }
         });
 
-        const associatedEvent = await prisma.event.findUnique({
-            where: {
-                eventID: eventID
-            }
-        });
+        const associatedEvent = await helperFunc.checkIfExistingEvent(eventID);
 
         const notification = await notifications.generateRSVPNotification(newRSVP, senderUserID, eventID, userIDs);
 
@@ -177,7 +173,8 @@ const getRSVPDetails = async (req, res) => {
                     select: {
                         event_title: true,
                         event_description: true,
-                        event_date: true
+                        event_date: true,
+                        location: true
                     }
                 },
                 recipients: {
@@ -222,6 +219,7 @@ const getUserRSVPs = async (req, res) => {
                         event_title: true,
                         event_description: true,
                         event_date: true,
+                        location: true,
                     },
                 },
                 recipients: {

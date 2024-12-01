@@ -7,18 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model calendar {
-  calendarID     Int    @id @default(autoincrement())
-  userID         Int
-  eventID        Int
-  linked_account String @db.VarChar(255)
-  event          event  @relation(fields: [eventID], references: [eventID], map: "Calendar_eventID_fkey")
-  user           user   @relation(fields: [userID], references: [userID], map: "Calendar_userID_fkey")
-
-  @@index([eventID], map: "Calendar_eventID_fkey")
-  @@index([userID], map: "Calendar_userID_fkey")
-}
-
 model event {
   eventID           Int             @id @default(autoincrement())
   userID            Int
@@ -27,7 +15,7 @@ model event {
   event_description String          @db.VarChar(255)
   event_date        DateTime        @default(now())
   created_at        DateTime        @default(now())
-  calendar          calendar[]
+  location          String?         @db.VarChar(255)
   eventcategory     eventcategory   @relation(fields: [categoryID], references: [categoryID], map: "Event_categoryID_fkey")
   user              user            @relation(fields: [userID], references: [userID], map: "Event_userID_fkey")
   notifications     notifications[]
@@ -107,7 +95,6 @@ model user {
   email_address String          @db.VarChar(255)                  @unique
   password      String?         @db.VarChar(255)
   googleID      String?         @unique
-  calendar      calendar[]
   event         event[]
   notifications notifications[]
   eventcategory eventcategory[] @relation("UserEventCategories")
