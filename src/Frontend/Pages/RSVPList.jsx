@@ -130,13 +130,7 @@ function EventList () {
       <ul>
         {events.map((event) => (
           <li key={event.eventID}>
-            <button onClick={()=> { 
-                            navigate("/Event", { 
-                                state: { 
-                                  event                                
-                                } 
-                            });
-                        }}>{event.event_title}</button>
+            <button>{event.event_title}</button>
             <p>Date: {new Date(event.event_date).toLocaleDateString()}</p>
             <button onClick={()=> { 
                             navigate("/editEvent", { 

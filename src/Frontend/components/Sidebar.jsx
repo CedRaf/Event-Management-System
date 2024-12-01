@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../App.css';
 import { SidebarData } from './SidebarData';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useNavigate } from 'react-router-dom';
@@ -27,14 +26,16 @@ function Sidebar({ user }) {
 
   return (
     <div className="sidebar">
-      <UserProfile name={user.name} type={user.type} />
-
+      {/* <UserProfile name={user.name} type={user.type} /> */}
+      <div className='temporary'>profile</div>
       <ul className="sidebarList">
         {SidebarData.map((item, index) => {
           // items with dropdown
+          
           if (item.subItems) {
             return (
-              <li key={index}>
+  
+              <li key={index} className='dropdown-container'>
                 <div
                   className="menu-item"
                   onClick={() => handleToggleDropdown(index)}
@@ -57,6 +58,7 @@ function Sidebar({ user }) {
                   </ul>
                 )}
               </li>
+        
             );
           }
 

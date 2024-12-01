@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/Sidebar.jsx';
 import AddEventCategory from '../Add/AddEventCategory.jsx';
 
 
@@ -42,13 +43,10 @@ function EventCategory(){
             }
             try{
                 console.log(user, token);
-                const response = await axios.get(`http://localhost:3000/eventCategory/findAll`,  {
+                const response = await axios.get(`http://localhost:3000/eventCategory/findAll/${user.userID}`,  {
                     headers: {
-                       Authorization: `Bearer: ${token}`
-                           },
-                    data: {
-                        userID: user.userID
-                    } }); 
+                       Authorization: `Bearer ${token}`
+                           } }); 
                     
                 if(response){
                     setCategories(response.data)
@@ -86,7 +84,9 @@ function EventCategory(){
         }));
 
         try{
-            console.log(newCategory);
+            console.log(newCategory, user
+
+            );
             const response = await axios.post(`http://localhost:3000/eventCategory/create`, newCategory, {
                  headers: {
                     Authorization: `Bearer: ${token}`
@@ -95,6 +95,7 @@ function EventCategory(){
                 setCategories((prevCategories) => [...prevCategories, response.data.newCategory]);
                 
             }
+            
         }catch(e){
             setError('Could not register category. Please try again later.');
         }
@@ -117,6 +118,8 @@ function EventCategory(){
                     setCategories((prevCategories) => prevCategories.filter((category) => category.categoryID !== response.data.deletedCategory.categoryID));
     
                  }
+            
+
         }catch(e){
             setError('Could not delete category. Please try again later.')
         }
@@ -132,7 +135,9 @@ function EventCategory(){
 
     
     return(
-        <div>
+        <div className='CatListContainer'>
+            <Sidebar />
+            <h1>Category</h1> 
             <input type="text" placeholder="Find Category" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
             <button onClick={() => searchCategory(searchTerm)}> Search </button>
             <ul>
@@ -143,8 +148,7 @@ function EventCategory(){
                             setEditedCategory(category);
                             navigate("/EditEventCategory", { 
                                 state: { 
-                                  category,
-                                  user                                 
+                                  category                                
                                 } 
                             });
                         }}>EDIT</button>  

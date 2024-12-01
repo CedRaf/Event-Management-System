@@ -11,13 +11,15 @@ function AddEventCategory({createCategory, newCategory, setNewCategory}){
     }
     
     return(
-        <div>
+   
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Event Name" value= {newCategory.category_name} onChange={(e) => {setNewCategory({...newCategory, category_name: e.target.value})}}/>
-                <input type="text" placeholder="Event Description" value= {newCategory.category_description} onChange={(e) => {setNewCategory({...newCategory, category_description: e.target.value})}}/>
+                <input type="text" placeholder="Category Name" value= {newCategory.category_name} onChange={(e) => {setNewCategory({...newCategory, category_name: e.target.value})}}/>
+                <input type="text" placeholder="Category Description" value= {newCategory.category_description} onChange={(e) => {setNewCategory({...newCategory, category_description: e.target.value})}}/>
                 <button type="submit">Submit</button>   
             </form>
-        </div>
+           
+   
+        
     )
 }
 export default AddEventCategory;

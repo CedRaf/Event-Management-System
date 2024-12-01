@@ -1,5 +1,7 @@
 const prisma = require("../prisma/database"); 
 const recipientSchema = require("../schemas/recipientSchema");
+const notifications = require("../controllers/notificationsController");
+const helperFunc = require("../controllers/helper_functions");
 
 const rsvpResponse = async(req, res) =>{
     
@@ -11,22 +13,12 @@ const rsvpResponse = async(req, res) =>{
     const {response} = req.body;
 
     try{
-        const existingRSVP = await prisma.rsvp.findUnique({
-            where:{
-                rsvpID: Number(rsvpID)
-            }
-        });
+        await helperFunc.checkIfExistingRSVP(rsvpID);
     
-        if(!existingRSVP){
-            return res.status(400).json({message:"RSVP does not exist"});
-        }
-    
-        const recipient = await prisma.recipient.findUnique({
+        const recipient = await prisma.recipient.findFirst({
             where:{
-                rsvpID_userID:{
-                    rsvpID: Number(rsvpID),
-                    userID: Number(userID)
-                }
+                rsvpID: Number(rsvpID),
+                userID: Number(userID)  
             }
         });
     
@@ -35,18 +27,17 @@ const rsvpResponse = async(req, res) =>{
         }
 
         const updatedResponse = await prisma.recipient.update({
-            where:{
-                rsvpID_userID:{
-                    rsvpID: Number(rsvpID),
-                    userID: Number(userID),
-                }          
+            where:{    
+                id: recipient.id           
             },
             data:{
                 response: response
             }
         });
 
-        return res.status(200).json({message:"Successfully updated response", updatedResponse}); 
+        const notification = await notifications.rsvpResponseNotification(rsvpID, userID, response);
+
+        return res.status(200).json({message:"Successfully updated response", updatedResponse, notification}); 
 
     }catch(e){
         console.error("Error updating RSVP response:", e);
@@ -57,22 +48,12 @@ const rsvpResponse = async(req, res) =>{
 const cancelRSVP = async(req, res) =>{
     const{rsvpID, userID} = req.params;
     try{
-        const existingRSVP = await prisma.rsvp.findUnique({
-            where:{
-                rsvpID: Number(rsvpID)
-            }
-        });
+        await helperFunc.checkIfExistingRSVP(rsvpID);
     
-        if(!existingRSVP){
-            return res.status(400).json({message:"RSVP does not exist"});
-        }
-    
-        const recipient = await prisma.recipient.findUnique({
+        const recipient = await prisma.recipient.findFirst({
             where:{
-                rsvpID_userID:{
                     rsvpID: Number(rsvpID),
                     userID: Number(userID)
-                }
             }
         });
     
@@ -82,18 +63,18 @@ const cancelRSVP = async(req, res) =>{
 
         const cancelledRecipient = await prisma.recipient.update({
             where:{
-                rsvpID_userID:{
-                    rsvpID: Number(rsvpID),
-                    userID: Number(userID)
-                }
+                id: recipient.id
             },
             data:{
+                response: "DECLINED",
                 cancelled: true,
                 cancelled_at: new Date()
             }
         });
 
-        return res.status(200).json({message:"Cancelled RSVP", cancelledRecipient}); 
+        const notification = await notifications.cancelRSVPNotification(rsvpID, userID);
+
+        return res.status(200).json({message:"Cancelled RSVP", cancelledRecipient, notification}); 
 
     }catch(e){
         console.error("Error cancelling RSVP:", e);

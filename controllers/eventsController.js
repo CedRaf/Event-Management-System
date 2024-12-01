@@ -180,15 +180,18 @@ const getEventsByCategory = async(req, res) =>{
 }
 
 const sortEvents = async(req, res) =>{
-    const{sortBy, orderBy = 'asc'} = req.params;
+    const{userID, sortBy, orderBy = 'asc'} = req.params;
     const validFields = ['event_title', 'event_date', 'created_at'];
     
     if(!validFields.includes(sortBy)){
-        return res.status(400).json({message:`Invalid order: ${orderBy}`});
+        return res.status(400).json({message:`Invalid order: ${sortBy}`});
     }
 
     try{
         const sortedData = await prisma.event.findMany({
+            where:{
+                userID: Number(userID)
+            },
             orderBy:{
                 [sortBy]: orderBy === 'asc' ? 'asc' : 'desc'
             }

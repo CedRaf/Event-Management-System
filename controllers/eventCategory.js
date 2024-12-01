@@ -1,6 +1,7 @@
 const prisma = require("../prisma/database");
 const newCategorySchema = require("../schemas/newCategorySchema");
 const editCategorySchema = require("../schemas/editCategorySchema"); 
+const helperFunc = require("../controllers/helper_functions");
 
 const createCategory = async (req, res) =>{
 
@@ -12,14 +13,9 @@ const createCategory = async (req, res) =>{
     const {category_name, category_description, userID} = req.body;
 
     try{
-        const existingCategory = await prisma.eventcategory.findFirst({
-            where:{
-                category_name: category_name 
-            }
-        });
-
+        const existingCategory = await helperFunc.checkIfCategoryNameExists(category_name, userID);
         if(existingCategory){
-            return res.status(400).json({message:"Category already exists!"});
+            return res.status(400).json({message:"Category Name already exists, please use another name"});
         }
 
         const newCategory = await prisma.eventcategory.create({
@@ -32,7 +28,6 @@ const createCategory = async (req, res) =>{
 
         return res.status(200).json({message:"Successfully created a new category!", newCategory}); 
 
-
     }catch(e){
         console.error('Error creating new category: ', e);
         return res.status(500).json({message:"Server Error"}); 
@@ -42,16 +37,12 @@ const createCategory = async (req, res) =>{
 const deleteCategory = async (req, res) =>{
     try{
         const {category_name, userID} = req.body;
-        const existingCategory = await prisma.eventcategory.findFirst({
-            where:{
-                userID: Number(userID),
-                category_name: category_name,
-            }
-        });
+        const existingCategory = await helperFunc.checkIfCategoryNameExists(category_name, userID);
 
         if(!existingCategory){
             return res.status(400).json({message:"Unable to delete category, it does not exist"}); 
         }
+        
         const deletedCategory = await prisma.eventcategory.delete({
             where:{
                 categoryID: existingCategory.categoryID
@@ -77,15 +68,7 @@ const editCategory = async(req, res) =>{
     const {category_name, category_description} = req.body;
 
     try{
-        const existingCategory = await prisma.eventcategory.findFirst({
-            where:{
-                categoryID: Number(categoryID)
-            }
-        })
-
-        if(!existingCategory){
-            return res.status(400).json({message:"Unable to delete category, it does not exist"}); 
-        }
+        const existingCategory = await helperFunc.checkIfCategoryIDExists(categoryID);
 
         const updatedCategory = await prisma.eventcategory.update({
             where:{
@@ -103,7 +86,6 @@ const editCategory = async(req, res) =>{
             console.error("Error updating category:", e);
             return res.status(500).json({ message: "Server error" });
         }
-
 }
 
 const findCategory = async (req, res) => {
@@ -137,7 +119,7 @@ const getAllCategories = async(req, res) =>{
     try{
         const categoryList = await prisma.eventcategory.findMany({
             where:{
-                userID: userID
+                userID: Number(userID)
             }
         });
         if(categoryList === 0){
@@ -151,7 +133,7 @@ const getAllCategories = async(req, res) =>{
 }
 
 const sortCategories = async(req, res) =>{
-    const{orderBy = 'asc'} = req.params;
+    const{userID, orderBy = 'asc'} = req.params;
     const validFields = ['asc', 'desc'];
     
     if(!validFields.includes(orderBy)){
@@ -160,6 +142,9 @@ const sortCategories = async(req, res) =>{
 
     try{
         const sortedData = await prisma.eventcategory.findMany({
+            where:{
+                userID: Number(userID)
+            },
             orderBy:{
                 category_name: orderBy
             }

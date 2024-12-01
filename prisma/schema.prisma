@@ -105,7 +105,8 @@ model user {
   first_name    String          @db.VarChar(255)
   last_name     String          @db.VarChar(255)
   email_address String          @db.VarChar(255)                  @unique
-  password      String          @db.VarChar(255)
+  password      String?         @db.VarChar(255)
+  googleID      String?         @unique
   calendar      calendar[]
   event         event[]
   notifications notifications[]

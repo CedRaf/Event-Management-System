@@ -7,9 +7,9 @@ import axios from 'axios';
 function EditEvent(){
     const navigate = useNavigate();
     const location = useLocation();
-    const {category} = location.state || {};
+    const {event} = location.state || {};
     const [token, setToken] = useState('');
-    const [localCategory, setLocalCategory] = useState(category);
+    const [localEvent, setLocalEvent] = useState(event);
     const [error, setError] = useState(null);
 
     useEffect(() =>{
@@ -21,17 +21,20 @@ function EditEvent(){
 
     }, [])
 
-    const editCategory = async() => {
+    const editEvent = async() => {
         if(!token){ //because these arent initialized right away
             return;
           }
         try{
             
-            console.log( token, localCategory.category_name, localCategory.category_description);
-            const response = await axios.patch(`http://localhost:3000/eventCategory/edit/${localCategory.categoryID}`,  
+            
+            const response = await axios.patch(`http://localhost:3000/events/edit/${localEvent.eventID}`,  
                 {
-                    category_name: localCategory.category_name,
-                    category_description: localCategory.category_description 
+                    event_title: localEvent.event_title,
+                    event_description: localEvent.event_description,
+                    event_date: localEvent.event_date,
+                    userID: localEvent.userID,
+                    categoryID: localEvent.categoryID
                     //why do different axios methods have different payload format
                 },
                 {
@@ -41,7 +44,7 @@ function EditEvent(){
                 } 
             );
             if(response && response.data){
-                navigate("/event-category")
+                navigate("/eventList")
             }
         }catch(e){
             setError('Could not edit category. Please try again later.')
@@ -51,15 +54,16 @@ function EditEvent(){
     const handleSubmit = async(e) => {
         e.preventDefault();
         
-        editCategory();
+        editEvent();
     }
     
     return(
         <div>
-            <button onClick={()=> { navigate("/event-category")}}>Back</button>
+            <button onClick={()=> { navigate("/eventList")}}>Back</button>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Event Name" value= {localCategory.category_name} onChange={(e) => {setLocalCategory({...localCategory, category_name: e.target.value})}}/>
-                <input type="text" placeholder="Event Description" value= {localCategory.category_description} onChange={(e) => {setLocalCategory({...localCategory, category_description: e.target.value})}}/>
+                <input type="text" placeholder="Event Title" value= {localEvent.event_title} onChange={(e) => {setLocalEvent({...localEvent, event_title : e.target.value})}}/>
+                <input type="text" placeholder="Event Description" value= {localEvent.event_description} onChange={(e) => {setLocalEvent({...localEvent, event_description: e.target.value})}}/>
+                <input type="date" placeholder="Event Date" value= {localEvent.event_date} onChange={(e) => {setLocalEvent({...localEvent, event_date: e.target.value})}}/>
                 <button type="submit">Update</button>   
             </form>
         </div>

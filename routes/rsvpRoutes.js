@@ -7,7 +7,7 @@ rsvpRouter.post("/create", rsvpController.createRSVP);
 rsvpRouter.delete("/delete", rsvpController.deleteRSVP); 
 rsvpRouter.patch("/edit/:rsvpID", rsvpController.editRSVP); 
 rsvpRouter.get("/getRecipients/:rsvpID", rsvpController.getRSVPRecipients);
-rsvpRouter.get("/getDetails/:rsvpID", rsvpController.getRSVPDetails); 
+rsvpRouter.get("/getDetails/:eventID", rsvpController.getRSVPDetails); 
 rsvpRouter.get("/getRSVPs/:userID", rsvpController.getUserRSVPs); 
 
 

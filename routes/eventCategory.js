@@ -8,6 +8,6 @@ eventCategoryRouter.get("/find/:category_name", authMiddleware, eventCategory.fi
 eventCategoryRouter.get("/findAll/:userID", authMiddleware, eventCategory.getAllCategories);
 eventCategoryRouter.delete("/delete", authMiddleware, eventCategory.deleteCategory);
 eventCategoryRouter.patch("/edit/:categoryID", authMiddleware, eventCategory.editCategory); 
-eventCategoryRouter.get("/sort/:orderBy", authMiddleware, eventCategory.sortCategories); 
+eventCategoryRouter.get("/sort/:userID/:orderBy", authMiddleware, eventCategory.sortCategories); 
 
 module.exports = eventCategoryRouter;
