@@ -9,6 +9,13 @@ import EditEventCategory from './Frontend/Edit/EditEventCategory.jsx'
 import EditEvent from './Frontend/Edit/EditEvent.jsx'
 import Event from './Frontend/Pages/Event.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+<<<<<<< Updated upstream
+=======
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import './index.css'
+import './sidebar.css'
+import './catList.css'
+>>>>>>> Stashed changes
 
 import './index.css'
 
