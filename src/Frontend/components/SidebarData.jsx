@@ -5,7 +5,7 @@ export const SidebarData = [
     {title: "Dashboard",
     link:"/dashboard"},
     {title: "Category List",
-        link:"/category"},
+        link:"/event-category"},
     {title: "Events >",
         subItems:[
             {title: "Create Events", link:"/eventCreation"},

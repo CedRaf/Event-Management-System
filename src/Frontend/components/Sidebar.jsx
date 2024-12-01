@@ -4,6 +4,8 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useNavigate } from 'react-router-dom';
 import UserProfile from './UserProfile';
 
+import "../../sidebar.css"
+
 function Sidebar({ user }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
@@ -13,13 +15,13 @@ function Sidebar({ user }) {
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      navigate('/'); 
+      navigate('/');
     } catch (error) {
       console.error('Error logging out:', error);
     }
   };
 
-  
+
   const handleToggleDropdown = (index) => {
     setActiveDropdown(activeDropdown === index ? null : index);
   };
@@ -31,10 +33,10 @@ function Sidebar({ user }) {
       <ul className="sidebarList">
         {SidebarData.map((item, index) => {
           // items with dropdown
-          
+
           if (item.subItems) {
             return (
-  
+
               <li key={index} className='dropdown-container'>
                 <div
                   className="menu-item"
@@ -58,11 +60,11 @@ function Sidebar({ user }) {
                   </ul>
                 )}
               </li>
-        
+
             );
           }
 
-        
+
           if (item.title === 'Logout') {
             return (
               <li

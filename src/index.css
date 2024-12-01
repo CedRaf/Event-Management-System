@@ -61,7 +61,7 @@
 }
 
 
-.loginForm input,button {
+.loginForm input {
   margin: 10px 0; 
   width: 100%;
   max-width: 300px; 
