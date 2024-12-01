@@ -11,7 +11,19 @@ const rateLimiter = require("./middlewares/rateLimiter");
 const loggingMiddleware = require("./middlewares/loggingMiddleware");
 const cors = require('cors');
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5173', // Add your frontend domain here
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  };
+  app.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    next();
+  });
+
+
+app.use(cors(corsOptions));
 app.use(express.json()); 
 // app.use(rateLimiter);
 app.use(loggingMiddleware);

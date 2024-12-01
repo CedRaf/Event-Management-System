@@ -46,20 +46,20 @@ function Login(){
         
     }
 
-    const clientID = '769574372190-iko3inrr1e3r6ttdh9ogtigf3dm8ubs4.apps.googleusercontent.com';
+    const clientID = '865144797533-cv0hii9vdkolii1kuppfs71cklajabn0.apps.googleusercontent.com';
 
     const handleGoogle = async (credentialResponse) =>{
         try{
-            const decoded = jwtDecode (credentialResponse.credential); //all the user info will be stored
+          
 
 
             //pass credential and client id to the body
             const body = {
-                credential: credentialResponse.credential,
+                idToken: credentialResponse.credential,
                 client_id: clientID
             };
-
-            const response = await axios.post ('http://localhost:3000/authenticate/google', body);
+            console.log(credentialResponse.credential, clientID)
+            const response = await axios.post ('http://localhost:3000/authenticate/googleSignIn', body);
 
             
             if(response.data){
@@ -92,13 +92,13 @@ function Login(){
     
             <form onSubmit={handleSubmit}>  
                <input type="email" placeholder="Email" value= {email} onChange={(e) => {setEmail(e.target.value)}}/>
-                <input type="text" placeholder="Password" value= {password} onChange={(e) => {setPassword(e.target.value)}}/>
+                <input type="password" placeholder="Password" value= {password} onChange={(e) => {setPassword(e.target.value)}}/>
                 <a className="forgotPass" href="">Forgot Your Password?</a>
                 <button type="submit">LOGIN</button>
             </form>
             <div>or continue with</div>
             <GoogleLogin
-             onSuccess={handleGoogle}
+              onSuccess={handleGoogle}
               onError={() => {
                console.log('Login Failed');
             }}/>
