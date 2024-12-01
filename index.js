@@ -13,7 +13,7 @@ const cors = require('cors');
 
 const corsOptions = {
     origin: 'http://localhost:5173', // Add your frontend domain here
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   };
   app.use((req, res, next) => {

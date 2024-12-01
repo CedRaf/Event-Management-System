@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllAPI, deleteAPI } from '../components/EventAPI';
 import AddEvent from '../Add/AddEvent'
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 
 function Event () {

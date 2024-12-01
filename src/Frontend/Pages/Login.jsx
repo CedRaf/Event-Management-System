@@ -46,7 +46,7 @@ function Login(){
         
     }
 
-    const clientID = '951606289972-boa6slqrcf04nbp435oj7qn20dkh1an2.apps.googleusercontent.com';
+    const clientID = '865144797533-cv0hii9vdkolii1kuppfs71cklajabn0.apps.googleusercontent.com';
 
     const handleGoogle = async (credentialResponse) =>{
         try{
@@ -59,15 +59,19 @@ function Login(){
                 client_id: clientID
             };
             console.log(credentialResponse.credential, clientID)
-            const {response} = await axios.post ('http://localhost:3000/authenticate/googleSignIn', body);
+            const response = await axios.post ('http://localhost:3000/authenticate/googleSignIn', body);
 
-            
-            if(response.data){
-                const{accessToken, user} = response.data;
+            const { token, user } = response.data;
 
-                localStorage.setItem('token', accessToken);
-                localStorage.setItem('user', JSON.stringify(user));
-
+            if(token){//check if the token exists
+                localStorage.setItem('token', token);
+                const userData = {
+                    userID: user.userID,
+                    userEmail: user.email_address,
+                    userName: user.username
+                };
+                localStorage.setItem('user', JSON.stringify(userData)); //what 
+                //redirect to dashboard page
                 navigate('/event-category');
             }
         }catch(error){
