@@ -113,7 +113,7 @@ const googleSignIn = async(req, res) =>{
 
         const ticket = await client.verifyIdToken({
             idToken,
-            audience: client_id
+            requiredAudience: client_id
         });
 
         const payload = ticket.getPayload();
@@ -135,7 +135,7 @@ const googleSignIn = async(req, res) =>{
                     email_address: payload.email,
                     first_name: payload.given_name,
                     last_name: payload.family_name,
-                    username: null,
+                    username: "MIKE TYSON",
                     password: null,
                 }
             })
@@ -143,7 +143,7 @@ const googleSignIn = async(req, res) =>{
 
         const token = jwt.sign({userID: user.userID, email: user.email_address}, process.env.TOKEN, {expiresIn: '1h'});
 
-        return res.status(200).json({message:"Successfully signed in with Google", token, user}); 
+        return res.status(200).json({message:"Successfully signed in with Google", user, token}); 
 
     }catch(e){
         console.error("Error verifying Google token", e);

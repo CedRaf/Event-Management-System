@@ -46,7 +46,7 @@ function Login(){
         
     }
 
-    const clientID = '865144797533-cv0hii9vdkolii1kuppfs71cklajabn0.apps.googleusercontent.com';
+    const clientID = '951606289972-boa6slqrcf04nbp435oj7qn20dkh1an2.apps.googleusercontent.com';
 
     const handleGoogle = async (credentialResponse) =>{
         try{
@@ -59,7 +59,7 @@ function Login(){
                 client_id: clientID
             };
             console.log(credentialResponse.credential, clientID)
-            const response = await axios.post ('http://localhost:3000/authenticate/googleSignIn', body);
+            const {response} = await axios.post ('http://localhost:3000/authenticate/googleSignIn', body);
 
             
             if(response.data){
