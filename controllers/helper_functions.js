@@ -62,7 +62,7 @@ const getEventDetails = async(eventID) =>{
         }
     });
 
-    if(!rsvp){
+    if(!eventDetails){
         throw new Error(`Event with ${eventID}, does not exist!`);
     }
 
