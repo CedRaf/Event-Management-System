@@ -20,6 +20,7 @@ function Login(){
     const handleSubmit = async(e) =>{
         e.preventDefault();
         try { 
+      
             const {data} = await axios.post('http://localhost:3000/authenticate/login', {
                 email_address: email,
                 password: password
@@ -50,8 +51,6 @@ function Login(){
 
     const handleGoogle = async (credentialResponse) =>{
         try{
-          
-
 
             //pass credential and client id to the body
             const body = {
@@ -89,7 +88,7 @@ function Login(){
             <div className='formBox'>
             <div className='noAccount'>
             <div>Do not have an account yet?</div>
-            <Link to="/register">Sign in</Link>
+            <Link to="/register">Sign up</Link>
             </div>
             <div className='loginForm'>
             <h2>Welcome back!</h2>
