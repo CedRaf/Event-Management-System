@@ -62,7 +62,7 @@ const getEventDetails = async(eventID) =>{
         }
     });
 
-    if(!rsvp){
+    if(!eventDetails){
         throw new Error(`Event with ${eventID}, does not exist!`);
     }
 
@@ -140,6 +140,21 @@ const checkIfExistingRSVP = async(rsvpID) =>{
     return existingRSVP;
 }
 
+const checkIfExistingEvent = async(eventID) =>{
+    const existingEvent = await prisma.event.findUnique({
+        where:{
+            eventID : Number(eventID)
+        }
+    });
+
+    if(!existingEvent){
+        throw new Error(`Event with id ${eventID} does not exist`);
+    }
+
+    return existingEvent;
+}
+
+
 module.exports = {
     checkIfExistingUser,
     checkIfExistingNotification,
@@ -150,5 +165,6 @@ module.exports = {
     getRSVPRecipientIDs,
     checkIfCategoryNameExists,
     checkIfCategoryIDExists,
-    checkIfExistingRSVP
+    checkIfExistingRSVP,
+    checkIfExistingEvent
 }

@@ -1,5 +1,6 @@
 const prisma = require("../prisma/database");
 const newEventSchema = require("../schemas/newEventSchema"); 
+const helperFunc = require("../controllers/helper_functions");
 
 const createEvent = async (req, res) =>{
 
@@ -9,7 +10,7 @@ const createEvent = async (req, res) =>{
         return res.status(400).json({message: error.details[0].message});
     }
 
-    const {event_title, event_description, event_date, userID, categoryID} = req.body;
+    const {event_title, event_description, event_date, location, userID, categoryID} = req.body;
 
     try{
         if(event_date && new Date(event_date) < new Date()){
@@ -21,6 +22,7 @@ const createEvent = async (req, res) =>{
                 event_title,
                 event_description,
                 event_date: event_date ? new Date(event_date) : undefined,
+                location,
                 userID,
                 categoryID
             }
@@ -38,15 +40,7 @@ const deleteEvent = async(req, res) =>{
 
     try{
         const{eventID} = req.params;
-        const existingEvent = await prisma.event.findUnique({
-            where:{
-                eventID : Number(eventID)
-            }
-        });
-
-        if(!existingEvent){
-            return res.status(400).json({message:"Error, event does not exist!"});
-        }
+        const existingEvent = await helperFunc.checkIfExistingEvent(eventID);
 
         const deletedEvent = await prisma.event.delete({
             where:{
@@ -68,18 +62,10 @@ const editEvent = async(req, res) =>{
     if(error){
         return res.status(400).json({message:error.details[0].message}); 
     }
-    const {event_title, event_description, event_date, userID, categoryID} = req.body;
+    const {event_title, event_description, event_date, location, userID, categoryID} = req.body;
 
     try{
-        const existingEvent = await prisma.event.findUnique({
-            where:{
-                eventID: Number(eventID)
-            }
-        })
-
-        if(!existingEvent){
-            return res.status(400).json({message:"Error updating, event does not exist!"});
-        }
+        const existingEvent = await helperFunc.checkIfExistingEvent(eventID);
 
         const updatedEvent = await prisma.event.update({
             where:{
@@ -89,6 +75,7 @@ const editEvent = async(req, res) =>{
                 event_title,
                 event_description,
                 event_date: event_date ? new Date(event_date) : undefined,
+                location,
                 userID,
                 categoryID
             }
@@ -150,15 +137,8 @@ const getAllEvents = async(req, res) =>{
 
 const getEventsByCategory = async(req, res) =>{
     const{categoryID} = req.params;
-    const existingCategory = await prisma.eventcategory.findUnique({
-        where:{
-            categoryID: categoryID
-        }
-    });
 
-    if(!existingCategory){
-        return res.status(400).json({message:"Category does not exist"}); 
-    }
+    const existingCategory = await helperFunc.checkIfCategoryIDExists(categoryID);
 
     try{
         const eventsByCategory = await prisma.event.findMany({

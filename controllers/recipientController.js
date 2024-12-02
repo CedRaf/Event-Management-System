@@ -13,7 +13,7 @@ const rsvpResponse = async(req, res) =>{
     const {response} = req.body;
 
     try{
-        await helperFunc.checkIfExistingRSVP(rsvpID);
+        const existingRSVP = await helperFunc.checkIfExistingRSVP(rsvpID);
     
         const recipient = await prisma.recipient.findFirst({
             where:{
@@ -34,6 +34,19 @@ const rsvpResponse = async(req, res) =>{
                 response: response
             }
         });
+
+        if(response.trim().toUpperCase() === 'ACCEPTED'){
+            const eventDetails = await helperFunc.getEventDetails(existingRSVP.eventID);
+            const newEvent = await prisma.event.create({
+                data:{
+                    event_title: eventDetails.event_title,
+                    event_description: eventDetails.event_description,
+                    event_date: eventDetails.event_date,
+                    userID: recipient.userID,
+                    categoryID: eventDetails.categoryID
+                }
+            })
+        }
 
         const notification = await notifications.rsvpResponseNotification(rsvpID, userID, response);
 

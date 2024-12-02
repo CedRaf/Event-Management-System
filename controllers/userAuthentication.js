@@ -99,6 +99,7 @@ const loginAccount = async (req, res) => {
     }
 }
 
+const token = googleUser.getAuthResponse().id_token;
 
 const googleSignIn = async(req, res) =>{
     
