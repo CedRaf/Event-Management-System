@@ -133,11 +133,40 @@ const getAllEvents = async(req, res) =>{
             return res.status(400).json({message:"No events found"});
         }
 
-        return res.status(200).json(eventList); 
+        const upcomingEvents = await getUpcomingEvents(userID); 
+
+        return res.status(200).json({eventList, upcomingEvents}); 
 
     }catch(e){
         console.error("Error finding events:", e);
         return res.status(500).json({ message: "Server error" });
+    }
+}
+
+const getUpcomingEvents = async(userID) =>{
+    try{
+        const today = new Date();
+        const nextWeek = new Date();
+        nextWeek.setDate(today.getDate() + 7);
+
+        const upcomingEvents = await prisma.event.findMany({
+            where:{
+                userID: Number(userID),
+                eventStart_date:{
+                    gte: today,
+                    lte: nextWeek
+                },
+                orderBy:{
+                    eventStart_date: 'asc'
+                }
+            }
+        });
+
+        return upcomingEvents;
+
+    }catch(e){
+        console.error("Error finding upcoming events");
+        throw new Error(e.message);
     }
 }
 

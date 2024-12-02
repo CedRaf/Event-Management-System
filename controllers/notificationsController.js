@@ -9,9 +9,17 @@ const getAllNotifications = async(req, res) =>{
         const existingUser = await helperFunc.checkIfExistingUser(userID, res);
         if(!existingUser) return
         
+        const today = new Date();
+        const nextMonths = new Date();
+        nextMonths.setDate(today.getMonth() + 3);
+
         const allNotifications = await prisma.notifications.findMany({
             where: {
-                userID: Number(userID)
+                userID: Number(userID),
+                time_sent:{
+                    gte: today,
+                    lte: nextMonths
+                }
             },
             orderBy:{
                 time_sent: 'desc'
