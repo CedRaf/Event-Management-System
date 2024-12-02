@@ -154,6 +154,27 @@ const checkIfExistingEvent = async(eventID) =>{
     return existingEvent;
 }
 
+const convertEmailToUserID = async(recipients) =>{
+    const users = await prisma.user.findMany({
+        where: {
+            email_address: { in: recipients }
+        },
+        select: {
+            userID: true, 
+            email_address: true 
+        }
+    });
+
+    const fetchedEmails = users.map(user => user.email_address);
+    const invalidEmails = recipients.filter(email => !fetchedEmails.includes(email));
+    if (invalidEmails.length > 0) {
+        return res.status(400).json({message: `The following email addresses do not exist: ${invalidEmails.join(", ")}`});
+    }
+
+    return users; 
+
+}
+
 
 module.exports = {
     checkIfExistingUser,
@@ -166,5 +187,6 @@ module.exports = {
     checkIfCategoryNameExists,
     checkIfCategoryIDExists,
     checkIfExistingRSVP,
-    checkIfExistingEvent
+    checkIfExistingEvent,
+    convertEmailToUserID
 }

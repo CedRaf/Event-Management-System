@@ -208,7 +208,7 @@ const editedEventNotification = async(eventID) =>{
             data: userIDs.map(userID=>({
                 userID: userID,
                 eventID: eventID,
-                message: `RSVP for event "${eventDetails.event_title}" has been edited by ${sender.first_name} ${sender.last_name}`,
+                message: `Details for event "${eventDetails.event_title}" has been edited by ${sender.first_name} ${sender.last_name}`,
                 time_sent: new Date()
             }))
         });
@@ -216,6 +216,29 @@ const editedEventNotification = async(eventID) =>{
         return {notification}
     }catch(e){
         console.error("Error generating notifications for edited event");
+        throw new Error(e.message);
+    }
+}
+
+const editedRSVPNotification = async(rsvpID) =>{
+    try{
+        const rsvpDetails = await helperFunc.getRSVPDetails(rsvpID); 
+        const sender = await helperFunc.getUserDetails(rsvpDetails.senderUserID);
+        const eventDetails = await helperFunc.getEventDetails(rsvpDetails.eventID);
+        const userIDs = await helperFunc.getRSVPRecipientIDs(rsvpDetails.eventID);
+        const notification = await prisma.notifications.createMany({
+            data: userIDs.map(userID=>({
+                userID: userID,
+                rsvpID: rsvpID,
+                message: `RSVP details for event "${eventDetails.event_title}" has been edited by ${sender.first_name} ${sender.last_name}`,
+                time_sent: new Date()
+            }))
+        });
+
+        return {notification}
+
+    }catch(e){
+        console.error("Error generating notifications for edited RSVP");
         throw new Error(e.message);
     }
 }
@@ -228,5 +251,6 @@ module.exports = {
     generateRSVPNotification,
     rsvpResponseNotification,
     cancelRSVPNotification,
-    editedEventNotification
+    editedEventNotification,
+    editedRSVPNotification
 }

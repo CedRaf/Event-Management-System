@@ -13,7 +13,8 @@ model event {
   categoryID        Int
   event_title       String          @db.VarChar(255)
   event_description String          @db.VarChar(255)
-  event_date        DateTime        @default(now())
+  eventStart_date   DateTime        @default(now())
+  eventEnd_date     DateTime        @default(now())
   created_at        DateTime        @default(now())
   location          String?         @db.VarChar(255)
   eventcategory     eventcategory   @relation(fields: [categoryID], references: [categoryID], map: "Event_categoryID_fkey")

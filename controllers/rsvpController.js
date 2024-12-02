@@ -13,22 +13,13 @@ const createRSVP = async (req, res) => {
     const { senderUserID, eventID, recipients } = req.body;
 
     try {
-        const users = await prisma.user.findMany({
-            where: {
-                email_address: { in: recipients }
-            },
-            select: {
-                userID: true, 
-                email_address: true 
-            }
-        });
+        const users = await helperFunc.convertEmailToUserID(recipients);
 
         const userIDs = users.map(user => user.userID);
 
-        const fetchedEmails = users.map(user => user.email_address);
-        const invalidEmails = recipients.filter(email => !fetchedEmails.includes(email));
-        if (invalidEmails.length > 0) {
-            return res.status(400).json({message: `The following email addresses do not exist: ${invalidEmails.join(", ")}`});
+        const existingRSVP = await helperFunc.checkIfEventHasRSVP(eventID);  
+        if(existingRSVP){
+            return res.status(400).json({message:"Failed to create RSVP for this event, already exists"}); 
         }
 
         const newRSVP = await prisma.rsvp.create({
@@ -93,6 +84,8 @@ const editRSVP = async (req, res) =>{
             },
         });
 
+        const users = await helperFunc.convertEmailToUserID(recipients);
+
         const editedRSVP = await prisma.rsvp.update({
             where:{
                 rsvpID: existingRSVP.rsvpID
@@ -102,14 +95,16 @@ const editRSVP = async (req, res) =>{
                 status,
                 last_edited: new Date(),
                 recipients : {
-                    create: recipients.map(userID => ({
-                        userID,
+                    create: users.map(user => ({
+                        userID: user.userID
                     }))
                 }
             }
         })
 
-        return res.status(200).json({message:"Successfully edited RSVP", editedRSVP});
+        const notification = await notifications.editedRSVPNotification(rsvpID);
+
+        return res.status(200).json({message:"Successfully edited RSVP", editedRSVP, notification});
 
     }catch(e){
         console.error("Error editing rsvp: ", e);

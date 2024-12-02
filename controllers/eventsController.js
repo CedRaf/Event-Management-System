@@ -10,10 +10,10 @@ const createEvent = async (req, res) =>{
         return res.status(400).json({message: error.details[0].message});
     }
 
-    const {event_title, event_description, event_date, location, userID, categoryID} = req.body;
+    const {event_title, event_description, eventStart_date, eventEnd_date, location, userID, categoryID} = req.body;
 
     try{
-        if(event_date && new Date(event_date) < new Date()){
+        if(eventStart_date && new Date(eventStart_date) < new Date() || eventEnd_date && new Date(eventEnd_date) < new Date() ){
             return res.status(400).json({message:"Inputted date was in the past, please enter a valid date"}); 
         }
 
@@ -21,7 +21,8 @@ const createEvent = async (req, res) =>{
             data:{
                 event_title,
                 event_description,
-                event_date: event_date ? new Date(event_date) : undefined,
+                eventStart_date: eventStart_date ? new Date(eventStart_date) : undefined,
+                eventEnd_date: eventEnd_date ? new Date(eventEnd_date) : undefined,
                 location,
                 userID,
                 categoryID
@@ -62,10 +63,14 @@ const editEvent = async(req, res) =>{
     if(error){
         return res.status(400).json({message:error.details[0].message}); 
     }
-    const {event_title, event_description, event_date, location, userID, categoryID} = req.body;
+    const {event_title, event_description, eventStart_date, eventEnd_date, location, userID, categoryID} = req.body;
 
     try{
         const existingEvent = await helperFunc.checkIfExistingEvent(eventID);
+
+        if(eventStart_date && new Date(eventStart_date) < new Date() || eventEnd_date && new Date(eventEnd_date) < new Date() ){
+            return res.status(400).json({message:"Inputted date was in the past, please enter a valid date"}); 
+        }
 
         const updatedEvent = await prisma.event.update({
             where:{
@@ -74,7 +79,8 @@ const editEvent = async(req, res) =>{
             data:{
                 event_title,
                 event_description,
-                event_date: event_date ? new Date(event_date) : undefined,
+                eventStart_date: eventStart_date ? new Date(eventStart_date) : undefined,
+                eventEnd_date: eventEnd_date ? new Date(eventEnd_date) : undefined,
                 location,
                 userID,
                 categoryID
