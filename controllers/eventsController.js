@@ -1,14 +1,15 @@
 const prisma = require("../prisma/database");
 const newEventSchema = require("../schemas/newEventSchema"); 
 const helperFunc = require("../controllers/helper_functions");
+const notification = require("../controllers/notificationsController");
 
 const createEvent = async (req, res) =>{
 
-    // const {error} = newEventSchema.validate(req.body); 
+    const {error} = newEventSchema.validate(req.body); 
 
-    // if(error){
-    //     return res.status(400).json({message: error.details[0].message});
-    // }
+    if(error){
+        return res.status(400).json({message: error.details[0].message});
+    }
 
     const {event_title, event_description, eventStart_date, eventEnd_date, location, userID, categoryID} = req.body;
 
@@ -48,6 +49,11 @@ const deleteEvent = async(req, res) =>{
                 eventID: existingEvent.eventID
             }
         });
+
+        const hasRSVP = await helperFunc.checkIfEventHasRSVP(eventID);
+        if(hasRSVP){
+            await notification.deletedEventWithRSVP(hasRSVP.rsvpID, deletedEvent);
+        }
 
         return res.status(200).json({message:"Event successfully deleted!", deletedEvent}); 
 

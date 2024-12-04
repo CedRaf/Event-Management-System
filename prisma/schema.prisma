@@ -19,8 +19,8 @@ model event {
   location          String?         @db.VarChar(255)
   eventcategory     eventcategory   @relation(fields: [categoryID], references: [categoryID], map: "Event_categoryID_fkey")
   user              user            @relation(fields: [userID], references: [userID], map: "Event_userID_fkey")
-  notifications     notifications[]
-  rsvp              rsvp[]
+  notifications     notifications[] 
+  rsvp              rsvp[]          
   
 
   @@index([categoryID], map: "Event_categoryID_fkey")
@@ -63,7 +63,7 @@ model rsvp {
   created_at   DateTime    @default(now())
   last_edited  DateTime    @default(now())
 
-  event        event       @relation(fields: [eventID], references: [eventID], map: "RSVP_eventID_fkey")
+  event        event       @relation(fields: [eventID], references: [eventID], map: "RSVP_eventID_fkey", onDelete:Cascade)
   sender       user        @relation("RSVP_Sender", fields: [senderUserID], references: [userID], map: "RSVP_senderUserID_fkey")
   recipients   recipient[] 
   notifications notifications[]

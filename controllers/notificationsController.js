@@ -251,6 +251,29 @@ const editedRSVPNotification = async(rsvpID) =>{
     }
 }
 
+const deletedEventWithRSVP = async(rsvpID, deletedEvent) =>{
+    try{
+        const rsvpDetails = await helperFunc.getRSVPDetails(rsvpID);
+        const sender = await helperFunc.getUserDetails(rsvpDetails.senderUserID);
+        const userIDs = await helperFunc.getRSVPRecipientIDs(rsvpDetails.eventID);
+        const notification = await prisma.notifications.createMany({
+            data: userIDs.map(userID =>({
+                userID: userID,
+                rsvpID: Number(rsvpID),
+                message: `${sender.first_name} ${sender.last_name} has deleted event ${deletedEvent.event_title} thus cancelling the RSVP`,
+                time_sent: new Date()
+            }))
+        });
+
+        return {notification}
+
+    }catch(e){
+        console.error("Error generating notification for deleted event");
+        throw new Error(e.message);
+    }
+    
+}
+
 module.exports = {
     getAllNotifications,
     markAsRead,
@@ -260,5 +283,6 @@ module.exports = {
     rsvpResponseNotification,
     cancelRSVPNotification,
     editedEventNotification,
-    editedRSVPNotification
+    editedRSVPNotification,
+    deletedEventWithRSVP
 }
