@@ -173,11 +173,8 @@ const convertEmailToUserID = async (recipients) => {
     const invalidEmails = recipients.filter(email => !fetchedEmails.includes(email));
     
     if (invalidEmails.length > 0) {
-        return res.status(400).json({
-            message: `The following email addresses do not exist: ${invalidEmails.join(", ")}`
-        });
+        throw new Error(`Invalid emails: ${invalidEmails.join(", ")}`);
     }
-
     return users;
 }
 

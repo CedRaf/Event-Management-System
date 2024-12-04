@@ -68,15 +68,15 @@ const deleteRSVP = async (req,res) =>{
 const editRSVP = async (req, res) =>{
 
     const {rsvpID} = req.params;
-    const {error} = editRSVPController.validate(req.body);
-    if(error){
-        return res.status(400).json({message: error.details[0].message});
-    }
+    // const {error} = editRSVPController.validate(req.body);
+    // if(error){
+    //     return res.status(400).json({message: error.details[0].message});
+    // }
 
     const {eventID, status, recipients} = req.body;
 
     try{
-        const existingRSVP = await helperFunc.checkIfExistingRSVP(rsvpID);
+        const existingRSVP = await helperFunc.checkIfExistingRSVP(Number(rsvpID));
 
         await prisma.recipient.deleteMany({
             where: {

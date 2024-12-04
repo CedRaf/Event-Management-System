@@ -237,7 +237,7 @@ const editedRSVPNotification = async(rsvpID) =>{
         const notification = await prisma.notifications.createMany({
             data: userIDs.map(userID=>({
                 userID: userID,
-                rsvpID: rsvpID,
+                rsvpID: Number(rsvpID),
                 message: `RSVP details for event "${eventDetails.event_title}" has been edited by ${sender.first_name} ${sender.last_name}`,
                 time_sent: new Date()
             }))
