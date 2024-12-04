@@ -154,7 +154,8 @@ const checkIfExistingEvent = async(eventID) =>{
     return existingEvent;
 }
 
-const convertEmailToUserID = async(recipients) =>{
+const convertEmailToUserID = async (recipients) => {
+    // Query the database to find the users with the given email addresses
     const users = await prisma.user.findMany({
         where: {
             email_address: { in: recipients }
@@ -165,14 +166,19 @@ const convertEmailToUserID = async(recipients) =>{
         }
     });
 
+    // Extract the email addresses from the fetched users
     const fetchedEmails = users.map(user => user.email_address);
+
+    // Check for invalid email addresses that are not found in the database
     const invalidEmails = recipients.filter(email => !fetchedEmails.includes(email));
+    
     if (invalidEmails.length > 0) {
-        return res.status(400).json({message: `The following email addresses do not exist: ${invalidEmails.join(", ")}`});
+        return res.status(400).json({
+            message: `The following email addresses do not exist: ${invalidEmails.join(", ")}`
+        });
     }
 
-    return users; 
-
+    return users;
 }
 
 

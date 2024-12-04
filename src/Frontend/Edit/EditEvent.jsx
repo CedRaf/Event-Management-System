@@ -32,7 +32,9 @@ function EditEvent(){
                 {
                     event_title: localEvent.event_title,
                     event_description: localEvent.event_description,
-                    event_date: localEvent.event_date,
+                    eventStart_date: localEvent.eventStart_date,
+                    eventEnd_date: localEvent.eventEnd_date,
+                    location: localEvent.location,
                     userID: localEvent.userID,
                     categoryID: localEvent.categoryID
                     //why do different axios methods have different payload format
@@ -63,7 +65,9 @@ function EditEvent(){
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Event Title" value= {localEvent.event_title} onChange={(e) => {setLocalEvent({...localEvent, event_title : e.target.value})}}/>
                 <input type="text" placeholder="Event Description" value= {localEvent.event_description} onChange={(e) => {setLocalEvent({...localEvent, event_description: e.target.value})}}/>
-                <input type="date" placeholder="Event Date" value= {localEvent.event_date} onChange={(e) => {setLocalEvent({...localEvent, event_date: e.target.value})}}/>
+                <input type="text" placeholder="Event Location" value= {localEvent.location} onChange={(e) => {setLocalEvent({...localEvent, location: e.target.value})}}/>
+                <input type="date" placeholder="Event Start Date" value= {localEvent.eventStart_date} onChange={(e) => {setLocalEvent({...localEvent, eventStart_date: e.target.value})}}/>
+                <input type="date" placeholder="Event End Date" value= {localEvent.eventEnd_date} onChange={(e) => {setLocalEvent({...localEvent, eventEnd_date: e.target.value})}}/>
                 <button type="submit">Update</button>   
             </form>
         </div>

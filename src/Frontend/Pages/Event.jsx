@@ -11,22 +11,56 @@ function Event () {
   const {event} = location.state || {};
   const [RSVPDetails, setRSVPDetails] = useState(null);
   const [token, setToken] = useState('');
+  const [user, setUser] =useState('');
   const [error, setError] = useState(null);
   const [toggleRSVP, setToggleRSVP]= useState(false);
   const [hasRSVP, setHasRSVP] = useState(false);
+  const [eventStatus, setEventStatus]= useState('');
+  const [recipients, setRecipients]= useState([]);
+  const [newRecipients, setNewRecipients]= useState([]);
+  const [createToggle, setCreateToggle]= useState(false);
+  const [inviteToggle, setInviteToggle]= useState(false);
   
     useEffect(() =>{
 
       const storedToken = localStorage.getItem('token');
-      if(storedToken){
+      const storedUser = localStorage.getItem('user');
+      const parsedUser = JSON.parse(storedUser);
+  
+      if(storedToken && storedUser){
           setToken(storedToken);
+          setUser(parsedUser);
       }
+    },[])
 
+
+    useEffect(() =>{
+      if(!token && !user){ //because these arent initialized right away
+        return;
+      }
+      
       const getRSVPDetails = async() => {
+       
         try {
-          const response = await axios.get(`http://localhost:3000/getDetails/${event.eventID}`);
+          const response = await axios.get(`http://localhost:3000/rsvp/getDetails/${event.eventID}`, {
+            headers: {
+              Authorization: `Bearer: ${token}`
+                }});
+                
           if(response && response.data){
+            
             setRSVPDetails(response.data.rsvpDetails);
+            const emailAddresses = response.data.rsvpDetails.recipients
+            .map(recipient => recipient.user?.email_address) // Safely access email_address
+            .filter(email => email);
+
+            
+            
+
+            setRecipients(emailAddresses);
+            console.log(recipients);
+            setHasRSVP(true);
+            
           }
 
         } catch (error) {
@@ -34,27 +68,109 @@ function Event () {
         }
       }
       getRSVPDetails();
-  }, [])
+  }, [user, token])
 
-    const createRSVP = async() =>{
-      if(!token){
-        return;
-      }
+
+
+    const createRSVP = async(e) =>{
+        e.preventDefault();
+        const formattedRecipients = newRecipients
+        .split(',')
+        .map(email => email.trim()) // Remove any extra spaces around the emails
+        .filter(email => email !== '');
+
+        const PAYLOAD= {
+          senderUserID: user.userID,
+          eventID: event.eventID,
+          recipients: formattedRecipients  
+        }
+        console.log(user.userID, PAYLOAD)
+        try{
+          const response = await axios.post(`http://localhost:3000/rsvp/create`, PAYLOAD , {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+            }
+          );
+          if(response && response.data){
+            setRSVPDetails((prevDetails) => ({
+              ...prevDetails, // Retain existing values
+              ...response,    // Apply new values on included attribtues
+            }));
+          }
+
+        }catch(e){
+          setError("unable to create RSVP");
+
+        }
+
+    }
+
+    const updateStatus = async(e) =>{
+      e.preventDefault();
+      console.log(event.eventID, eventStatus, recipients )
       try{
-
-      }catch(e){
+      const response = await axios.patch(`http://localhost:3000/rsvp/edit/${RSVPDetails.rsvpID}`, 
+        {
+        eventID: event.eventID,
+        status: eventStatus,
+        recipients: RSVPDetails.recipients
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+        }
+      );
+      if(response && response.data){
+        setRSVPDetails((prevDetails) => ({
+          ...prevDetails, // Retain existing values
+          ...response,    // Apply new values on included attribtues
+        }));
+      }
+      }catch (e){
         setError("Unable to invite members");
       }
-    }
-
-    const inviteMembers = async() =>{
-
-    }
-    const toggleStatus = async() =>{
-
+       
     }
   
+    const inviteMembers = async(e) =>{
+      e.preventDefault();
+      const formattedRecipients = newRecipients
+      .split(',')
+      .map(email => email.trim()) // Remove any extra spaces around the emails
+      .filter(email => email !== '');
 
+      setRSVPDetails(prevState => ({
+        ...prevState, // Keep other properties intact
+        recipients: [...prevState.recipients, ...formattedRecipients], // Append formattedRecipients
+      }));
+
+      const PAYLOAD= {
+        eventID: event.eventID,
+        status: RSVPDetails.status,
+        recipients: RSVPDetails.recipients  
+      }
+      console.log(user.userID, PAYLOAD)
+      try{
+        const response = await axios.patch(`http://localhost:3000/rsvp/edit/${RSVPDetails.rsvpID}`, PAYLOAD , {
+          headers: { //if payload doesnt work format to same as status ^^
+            Authorization: `Bearer ${token}`
+          }
+          }
+        );
+        if(response && response.data){
+          setRSVPDetails((prevDetails) => ({
+            ...prevDetails, // Retain existing values
+            ...response.editedRSVP,    // Apply new values on included attribtues
+          }));
+        }
+
+      }catch(e){
+        setError("unable to create RSVP");
+
+      }
+
+  }
   
       
   
@@ -64,33 +180,55 @@ function Event () {
       <div>
         <h1>{event.event_title}</h1>
         <p>Description: {event.event_description}</p>
-        <p>Date: {new Date(event.event_date).toLocaleString()}</p>
+        <p>Start Date: {new Date(event.eventStart_date).toLocaleString()}</p>
+        <p>End Date: {new Date(event.eventEnd_date).toLocaleString()}</p>
         <p>Created At: {new Date(event.created_at).toLocaleString()}</p>
-        <button onClick= {()=> setToggleRSVP((prevState) => !prevState)}>Create RSVP</button>
-        {RSVPDetails && <div>
-          <p>Event: {RSVPDetails.event.event_title}</p>
+
+
+
+        {hasRSVP && <div>
+          Current RSVP status: {RSVPDetails.status}
           <ul>
             Invited Members:
             {RSVPDetails.recipients.map((recipient) => (
-              <li key={recipient.user.email}>
+              <li key={recipient.user.email_address}>
                 {recipient.user.first_name} {recipient.user.last_name} ({recipient.user.email_address})
               </li>
             ))}
           </ul>
 
-          Change Event status: {eventStatus}
+          <form onSubmit={updateStatus}>
           <select value={eventStatus} onChange={(event) => setEventStatus(event.target.value)}>
             <option value="ACTIVE">Active</option>
             <option value="CANCELLED">Cancelled</option>
             <option value="COMPLETE">Complete</option>
           </select>
-          <button>Update Status</button>
+          <button type="submit">Update Status</button>
+          </form>
 
 
-          <button>Invite Members</button>
+          <button onClick={()=> setInviteToggle((prevState) => !prevState)}> Invite members! </button>
+                  {inviteToggle && <div> 
+                    <form onSubmit={inviteMembers}>
+                        <input
+                          value={newRecipients} onChange={(e) => setNewRecipients(e.target.value)} placeholder="Enter member emails separated by a comma"
+                        />
+                        <button type="submit">Submit</button>
+                    </form>                  
+                  </div>}  
         </div>}
-        {!RSVPDetails && <div>
-          <button>Create RSVP!</button>  
+
+
+        {!hasRSVP && <div>
+          <button onClick={()=> setCreateToggle((prevState) => !prevState)}> Create RSVP! </button>
+                  {createToggle && <div> 
+                    <form onSubmit={createRSVP}>
+                        <input
+                          value={newRecipients} onChange={(e) => setNewRecipients(e.target.value)} placeholder="Enter member emails separated by a comma"
+                        />
+                        <button type="submit">Submit</button>
+                    </form>                  
+                  </div>}  
         </div>}
       </div>
     );

@@ -4,11 +4,11 @@ const helperFunc = require("../controllers/helper_functions");
 
 const createEvent = async (req, res) =>{
 
-    const {error} = newEventSchema.validate(req.body); 
+    // const {error} = newEventSchema.validate(req.body); 
 
-    if(error){
-        return res.status(400).json({message: error.details[0].message});
-    }
+    // if(error){
+    //     return res.status(400).json({message: error.details[0].message});
+    // }
 
     const {event_title, event_description, eventStart_date, eventEnd_date, location, userID, categoryID} = req.body;
 
@@ -156,9 +156,9 @@ const getUpcomingEvents = async(userID) =>{
                     gte: today,
                     lte: nextWeek
                 },
-                orderBy:{
-                    eventStart_date: 'asc'
-                }
+            },
+            orderBy:{
+                eventStart_date: 'asc'
             }
         });
 

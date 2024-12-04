@@ -11,7 +11,7 @@ const createRSVP = async (req, res) => {
     }
 
     const { senderUserID, eventID, recipients } = req.body;
-
+    console.log(req.body)
     try {
         const users = await helperFunc.convertEmailToUserID(recipients);
 
@@ -149,11 +149,12 @@ const getRSVPDetails = async (req, res) => {
     try {
         const { eventID } = req.params;
 
-        const rsvpDetails = await prisma.rsvp.findUnique({
+        const rsvpDetails = await prisma.rsvp.findFirst({
             where: {
                 eventID: Number(eventID)
             },
             select: {
+                rsvpID: true,
                 senderUserID: true,
                 sender: {
                     select: {
@@ -168,7 +169,8 @@ const getRSVPDetails = async (req, res) => {
                     select: {
                         event_title: true,
                         event_description: true,
-                        event_date: true,
+                        eventStart_date: true,
+                        eventEnd_date: true,
                         location: true
                     }
                 },

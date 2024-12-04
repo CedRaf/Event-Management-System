@@ -13,7 +13,9 @@ function EventList () {
   const [newEvent, setNewEvent] = useState({
     event_title: '',
     event_description: '',
-    event_date: '',
+    eventEnd_date: '',
+    eventStart_date: '',
+    location: ''
 
 
   });
@@ -44,9 +46,10 @@ function EventList () {
           headers: {
             Authorization: `Bearer: ${token}`
               }});
-        if(response){
-          setEvents(response.data);
-          setFilteredEvents(response.data);
+        if(response){ 
+          setEvents(response.data.eventList);
+          setFilteredEvents(response.data.eventList);
+          console.log(response);
         }
         
       } catch (err) {
@@ -64,10 +67,10 @@ function EventList () {
         const eventData = {
           ...newEvent,
           userID: user.userID, // Make sure userID is set
-          categoryID: 12
+          categoryID: 1
           // Set categoryID
       };
-      console.log(eventData);
+      
       try{
           console.log(eventData, token);
           const response = await axios.post(`http://localhost:3000/events/create`, eventData, {
@@ -137,7 +140,8 @@ function EventList () {
                                 } 
                             });
                         }}>{event.event_title}</button>
-            <p>Date: {new Date(event.event_date).toLocaleDateString()}</p>
+            <p>Start Date: {new Date(event.eventStart_date).toLocaleDateString()}</p>
+            <p>End Date: {new Date(event.eventEnd_date).toLocaleDateString()}</p>
             <button onClick={()=> { 
                             navigate("/editEvent", { 
                                 state: { 
