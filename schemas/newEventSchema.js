@@ -21,7 +21,7 @@ const newEventSchema = Joi.object({
         "date.iso" : "Input should be in ISO format (YYYY-MM-DDTHH:mm:ss:sssZ)",
         "any.required" : "Please enter an event date"
     }),
-    location: Joi.string().max(255).optional().message({
+    location: Joi.string().max(255).optional().messages({
         "string.max" : "The event location should be at most 255 characters",
     }),
 

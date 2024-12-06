@@ -35,10 +35,10 @@ const createRSVP = async (req, res) => {
         });
 
         const associatedEvent = await helperFunc.checkIfExistingEvent(eventID);
-
+        const recipientData = await helperFunc.getRecipientData(eventID);
         const notification = await notifications.generateRSVPNotification(newRSVP, senderUserID, eventID, userIDs);
 
-        return res.status(201).json({message: "RSVP Successfully created and sent!", rsvp: newRSVP, associatedEvent, notification});
+        return res.status(201).json({message: "RSVP Successfully created and sent!", rsvp: newRSVP, associatedEvent, recipientData, notification});
     } catch (e) {
         console.error("Error creating new RSVP: ", e);
         return res.status(500).json({ message: "Server Error" });
@@ -76,8 +76,8 @@ const editRSVP = async (req, res) =>{
     const {eventID, status, recipients} = req.body;
 
     try{
-        const existingRSVP = await helperFunc.checkIfExistingRSVP(Number(rsvpID));
-
+        const existingRSVP = await helperFunc.checkIfExistingRSVP(rsvpID);
+        const recipientData = await helperFunc.getRecipientData(eventID); 
         await prisma.recipient.deleteMany({
             where: {
                 rsvpID: existingRSVP.rsvpID,
@@ -99,12 +99,12 @@ const editRSVP = async (req, res) =>{
                         userID: user.userID
                     }))
                 }
-            }
+            },
         })
 
         const notification = await notifications.editedRSVPNotification(rsvpID);
 
-        return res.status(200).json({message:"Successfully edited RSVP", editedRSVP, notification});
+        return res.status(200).json({message:"Successfully edited RSVP", editedRSVP, recipientData, notification});
 
     }catch(e){
         console.error("Error editing rsvp: ", e);

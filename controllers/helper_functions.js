@@ -93,7 +93,7 @@ const getRSVPRecipientIDs = async(eventID) =>{
         }
     });
 
-    if(rsvpRecipients === 0){
+    if(rsvpRecipients.length === 0){
         throw new Error(`No recipients for RSVP with event ${eventID}`);
     }
 
@@ -176,6 +176,34 @@ const convertEmailToUserID = async (recipients) => {
     return users;
 }
 
+const getRecipientData = async(eventID) =>{
+
+    const recipientData = await prisma.rsvp.findMany({
+        where:{
+            eventID: Number(eventID),
+        },
+        select:{
+           recipients:{
+                select:{
+                    response: true,
+                    user:{
+                        select:{
+                            first_name: true,
+                            last_name: true,
+                            email_address: true,
+                        }
+                    }
+                }
+           } 
+        }
+    });
+
+    if(recipientData.length === 0){
+        throw new Error(`No recipients found`);
+    }
+    return recipientData
+}
+
 
 module.exports = {
     checkIfExistingUser,
@@ -189,5 +217,6 @@ module.exports = {
     checkIfCategoryIDExists,
     checkIfExistingRSVP,
     checkIfExistingEvent,
-    convertEmailToUserID
+    convertEmailToUserID,
+    getRecipientData
 }
