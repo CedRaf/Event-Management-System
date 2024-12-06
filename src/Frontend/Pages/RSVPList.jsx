@@ -34,7 +34,7 @@ function RSVPList () {
             Authorization: `Bearer: ${token}`
               }});
         if(response && response.data){
-          setUserRSVPs(response.data.userRSVPs);
+          setUserRSVPs(response.data.invitations);
         }
         
       } catch (err) {
@@ -52,10 +52,11 @@ function RSVPList () {
       {/* <input type="text" placeholder="Find Event" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
             <button onClick={() => searchEvent(searchTerm)}> SEARCH </button> */}
       <ul>
-        {userRSVPs.map((rsvp) => (
-          <li key={rsvp.rsvpID}>
+        {userRSVPs.map((invite) => (
+          <li key={invite.rsvpID}>
           
-              {rsvp.event.event_title} {rsvp.event.location} {rsvp.event.eventStart_date} {rsvp.event.eventEnd_date}
+              {invite.rsvp.event.event_title} {invite.rsvp.event.location} {invite.rsvp.event.eventStart_date} {invite.rsvp.event.eventEnd_date}
+              Current response: {invite.response}
           </li>
         ))}
       </ul>

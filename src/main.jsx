@@ -8,6 +8,7 @@ import EventList from './Frontend/Pages/EventList.jsx'
 import EditEventCategory from './Frontend/Edit/EditEventCategory.jsx'
 import EditEvent from './Frontend/Edit/EditEvent.jsx'
 import Event from './Frontend/Pages/Event.jsx'
+import RSVPList from './Frontend/Pages/RSVPList.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
 {
   path:'/event',
   element:<Event/>
+},
+{
+  path:'/rsvpList',
+  element:<RSVPList/>
 }
 
 ])

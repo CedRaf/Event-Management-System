@@ -222,6 +222,7 @@ const getUserRSVPs = async (req, res) => {
                                 eventEnd_date: true
                             }
                         },
+                        senderUserID: true,
                         sender:{
                             select:{
                                 first_name: true,
@@ -231,7 +232,7 @@ const getUserRSVPs = async (req, res) => {
                         }
                     }
                 },
-                senderUserID: true,
+                
                 response: true
             }
         });

@@ -9,7 +9,7 @@ function Event () {
   const navigate = useNavigate();
   const location = useLocation();
   const {event} = location.state || {};
-  const [RSVPList, setRSVPList] = useState(null);
+  const [RSVPDetails, setRSVPDetails] = useState(null);
   const [token, setToken] = useState('');
   const [user, setUser] =useState('');
   const [error, setError] = useState(null);
@@ -56,7 +56,7 @@ function Event () {
 
             
             
-
+            
             setRecipients(emailAddresses);
            
             setHasRSVP(true);
@@ -189,6 +189,7 @@ function Event () {
             {RSVPDetails.recipients.map((recipient) => (
               <li key={recipient.user.email_address}>
                 {recipient.user.first_name} {recipient.user.last_name} ({recipient.user.email_address})
+                {recipient.response}
               </li>
             ))}
           </ul>
