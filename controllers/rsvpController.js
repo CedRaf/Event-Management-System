@@ -176,12 +176,13 @@ const getRSVPDetails = async (req, res) => {
                 },
                 recipients: {
                     select: {
+                        response: true,
                         user: {
                             select: {
                                 first_name: true,
                                 last_name: true,
                                 email_address: true,
-                                response: true
+                    
                             }
                         }
                     }
@@ -201,52 +202,46 @@ const getRSVPDetails = async (req, res) => {
     }
 };
 
+
 const getUserRSVPs = async (req, res) => {
     const { userID } = req.params;
     try {
-        const userRSVPs = await prisma.rsvp.findMany({
-            where: {
-                OR: [
-                    { senderUserID: Number(userID) }, 
-                    { recipients: { some: { userID: Number(userID) } } },
-                ],
+        const invitations = await prisma.recipient.findMany({
+            where:{
+                userID: Number(userID),
             },
-            include: {
-                event: {
-                    select: {
-                        event_title: true,
-                        event_description: true,
-                        eventStart_date: true,
-                        eventEnd_date: true,
-                        location: true,
-                    },
-                },
-                recipients: {
-                    select: {
-                        user: {
-                            select: {
+            select:{
+                rsvpID: true,
+                rsvp:{
+                    select:{
+                        event:{
+                            select:{
+                                eventID: true,
+                                event_title: true,
+                                eventStart_date: true,
+                                eventEnd_date: true
+                            }
+                        },
+                        sender:{
+                            select:{
                                 first_name: true,
                                 last_name: true,
                                 email_address: true,
-                            },
-                        },
-                    },
+                            }
+                        }
+                    }
                 },
-                sender: {
-                    select: {
-                        first_name: true,
-                        last_name: true,
-                        email_address: true,
-                    },
-                },
-            },
+                senderUserID: true,
+                response: true
+            }
         });
 
-        if (userRSVPs.length === 0) {
-            return res.status(404).json({ message: "No RSVPs associated with this user." });
+        if(invitations.length === 0){
+            return res.status(404).json({message:"RSVPs cannot be found"});
         }
 
-        return res.status(200).json({ message: "User RSVPs retrieved successfully", userRSVPs });
+        return res.status(200).json({invitations});
+
     } catch (e) {
         console.error("Error fetching RSVPs: ", e);
         return res.status(500).json({ message: "Server error" });
