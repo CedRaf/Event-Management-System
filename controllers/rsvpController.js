@@ -180,7 +180,8 @@ const getRSVPDetails = async (req, res) => {
                             select: {
                                 first_name: true,
                                 last_name: true,
-                                email_address: true
+                                email_address: true,
+                                response: true
                             }
                         }
                     }
@@ -215,7 +216,8 @@ const getUserRSVPs = async (req, res) => {
                     select: {
                         event_title: true,
                         event_description: true,
-                        event_date: true,
+                        eventStart_date: true,
+                        eventEnd_date: true,
                         location: true,
                     },
                 },

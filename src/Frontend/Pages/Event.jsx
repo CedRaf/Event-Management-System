@@ -9,7 +9,7 @@ function Event () {
   const navigate = useNavigate();
   const location = useLocation();
   const {event} = location.state || {};
-  const [RSVPDetails, setRSVPDetails] = useState(null);
+  const [RSVPList, setRSVPList] = useState(null);
   const [token, setToken] = useState('');
   const [user, setUser] =useState('');
   const [error, setError] = useState(null);
@@ -39,7 +39,7 @@ function Event () {
         return;
       }
       
-      const getRSVPDetails = async() => {
+      const getUserRSVPS = async() => {
        
         try {
           const response = await axios.get(`http://localhost:3000/rsvp/getDetails/${event.eventID}`, {
@@ -58,16 +58,16 @@ function Event () {
             
 
             setRecipients(emailAddresses);
-            console.log(recipients);
+           
             setHasRSVP(true);
             
           }
 
         } catch (error) {
-          setError("unable to fetch events");
+          setError("unable to fetch users rsvps");
         }
       }
-      getRSVPDetails();
+      getUserRSVPS();
   }, [user, token])
 
 
@@ -84,7 +84,7 @@ function Event () {
           eventID: event.eventID,
           recipients: formattedRecipients  
         }
-        console.log(user.userID, PAYLOAD)
+        
         try{
           const response = await axios.post(`http://localhost:3000/rsvp/create`, PAYLOAD , {
             headers: {
@@ -93,6 +93,7 @@ function Event () {
             }
           );
           if(response && response.data){
+            console.log(response)
             setRSVPDetails((prevDetails) => ({
               ...prevDetails, // Retain existing values
               ...response,    // Apply new values on included attribtues
@@ -114,7 +115,7 @@ function Event () {
         {
         eventID: event.eventID,
         status: eventStatus,
-        recipients: RSVPDetails.recipients
+        recipients: recipients
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -122,10 +123,7 @@ function Event () {
         }
       );
       if(response && response.data){
-        setRSVPDetails((prevDetails) => ({
-          ...prevDetails, // Retain existing values
-          ...response,    // Apply new values on included attribtues
-        }));
+
       }
       }catch (e){
         setError("Unable to invite members");
@@ -140,15 +138,16 @@ function Event () {
       .map(email => email.trim()) // Remove any extra spaces around the emails
       .filter(email => email !== '');
 
-      setRSVPDetails(prevState => ({
-        ...prevState, // Keep other properties intact
-        recipients: [...prevState.recipients, ...formattedRecipients], // Append formattedRecipients
-      }));
+      setRecipients((prevRecipients) => [
+        ...prevRecipients,
+        ...formattedRecipients,
+      ]);
+
 
       const PAYLOAD= {
         eventID: event.eventID,
-        status: RSVPDetails.status,
-        recipients: RSVPDetails.recipients  
+        status: eventStatus,
+        recipients: recipients  
       }
       console.log(user.userID, PAYLOAD)
       try{
@@ -159,10 +158,7 @@ function Event () {
           }
         );
         if(response && response.data){
-          setRSVPDetails((prevDetails) => ({
-            ...prevDetails, // Retain existing values
-            ...response.editedRSVP,    // Apply new values on included attribtues
-          }));
+            console.log(response);
         }
 
       }catch(e){
@@ -201,7 +197,7 @@ function Event () {
           <select value={eventStatus} onChange={(event) => setEventStatus(event.target.value)}>
             <option value="ACTIVE">Active</option>
             <option value="CANCELLED">Cancelled</option>
-            <option value="COMPLETE">Complete</option>
+            <option value="COMPLETED">Complete</option>
           </select>
           <button type="submit">Update Status</button>
           </form>
