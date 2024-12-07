@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import{createContext} from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
+// import {RecoveryContext} import from ced
+
+
 
 
 // user inputs email/username and password in a useState
@@ -10,11 +14,14 @@ import { GoogleLogin } from '@react-oauth/google';
 // if true: the response will be a token plus user credentials
 // if false: response is status 404 or 500
 
+
 function Login() {
-    const [email, setEmail] = useState('');
+    const { setEmail, setPage } = useContext(RecoveryContext); 
+    const [email, setEmailState] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -56,6 +63,12 @@ function Login() {
             }
         }
     };
+
+    const navigateToOTP = ()=>{
+        setEmail(email);
+        setPage('otp');
+        navigate('/otp');
+    }
 
     const clientID = '865144797533-cv0hii9vdkolii1kuppfs71cklajabn0.apps.googleusercontent.com';
 
@@ -109,7 +122,7 @@ function Login() {
                             onChange={(e) => setEmail(e.target.value)}/>
                         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         {errors.password && <div className="error-message">{errors.password}</div>}
-                        <a className="forgotPass" href="">Forgot Your Password?</a>
+                        <Link to="#" onClick={{navigateToOTP}}>Forgot Your Password?</Link>
                         <button type="submit">LOGIN</button>
                     </form>
                     <div className='googleContainer'>
