@@ -101,8 +101,6 @@ const loginAccount = async (req, res) => {
     }
 }
 
-
-
 const googleSignIn = async(req, res) =>{
     
     const {idToken, client_id} = req.body;
@@ -187,7 +185,7 @@ const forgotPassword = async(req, res) =>{
         return res.status(200).json({message:"Password reset link sent to your email"});
 
     }catch(e){
-        console.error("Error sending reset password link");
+        console.error("Error sending reset password link", e);
         return res.status(500).json({message:"Server Error"});
 
     }

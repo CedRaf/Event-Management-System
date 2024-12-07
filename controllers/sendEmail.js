@@ -14,10 +14,10 @@ const sendEmail = (to, subject, link)=>{
         from: process.env.USER_EMAIL,
         to: to,
         subject: subject,
-        text: `Click the link to reset your password ${link}`
+        text: `Click the link to reset your password NOTE: This is only valid for 30 minutes ${link}`
     }
 
-    return transporter.sendEmail(email)
+    return transporter.sendMail(email)
 }
 
 module.exports = sendEmail
