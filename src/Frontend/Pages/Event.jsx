@@ -20,6 +20,7 @@ function Event () {
   const [newRecipients, setNewRecipients]= useState([]);
   const [createToggle, setCreateToggle]= useState(false);
   const [inviteToggle, setInviteToggle]= useState(false);
+  const [isAdmin, setIsAdmin]= useState(false);
   
     useEffect(() =>{
 
@@ -60,6 +61,9 @@ function Event () {
             setRecipients(emailAddresses);
            
             setHasRSVP(true);
+            if(RSVPDetails.senderUserID === user.userID){
+              setIsAdmin(true);
+            }
             
           }
 
@@ -194,7 +198,8 @@ function Event () {
             ))}
           </ul>
 
-          <form onSubmit={updateStatus}>
+          {isAdmin && <div> 
+            <form onSubmit={updateStatus}>
           <select value={eventStatus} onChange={(event) => setEventStatus(event.target.value)}>
             <option value="ACTIVE">Active</option>
             <option value="CANCELLED">Cancelled</option>
@@ -213,10 +218,15 @@ function Event () {
                         <button type="submit">Submit</button>
                     </form>                  
                   </div>}  
+            </div>}
+ 
         </div>}
 
-
-        {!hasRSVP && <div>
+        {!isAdmin && <div>
+          <button>ACCEPT</button>
+          <button>REJECT</button>
+          </div>}
+        {!hasRSVP && isAdmin && <div>
           <button onClick={()=> setCreateToggle((prevState) => !prevState)}> Create RSVP! </button>
                   {createToggle && <div> 
                     <form onSubmit={createRSVP}>

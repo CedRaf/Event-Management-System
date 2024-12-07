@@ -45,7 +45,43 @@ function RSVPList () {
     getEvents();
   }, [token, user]);
 
+  const handleRSVPResponse = async (rsvpID, newResponse) => {
+    try {
+      const response = await axios.patch(`http://localhost:3000/recipient/rsvpStatusUpdate/${rsvpID}/${user.userID}`, {
+        response: newResponse
+      },
+        {
+        headers: {
+          Authorization: `Bearer: ${token}`
+            }
+      });
+      if(response){
 
+      }
+  
+
+    } catch (error) {
+      console.error("Error sending response:", error);
+    }
+  };
+  const handleRSVPCancel = async (rsvpID) => {
+    try {
+      const response = await axios.patch(`http://localhost:3000/recipient/cancelRSVP/${rsvpID}/${user.userID}`, 
+        {
+        headers: {
+          Authorization: `Bearer: ${token}`
+            }
+      });
+      if(response){
+
+      }
+  
+
+    } catch (error) {
+      console.error("Error sending response:", error);
+    }
+  };
+ 
   return (
     <div className="rsvp-list">
       <h2>RSVP List</h2>
@@ -55,8 +91,42 @@ function RSVPList () {
         {userRSVPs.map((invite) => (
           <li key={invite.rsvpID}>
           
-              {invite.rsvp.event.event_title} {invite.rsvp.event.location} {invite.rsvp.event.eventStart_date} {invite.rsvp.event.eventEnd_date}
+               
+              <button onClick={()=> { 
+                            navigate("/Event", { 
+                                state: { 
+                                  event: invite.rsvp.event                                
+                                } 
+                            });
+                        }}>{invite.rsvp.event.event_title}</button>
+              {invite.rsvp.event.location} {invite.rsvp.event.eventStart_date} {invite.rsvp.event.eventEnd_date}  
               Current response: {invite.response}
+
+              {invite.response === "PENDING" && (
+              <div>
+                <button 
+                  onClick={() => handleRSVPResponse(invite.rsvpID, "ACCEPTED")}
+                >
+                  ACCEPT
+                </button>
+                <button 
+                  onClick={() => handleRSVPResponse(invite.rsvpID, "DECLINED")}
+                >
+                  DECLINE
+                </button>
+              </div>
+            )}
+
+              {invite.response === "ACCEPTED" && (
+              <div>
+                <button 
+                  onClick={() => handleRSVPCancel(invite.rsvpID)}
+                >
+                  CANCEL
+                </button>
+              </div>
+            )}
+              
           </li>
         ))}
       </ul>
