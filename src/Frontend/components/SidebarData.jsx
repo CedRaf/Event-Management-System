@@ -8,7 +8,7 @@ export const SidebarData = [
         link:"/event-category"},
     {title: "Events >",
         subItems:[
-            {title: "Create Events", link:"/eventCreation"},
+            {title: "Create Events", link:"/createEvent"},
             {title: "Event List", link:"/eventList"}
         ]
         },
