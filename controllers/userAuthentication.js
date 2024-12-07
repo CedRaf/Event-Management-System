@@ -6,6 +6,8 @@ const registerSchema = require("../schemas/registerSchema");
 const loginSchema = require("../schemas/loginSchema"); 
 const saltRounds = 10;
 const {OAuth2Client} = require('google-auth-library');
+const crypto = require('crypto');
+const sendEmail = require('../controllers/sendEmail');
 
 const registerNewUser = async (req, res)=>{
     console.log(req.body) //for testing purposes
@@ -152,10 +154,82 @@ const googleSignIn = async(req, res) =>{
     }
 }
 
+const forgotPassword = async(req, res) =>{
+    const {email_address} = req.body;
+    if(!email_address){
+        return res.status(400).json({message:"Email is required"});
+    }
+
+    try{
+        const existingUser = await prisma.user.findUnique({
+            where:{
+                email_address: email_address
+            }
+        });
+        if(!existingUser){
+            return res.status(404).json({message:"User not found"});
+        }
+
+        const resetToken = crypto.randomBytes(32).toString("hex");
+        const expiry = new Date(Date.now() + 1800000);
+        await prisma.user.update({
+            where:{
+                email_address: email_address
+            },
+            data:{
+                resetToken: resetToken,
+                resetTokenExpiry: expiry
+            }
+        });
+
+        const resetLink = `http://localhost:5173/authenticate/reset-password?token=${resetToken}`
+        await sendEmail(email_address, "Reset Password Request", resetLink);
+        return res.status(200).json({message:"Password reset link sent to your email"});
+
+    }catch(e){
+        console.error("Error sending reset password link");
+        return res.status(500).json({message:"Server Error"});
+
+    }
+
+}
+
+const resetPassword = async(req, res) =>{
+    const {token, newPassword} = req.body;
+    try{
+        const user = prisma.user.findFirst({
+            where:{
+                resetToken: token
+            }
+        });
+        if(!user || new Date() > user.resetTokenExpiry){
+            return res.status(400).json({message:"Invalid or expired token"});
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await prisma.user.update({
+            where:{
+                resetToken: token
+            },
+            data:{
+                password: hashedPassword,
+                resetToken: null,
+                resetTokenExpiry: null,
+            }
+        });
+
+        return res.status(200).json({message:"Successfully reset password"});
+
+    }catch(e){
+        console.error('Error resetting password', e);
+        return res.status(500).json({message:"Server Error"}); 
+    }
+}
 
 module.exports = {
     registerNewUser,
     loginAccount,
-    googleSignIn
+    googleSignIn,
+    forgotPassword,
+    resetPassword
 }
 

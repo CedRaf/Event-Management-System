@@ -16,7 +16,7 @@ import { GoogleLogin } from '@react-oauth/google';
 
 
 function Login() {
-    const { setEmail, setPage } = useContext(RecoveryContext); 
+    //const { setEmail, setPage } = useContext(RecoveryContext); 
     const [email, setEmailState] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();

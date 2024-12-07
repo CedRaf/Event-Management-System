@@ -89,18 +89,20 @@ model recipient {
 }
 
 model user {
-  userID        Int             @id @default(autoincrement())
-  username      String          @db.VarChar(255)
-  first_name    String          @db.VarChar(255)
-  last_name     String          @db.VarChar(255)
-  email_address String          @db.VarChar(255)                  @unique
-  password      String?         @db.VarChar(255)
-  googleID      String?         @unique
-  event         event[]
-  notifications notifications[]
-  eventcategory eventcategory[] @relation("UserEventCategories")
+  userID           Int             @id @default(autoincrement())
+  username         String          @db.VarChar(255)
+  first_name       String          @db.VarChar(255)
+  last_name        String          @db.VarChar(255)
+  email_address    String          @db.VarChar(255)                  @unique
+  password         String?         @db.VarChar(255)
+  googleID         String?         @unique
+  resetToken       String?         @db.VarChar(255)
+  resetTokenExpiry DateTime?
+  event            event[]
+  notifications    notifications[]
+  eventcategory    eventcategory[] @relation("UserEventCategories")
 
-  sentRSVPs     rsvp[]          @relation("RSVP_Sender")
+  sentRSVPs     rsvp[]             @relation("RSVP_Sender")
   receivedRSVPs recipient[]     
 }
 

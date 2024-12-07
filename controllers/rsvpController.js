@@ -68,23 +68,19 @@ const deleteRSVP = async (req,res) =>{
 const editRSVP = async (req, res) =>{
 
     const {rsvpID} = req.params;
-    // const {error} = editRSVPController.validate(req.body);
-    // if(error){
-    //     return res.status(400).json({message: error.details[0].message});
-    // }
+    const {error} = editRSVPController.validate(req.body);
+    if(error){
+        return res.status(400).json({message: error.details[0].message});
+    }
 
     const {eventID, status, recipients} = req.body;
 
     try{
         const existingRSVP = await helperFunc.checkIfExistingRSVP(rsvpID);
         const recipientData = await helperFunc.getRecipientData(eventID); 
-        await prisma.recipient.deleteMany({
-            where: {
-                rsvpID: existingRSVP.rsvpID,
-            },
-        });
-
+        const originalList = await helperFunc.getRSVPRecipientIDs(eventID);
         const users = await helperFunc.convertEmailToUserID(recipients);
+        const newRecipients = users.filter(id => !originalList.includes(id));
 
         const editedRSVP = await prisma.rsvp.update({
             where:{
@@ -95,9 +91,7 @@ const editRSVP = async (req, res) =>{
                 status,
                 last_edited: new Date(),
                 recipients : {
-                    create: users.map(user => ({
-                        userID: user.userID
-                    }))
+                    create: newRecipients.map(userID => ({userID})),
                 }
             },
         })
