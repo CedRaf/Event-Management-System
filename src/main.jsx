@@ -15,7 +15,7 @@ import RSVPList from './Frontend/Pages/RSVPList.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './index.css'
-
+import Calendar from './Frontend/Pages/Calendar.jsx'
 
 
 

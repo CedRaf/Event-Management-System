@@ -46,7 +46,7 @@ function Calendar() {
 
   useEffect(() => {
     let modifiedEvents = events.map((event) => {
-      console.log(event);
+      
       const trimmedDate = event.eventStart_date.substring(0, 10);
       return {
         title: event.event_title,
@@ -88,6 +88,8 @@ function Calendar() {
     let eventEnd = new Date(
       newEvent.eventEnd_date + "T" + newEvent.eventEnd_time
     );
+
+    console.log(eventStart)
 
     let newEventData = {
       event_title: newEvent.event_title,
