@@ -14,7 +14,6 @@ import Event from './Frontend/Pages/Event.jsx'
 import RSVPList from './Frontend/Pages/RSVPList.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google';
-// import { RecoveryProvider } from './contexts/RecoveryContext'; import from Ced
 import './index.css'
 
 
@@ -32,12 +31,12 @@ const router = createBrowserRouter([
   element: <OTP/>
 },
 {
-  path: '/resetPassword',
+  path: '/authenticate/reset-password',
   element: <ResetPassword/>
 },
 {
   path: '/recoveredPassword',
-  element: <OTP/>
+  element: <RecoveredPassword/>
 },
 {
   path: '/register',
