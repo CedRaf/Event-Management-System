@@ -70,6 +70,10 @@ const router = createBrowserRouter([
 {
   path:'/rsvpList',
   element:<RSVPList/>
+},
+{
+  path: 'calendar',
+  element: <Calendar/>
 }
 
 ])
