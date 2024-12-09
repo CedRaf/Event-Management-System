@@ -195,7 +195,7 @@ const forgotPassword = async(req, res) =>{
 const resetPassword = async(req, res) =>{
     const {token, newPassword} = req.body;
     try{
-        const user = prisma.user.findFirst({
+        const user = await prisma.user.findFirst({
             where:{
                 resetToken: token
             }
@@ -206,7 +206,7 @@ const resetPassword = async(req, res) =>{
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await prisma.user.update({
             where:{
-                resetToken: token
+                userID: user.userID
             },
             data:{
                 password: hashedPassword,
