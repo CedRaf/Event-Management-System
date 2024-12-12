@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-const AddEvent = ({createEvent, newEvent, setNewEvent}) => {
+const AddEvent = ({createEvent, newEvent, setNewEvent, categories}) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +25,25 @@ const AddEvent = ({createEvent, newEvent, setNewEvent}) => {
                 <input type="date" name="eventStart_date" placeholder="Event Date" value= {newEvent.eventStart_date} onChange={handleChange}/>
                 <input type="date" name="eventEnd_date" placeholder="Event Date" value= {newEvent.eventEnd_date} onChange={handleChange}/>
 
-
+                <select
+                    name="categoryID"
+                    value={newEvent.categoryID}
+                    onChange={(e) =>
+                      setNewEvent((prevState) => ({
+                        ...prevState,
+                        categoryID: e.target.value, // Set the selected category's ID
+                      }))
+                    }
+                  >
+                    <option value="" disabled>
+                      Select a Category
+                    </option>
+                    {categories.map((category) => (
+                      <option key={category.categoryID} value={category.categoryID}>
+                        {category.category_name}
+                      </option>
+                    ))}
+               </select>
 
                 <button type="submit">Submit</button>   
             </form>

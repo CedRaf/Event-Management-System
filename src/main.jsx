@@ -16,6 +16,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './index.css'
 import Calendar from './Frontend/Pages/Calendar.jsx'
+import NotificationList from './Frontend/components/NotificationList.jsx'
 
 
 
@@ -72,10 +73,13 @@ const router = createBrowserRouter([
   element:<RSVPList/>
 },
 {
-  path: 'calendar',
+  path: '/calendar',
   element: <Calendar/>
+},
+{
+  path: '/notifications',
+  element: <NotificationList/>
 }
-
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

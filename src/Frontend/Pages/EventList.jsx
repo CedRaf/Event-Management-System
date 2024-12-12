@@ -15,12 +15,14 @@ function EventList () {
     event_description: '',
     eventEnd_date: '',
     eventStart_date: '',
-    location: ''
+    location: '',
+    categoryID: ''
 
 
   });
   const [addtoggle, setAddToggle]= useState(false);
   const [searchTerm, setSearchTerm]= useState('');
+  const [categories, setCategories]= useState([]);
   const navigate= useNavigate(); 
 
   useEffect(() =>{
@@ -49,7 +51,7 @@ function EventList () {
         if(response){ 
           setEvents(response.data.eventList);
           setFilteredEvents(response.data.eventList);
-          console.log(response);
+          console.log(token);
         }
         
       } catch (err) {
@@ -58,6 +60,32 @@ function EventList () {
     };
 
     getEvents();
+  }, [token, user]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      if (!token && !user) {
+        //because these arent initialized right away
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/eventCategory/findAll/${user.userID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response) {
+          setCategories(response.data);
+        }
+      } catch (error) {
+        console.error("Error retrieving categories:", error);
+      }
+    };
+    getCategories();
   }, [token, user]);
 
     const createEvent = async(newEvent) =>{
@@ -155,7 +183,7 @@ function EventList () {
       </ul>
         <button onClick={()=> setAddToggle((prevState) => !prevState)}> ADD </button>
                   {addtoggle && <div> 
-                      <AddEvent createEvent= {createEvent} newEvent= {newEvent} setNewEvent = {setNewEvent}/>                    
+                      <AddEvent createEvent= {createEvent} newEvent= {newEvent} setNewEvent = {setNewEvent} categories= {categories}/>                    
                   </div>}
     </div>
   );

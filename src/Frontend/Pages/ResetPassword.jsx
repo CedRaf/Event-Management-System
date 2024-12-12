@@ -1,19 +1,27 @@
 import React, {useState} from 'react'
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [otpToken, setOtpToken] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const query = new URLSearchParams(useLocation().search); // Extract the query params
+  const resetToken = query.get('token');
+
 
   const handlePasswordReset = async (e) =>{
-
+    e.preventDefault();
+    console.log(resetToken, newPassword);
     try{
-      const response = await axios.post("http://localhost:3000/reset-password", { token: otpToken, newPassword:newPassword, });
+      const response = await axios.patch("http://localhost:3000/authenticate/reset-password", { token: resetToken, newPassword:newPassword, });
       setMessage("Password reset successfully!");
+      console.log(response);
     }catch (err){
       setError(err.response.data.message);
     }
+
   };
   return (
     <div>

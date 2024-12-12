@@ -70,9 +70,10 @@ function EventCategory() {
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) // Case-insensitive search
       );
-      setCategories(results);
+      setFilteredCategories(results);
+      
     } else {
-      setCategories(categories);
+      setFilteredCategories(categories);
     }
   };
 
@@ -83,7 +84,7 @@ function EventCategory() {
     try {
       // you can't set the userID in this function because we need to actually have the userID before we can create a category, setting something only gets called after the function is done no matter how early we put the function
       // so we need to set the userID in the createCategory function
-      const newCategoryPost = {
+      const categoryData = {
         category_name: newCategory.category_name,
         category_description: newCategory.category_description,
         userID: user.userID,
@@ -91,7 +92,7 @@ function EventCategory() {
 
       const response = await axios.post(
         `http://localhost:3000/eventCategory/create`,
-        newCategoryPost,
+        categoryData,
         {
           headers: {
             Authorization: `Bearer: ${token}`,
@@ -99,10 +100,12 @@ function EventCategory() {
         }
       );
       if (response && response.data.newCategory) {
-        setCategories((prevCategories) => [
-          ...prevCategories,
-          response.data.newCategory,
-        ]);
+        setCategories((prevCategories) => {
+          const updatedCategories = [...prevCategories, response.data.newCategory];
+          setFilteredCategories(updatedCategories); // Update another dependent state
+          return updatedCategories; // This becomes the new categories state
+        });
+        
         setNewCategory({
           category_name: "",
           category_description: "",
@@ -130,12 +133,13 @@ function EventCategory() {
         }
       );
       if (response && response.data) {
-        setCategories((prevCategories) =>
+        setFilteredCategories((prevCategories) =>
           prevCategories.filter(
             (category) =>
               category.categoryID !== response.data.deletedCategory.categoryID
           )
         );
+        
       }
     } catch (e) {
       setError("Could not delete category. Please try again later.");
@@ -155,13 +159,18 @@ function EventCategory() {
       );
 
       if (response && response.data.updatedCategory) {
-        setCategories((prevCategories) =>
-          prevCategories.map((cat) =>
+        setCategories((prevCategories) => {
+          const updatedCategories = prevCategories.map((cat) =>
             cat.categoryID === response.data.updatedCategory.categoryID
               ? response.data.updatedCategory
               : cat
-          )
-        );
+          );
+        
+          // Use the updated categories to immediately update filteredCategories
+          setFilteredCategories(updatedCategories);
+        
+          return updatedCategories; // Return the updated state for `setCategories`
+        });
       }
     } catch (e) {
       setError("Could not update category. Please try again later.");
@@ -195,7 +204,8 @@ function EventCategory() {
         </div>
 
         <ul className="category-list">
-          {categories.map((category) => {
+          {filteredCategories.map((category) => {
+            <li key={category.categoryID}></li>
             return (
               <Category
                 category={category}
@@ -204,6 +214,7 @@ function EventCategory() {
               >
                 {" "}
               </Category>
+              
             );
           })}
         </ul>

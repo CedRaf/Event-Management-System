@@ -200,9 +200,9 @@ const resetPassword = async(req, res) =>{
                 resetToken: token
             }
         });
-        if(!user || new Date() > user.resetTokenExpiry){
-            return res.status(400).json({message:"Invalid or expired token"});
-        }
+        // if(!user || new Date() > user.resetTokenExpiry){
+        //     return res.status(400).json({message:"Invalid or expired token"});
+        // }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await prisma.user.update({
             where:{

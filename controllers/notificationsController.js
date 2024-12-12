@@ -153,7 +153,7 @@ const rsvpResponseNotification = async(rsvpID, userID, response) =>{
                 userID: rsvp.senderUserID,
                 eventID: rsvp.eventID,
                 rsvpID: Number(rsvpID),
-                message: `${recipient.first_name} ${recipient.last_name} ${response} your rsvp for ${eventDetails.event_title} on ${eventDetails.event_date}`,
+                message: `${recipient.first_name} ${recipient.last_name} ${response} your rsvp for ${eventDetails.event_title} on ${eventDetails.eventStart_date}`,
                 time_sent: new Date()
             }
         });

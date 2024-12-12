@@ -39,7 +39,9 @@ function Event () {
       if(!token && !user){ //because these arent initialized right away
         return;
       }
-      
+      if(event.userID === user.userID){
+        setIsAdmin(true);
+      }
       const getUserRSVPS = async() => {
        
         try {
@@ -61,9 +63,10 @@ function Event () {
             setRecipients(emailAddresses);
            
             setHasRSVP(true);
-            if(RSVPDetails.senderUserID === user.userID){
-              setIsAdmin(true);
-            }
+            setEventStatus(response.data.rsvpDetails.status);
+            
+            
+  
             
           }
 

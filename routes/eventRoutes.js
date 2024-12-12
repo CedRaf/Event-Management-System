@@ -10,7 +10,7 @@ eventsRouter.get("/find/:userID", authMiddleware, eventController.findEvent);  /
 eventsRouter.get("/findAll/:userID", authMiddleware, eventController.getAllEvents); 
 eventsRouter.get("/findByCategory/:categoryID", authMiddleware, eventController.getEventsByCategory);
 eventsRouter.get("/sort/:userID/:sortBy/:orderBy?", authMiddleware, eventController.sortEvents);
-eventsRouter.get("/getUpcomingEvents/:userID", authMiddleware, eventController.getUpcomingEvents);
+
 
 
 module.exports = eventsRouter;
