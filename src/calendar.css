@@ -1,76 +1,147 @@
 .fc {
-    width:70%;
-    margin-left:20rem;
-    margin-right:3rem;
-    border-radius: 8px;
-    padding: 10px;
-  
-  }
-  
-  .fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start {
-    color: white;
-    background-color: #007bff;
-  }
-  
-  .fc-event-main {
-    padding: 0.5em;
-    font-size: 1em;
-    font-weight: 500;
-    color: white;
-    background-color: #007bff;
-    border-radius: 5px;
-  }
-  
-  .calendar {
-    overflow-y: hidden;
-    height:100vh;
-  }
-  
-  .calendar-modal {
-    position:absolute;
-    top:50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    z-index: 100;
-    background-color: white;
-    padding:1rem 1.5rem;
-    border-radius: 1rem;
-  }
-  
-  .calendar-modal h1 {
-    font-size: 1.5rem;
-    margin-left:0.5rem;
-  }
-  
-  .calendar form {
-    display:flex;
-    flex-direction: column;
-  }
-  
-  .calendar form label {
-    margin-top:0.25rem;
-    margin-left:0.5rem;
-  }
-  
-  .calendar form input {
-    margin: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: 1px solid #007bff;
-  }
-  
-  .calendar form button {
-    margin: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: 1px solid #007bff;
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .calendar form .close-calendar-modal-button {
-    background-color: rgb(108, 108, 108);
-    color: white;
-    border: 1px solid rgb(108, 108, 108);
-  }
+  width: 70%;
+  margin-left: 20rem;
+  margin-right: 3rem;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+  color: white;
+  background-color: #007bff;
+}
+
+.fc-event-main {
+  padding: 0.5em;
+  font-size: 1em;
+  font-weight: 500;
+  color: white;
+  background-color: #007bff;
+  border-radius: 5px;
+}
+
+.calendar {
+  overflow-y: hidden;
+  height: 100vh;
+}
+
+.calendar-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  background-color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+}
+
+.calendar-modal h1 {
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.calendar form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.calendar form label {
+  margin-top: 0.25rem;
+  margin-left: 0.5rem;
+}
+
+.calendar form input {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+}
+
+.calendar form button {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: white;
+}
+
+.calendar form .close-calendar-modal-button {
+  background-color: rgb(108, 108, 108);
+  color: white;
+  border: 1px solid rgb(108, 108, 108);
+}
+
+.calendar select {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+}
+
+.new-event-button {
+  position: fixed;
+  top: 1rem;
+  left: 35rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: white;
+}
+
+.event-details {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  width: 400px;
+}
+
+.event-details h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.event-details p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.close-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-event-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: rgb(108, 108, 108);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left:1rem;
+}
+
+.delete-event-button:hover {
+  background-color: rgb(80, 80, 80);
+}

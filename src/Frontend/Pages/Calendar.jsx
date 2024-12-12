@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import Sidebar from "../components/Sidebar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import EventModal from "../components/EventModal";
-import axios from "axios";
+import EventDetails from "../components/EventDetails";
 import "../../calendar.css";
 
 function Calendar() {
@@ -13,9 +15,23 @@ function Calendar() {
   const [user, setUser] = useState("");
   const [events, setEvents] = useState([]);
   const [cleanedEvents, setCleanedEvents] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [toggleEventDetails, setToggleEventDetails] = useState(false);
+  const [clickedEvent, setClickedEvent] = useState(null);
+  const [eventDetailModalPosition, setEventDetailModalPosition] = useState({});
 
   const handleDateClick = (arg) => {
     setToggleModal(true);
+  };
+
+  const handleEventClick = (arg) => {
+    const { clientX, clientY } = arg.jsEvent;
+    setEventDetailModalPosition({ clientX, clientY });
+    const clickedEvent = events.find(
+      (event) => event.event_title === arg.event.title
+    );
+    setClickedEvent(clickedEvent);
+    setToggleEventDetails(true);
   };
 
   useEffect(() => {
@@ -41,12 +57,28 @@ function Calendar() {
         console.error("Error fetching events:", e);
       }
     }
+
+    async function fetchAllCategories() {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/eventCategory/findAll/${parsedUser.userID}`,
+          {
+            headers: {
+              Authorization: `Bearer: ${storedToken}`,
+            },
+          }
+        );
+        setCategories(response.data);
+      } catch (e) {
+        console.error("Error fetching categories:", e);
+      }
+    }
     fetchAllEvents();
+    fetchAllCategories();
   }, []);
 
   useEffect(() => {
     let modifiedEvents = events.map((event) => {
-      
       const trimmedDate = event.eventStart_date.substring(0, 10);
       return {
         title: event.event_title,
@@ -63,7 +95,8 @@ function Calendar() {
       eventStart_date === "" ||
       eventStart_time === "" ||
       eventEnd_date === "" ||
-      eventEnd_time === ""
+      eventEnd_time === "" ||
+      category === ""
     ) {
       alert("Please fill in all fields");
       return;
@@ -82,16 +115,14 @@ function Calendar() {
       return;
     }
 
-    let eventStart = new Date(
+    const eventStart = new Date(
       newEvent.eventStart_date + "T" + newEvent.eventStart_time
     );
-    let eventEnd = new Date(
+    const eventEnd = new Date(
       newEvent.eventEnd_date + "T" + newEvent.eventEnd_time
     );
 
-    console.log(eventStart)
-
-    let newEventData = {
+    const newEventData = {
       event_title: newEvent.event_title,
       event_description: newEvent.event_description,
       eventStart_date: eventStart,
@@ -100,7 +131,20 @@ function Calendar() {
       userID: user.userID,
       categoryID: 1,
     };
+
     try {
+      const response = await axios.get(
+        `http://localhost:3000/eventCategory/find/${newEvent.category}`,
+        {
+          headers: {
+            Authorization: `Bearer: ${token}`,
+          },
+        }
+      );
+      const foundCategory = response.data.existingCategory.find(
+        (category) => category.category_name === newEvent.category
+      );
+      newEventData.categoryID = foundCategory.categoryID;
       await axios.post("http://localhost:3000/events/create", newEventData, {
         headers: {
           Authorization: `Bearer: ${token}`,
@@ -123,10 +167,28 @@ function Calendar() {
     setToggleModal(false);
   };
 
+  const deleteEventHandler = async (eventId) => {
+    try {
+      await axios.delete(`http://localhost:3000/events/delete/${eventId}`, {
+        headers: {
+          Authorization: `Bearer: ${token}`,
+        },
+      });
+    } catch (e) {
+      console.error("Error deleting event:", e);
+      return;
+    }
+    const newEvents = events.filter((event) => event.eventID !== eventId);
+    setEvents(newEvents);
+    setToggleEventDetails(false);
+  };
+
   return (
     <div className="calendar">
       <Sidebar></Sidebar>
-
+      <button className="new-event-button" onClick={handleDateClick}>
+        New Event
+      </button>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -134,12 +196,23 @@ function Calendar() {
         events={cleanedEvents}
         eventContent={renderEventContent}
         dateClick={handleDateClick}
+        eventClick={handleEventClick}
       />
+      {toggleEventDetails && (
+        <EventDetails
+          event={clickedEvent}
+          setToggleEventDetails={setToggleEventDetails}
+          toggleEventDetails={toggleEventDetails}
+          deleteEventHandler={deleteEventHandler}
+          eventDetailModalPosition={eventDetailModalPosition}
+        ></EventDetails>
+      )}
       {toggleModal && (
         <EventModal
           submitFormHandler={submitFormHandler}
           toggleModal={toggleModal}
           setToggleModal={setToggleModal}
+          categories={categories}
         ></EventModal>
       )}
     </div>
