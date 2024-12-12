@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-function EventModal({ submitFormHandler, toggleModal, setToggleModal }) {
+function EventModal({
+  submitFormHandler,
+  toggleModal,
+  setToggleModal,
+  categories,
+}) {
   const [event, setEvent] = useState({
     event_title: "",
     event_description: "",
@@ -8,6 +13,7 @@ function EventModal({ submitFormHandler, toggleModal, setToggleModal }) {
     eventStart_time: "",
     eventEnd_date: "",
     eventEnd_time: "",
+    category: "",
   });
 
   const handleChange = (e) => {
@@ -81,9 +87,39 @@ function EventModal({ submitFormHandler, toggleModal, setToggleModal }) {
           value={event.eventEnd_time}
           onChange={handleChange}
         />
+        <label htmlFor="category">Category</label>
+        <select
+          id="category"
+          name="category"
+          required
+          value={event.category}
+          onChange={handleChange}
+        >
+          {categories && categories.length > 0 ? (
+            <>
+              <option value="" disabled>
+                Select a category
+              </option>
+              {categories.map((category, index) => (
+                <option key={index} value={category.category_name}>
+                  {category.category_name}
+                </option>
+              ))}
+            </>
+          ) : (
+            <option value="" disabled>
+              You don't have any categories
+            </option>
+          )}
+        </select>
 
         <button type="submit">Create Event</button>
-        <button onClick={() => setToggleModal(!toggleModal)} className="close-calendar-modal-button">Cancel</button>
+        <button
+          onClick={() => setToggleModal(!toggleModal)}
+          className="close-calendar-modal-button"
+        >
+          Cancel
+        </button>
       </form>
     </div>
   );
