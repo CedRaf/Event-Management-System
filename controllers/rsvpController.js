@@ -80,7 +80,7 @@ const editRSVP = async (req, res) =>{
         const recipientData = await helperFunc.getRecipientData(eventID); 
         const originalList = await helperFunc.getRSVPRecipientIDs(eventID);
         const users = await helperFunc.convertEmailToUserID(recipients);
-        const newRecipients = users.filter(id => !originalList.includes(id));
+        const newRecipients = users.filter(user => !originalList.includes(user.userID));
 
         const editedRSVP = await prisma.rsvp.update({
             where:{
@@ -91,7 +91,7 @@ const editRSVP = async (req, res) =>{
                 status,
                 last_edited: new Date(),
                 recipients : {
-                    create: newRecipients.map(userID => ({userID})),
+                    create: newRecipients.map(newRecipient => ({userID: newRecipient.userID})),
                 }
             },
         })

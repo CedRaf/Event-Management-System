@@ -231,6 +231,7 @@ module.exports = {
     editEvent,
     findEvent,
     getAllEvents,
+    getUpcomingEvents,
     getEventsByCategory,
-    sortEvents
-}
+    sortEvents,
+}    
