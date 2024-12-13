@@ -17,23 +17,32 @@
 .intro{
   width: 50%;
   height: 100vh;
-  background-color: rgb(109, 109, 255);
+  background: linear-gradient(45deg, rgb(25, 25, 112), rgb(135, 206, 250));
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
+.logo{
+  margin-top: -20rem;
+  margin-bottom: -10rem;
+}
 
+.systemName{
+  display:flex;
+  font-size: 4rem;
+  color:white;
+  margin-bottom: 0.3rem;
+}
 
 .helloTxt{
   display: flex;
-  width: 80%;
   color: white;
 }
 
 .formBox{
   width: 50%;
-  
 }
 .noAccount{
   width: 100%;
@@ -41,7 +50,6 @@
   display: flex;
   margin-top: 40px;
 }
-
 
 
 .noAccount div{
@@ -58,8 +66,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
+.welcomeBack{
+  display:flex;
+  margin-right: 3.5rem;
+}
 
 .loginForm input {
   margin: 10px 0; 
@@ -73,13 +86,18 @@
 
 .loginForm button{
   width: 300px;
-  height: 25px;
+  height: 30px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   background-color: rgb(109, 109, 255);
   border: none;
   border-radius: 7px;
   color: white;
   margin-top: 1rem;
+}
+
+.loginForm button:hover {
+  background-color: rgb(85, 85, 255);
+  transform: translateY(-2px); 
 }
 
 .regForm{
@@ -98,13 +116,18 @@
 
 .regForm button{
   width: 300px;
-  height: 25px;
+  height: 30px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   background-color: rgb(109, 109, 255);
   border: none;
   border-radius: 7px;
   color: white;
   margin-top: 1rem;
+}
+
+.regForm button:hover {
+  background-color: rgb(85, 85, 255); 
+  transform: translateY(-2px); 
 }
 
 .regForm input{
@@ -131,13 +154,15 @@ input{
 
 .googleContainer{
   margin-top: 10px;
+  margin-right: 3.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .continueWith{
-  margin-bottom: 20px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .error-message{

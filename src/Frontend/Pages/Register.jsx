@@ -59,10 +59,13 @@ function Register(){
     }
     return(
         <div className='container'>
-                <div className='intro'>
-                <img src="" alt="" />
-                <p className='helloTxt'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt, recusandae? Officiis, esse sapiente consectetur necessitatibus reprehenderit ab vitae a? Perferendis architecto odit nisi expedita quos molestias sed debitis reiciendis aspernatur.</p>
-                </div>
+            <div className='intro'>
+              <img src="../src/EasyEventsLogo.png" alt="Logo" className='logo' />
+              <h1 className='systemName'>EasyEvents</h1>
+              <p className='helloTxt'>
+                  Your events, effortlessly organized in one!
+              </p>
+            </div>
 
                 <div className='formBox'>
                     <div className='noAccount'>
@@ -71,7 +74,7 @@ function Register(){
                         <Link to="/">Login</Link>
                     </div>
                     <div className='regForm'>
-                        <h2>Join Us!</h2>
+                        <h2>Join Us At Easy Events!</h2>
                         {errors.global && <div className="reg-error-message">{errors.global}</div>}
        
             <form onSubmit={handleSubmit}>

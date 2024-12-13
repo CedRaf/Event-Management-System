@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import '../../../src/OTP.css'
 
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -24,19 +25,21 @@ function ResetPassword() {
 
   };
   return (
-    <div>
-     <form onSubmit={handlePasswordReset}>
-          <h2>Reset Password</h2>
-          <div>
-            <label>New Password:</label>
-            <input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} required placeholder='Enter new password' />
-            
-          </div>
-          <button type='submit'>Reset Password</button>
+    <div className='main-container'>
+      <div className='form-container'>
+      <form onSubmit={handlePasswordReset}>
+            <h2>Reset Password</h2>
+            <div>
+              <label>New Password:</label>
+              <input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} required placeholder='Enter new password' />
+              
+            </div>
+            <button type='submit'>Reset Password</button>
         </form>
         {message && <p>{message}</p>}
         {error && <div>{error}</div> } 
-        </div>
+      </div>
+    </div>
   );
 }
 

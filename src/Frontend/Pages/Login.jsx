@@ -100,9 +100,10 @@ function Login() {
     return (
         <div className='container'>
             <div className='intro'>
-                <img src="" alt="" />
+                <img src="../src/EasyEventsLogo.png" alt="Logo" className='logo' />
+                <h1 className='systemName'>EasyEvents</h1>
                 <p className='helloTxt'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, recusandae? Officiis, esse sapiente consectetur necessitatibus reprehenderit ab vitae a? Perferendis architecto odit nisi expedita quos molestias sed debitis reiciendis aspernatur.
+                    Your events, effortlessly organized in one!
                 </p>
             </div>
 
@@ -112,7 +113,7 @@ function Login() {
                     <Link to="/register">Sign up</Link>
                 </div>
                 <div className='loginForm'>
-                    <h2>Welcome back!</h2>
+                    <h2 className='welcomeBack'>Welcome back!</h2>
                     {errors.global && <div className="error-message">{errors.global}</div>}
                     <form onSubmit={handleSubmit}>
                         <input type="email" placeholder="Email"value={email}
