@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 
-function NotificationList () {
+function Dashboard () {
   const [token, setToken] = useState('');
   const [user, setUser] = useState('');
   const [notifications, setNotifications] = useState([]);
@@ -48,23 +48,35 @@ function NotificationList () {
       }
     };
 
-    getNotifications();
+    getUpcomingEvents();
   }, [token, user]);
 
-  useEffect(() => {
-    const formattedEvents = events.map((event) => {
-      
-      const trimmedDate = event.eventStart_date.substring(0, 10);
-      return {
-        title: event.event_title,
-        date: trimmedDate,
-      };
-    });
-    setCleanedEvents(formattedEvents);
-  }, [upcomingEvents]);
+    const fullCalendarEvents = upcomingEvents.map((event) => ({
+      id: String(event.eventID),             // ID as string
+      title: event.event_title,              // Title of the event
+      start: event.eventStart_date,          // Start date in ISO format
+      extendedProps: {                       // Additional data
+        description: event.event_description,
+        end: event.eventEnd_date,            // Optional end date
+        location: event.location,
+        userID: event.userID,
+        categoryID: event.categoryID,
+      },
+    }));
  
 
+    const handleDateClick = (arg) => {
+      //navigate the user to event page passing event
+    };
 
+    const renderEventContent = (eventInfo) => {
+      return (
+        <>
+          <b>{eventInfo.event.title}</b>
+          <p>{eventInfo.event.extendedProps.location}</p>
+        </>
+      );
+    };
 
     return (    
     <div className="dashboard">
@@ -72,7 +84,7 @@ function NotificationList () {
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridWeek"
             weekends={true}
-            events={cleanedEvents}
+            events={fullCalendarEvents}
             eventContent={renderEventContent}
             dateClick={handleDateClick}
         />
@@ -80,4 +92,4 @@ function NotificationList () {
   );
 };
 
-export default NotificationList;
+export default Dashboard;
