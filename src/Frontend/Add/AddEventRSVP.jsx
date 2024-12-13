@@ -32,4 +32,4 @@ const AddEventRSVP = ({createRSVP, newRSVP, setNewRSVP}) => {
   );
 };
 
-export default AddEvent;
+export default AddEventRSVP;

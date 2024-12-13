@@ -201,11 +201,11 @@ function EventCategory() {
               Search{" "}
             </button>
           </div>
-        </div>
-
+       
+        <div className="category-list-box">
         <ul className="category-list">
           {filteredCategories.map((category) => {
-            <li key={category.categoryID}></li>
+            <li key={category.categoryID} ></li>
             return (
               <Category
                 category={category}
@@ -218,7 +218,8 @@ function EventCategory() {
             );
           })}
         </ul>
-        <div>
+        </div>
+        <div className="create-category-container">
           <button
             onClick={() => setAddToggle((prevState) => !prevState)}
             className="toggle-create-category"
@@ -235,6 +236,7 @@ function EventCategory() {
               />
             </div>
           )}
+        </div>
         </div>
       </div>
     </>

@@ -159,7 +159,7 @@ function EventList () {
     <>
     <Sidebar />
     <div className='event-list-container'>
-    <div className="event-top-container">
+    <div className='event-top-container'>
       <h1>Event List</h1>
       <div className='event-input-container'>
       <input type="text" 
@@ -170,7 +170,7 @@ function EventList () {
         />
             <button onClick={() => searchEvent(searchTerm)} className='event-search-button'> SEARCH </button>
       </div>
-      </div>
+     
       <div className='eventContainer'>
        
       <ul className='event-list'>
@@ -209,11 +209,12 @@ function EventList () {
       </div>
 
       
-      <div>
+      <div className='add-event-container'>
         <button onClick={()=> setAddToggle((prevState) => !prevState)} className='toggle-create-event'> ADD </button>
                   {addtoggle && <div> 
                       <AddEvent createEvent= {createEvent} newEvent= {newEvent} setNewEvent = {setNewEvent} categories= {categories}/>                    
                   </div>}
+       </div>
        </div>
     </div>
     </>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import "../../rsvp.css";
+import Sidebar from '../components/Sidebar';
 
 function RSVPList () {
   const [token, setToken] = useState('');
@@ -83,6 +85,9 @@ function RSVPList () {
   };
  
   return (
+    <>
+    <Sidebar></Sidebar>
+    <div className='rsvp-parent'>
     <div className="rsvp-list">
       <h2>RSVP List</h2>
       {/* <input type="text" placeholder="Find Event" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
@@ -131,6 +136,8 @@ function RSVPList () {
         ))}
       </ul>
     </div>
+    </div>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ export const SidebarData = [
   { title: "Category List", link: "/event-category" },
   { title: "Event List", link: "/eventList" },
   { title: "RSVP", link: "/rsvpList" },
-  { title: "Notification", link: "/notification" },
+  { title: "Notification", link: "/notifications" },
   { title: "Calendar", link: "/calendar" },
   { title: "Logout", link: "/logout" },
 ];

@@ -4,7 +4,7 @@ import AddEvent from '../Add/AddEvent'
 import axios from 'axios';
 import {useNavigate, useLocation} from 'react-router-dom';
 import Sidebar from "../components/Sidebar.jsx";
-import "../../event-list.css";
+import "../../event.css";
 
 function Event () {
   const navigate = useNavigate();
@@ -181,9 +181,10 @@ function Event () {
    
   
     return (
-      <>
+      <div className='Parent'>
       <Sidebar></Sidebar>
-      <div className='event-list-container'>
+      <div className='event-parent'>
+        <div className='event-container'>
         <h1>{event.event_title}</h1>
         <div className='detail'>
         <p>Description: {event.event_description}</p>
@@ -193,7 +194,7 @@ function Event () {
         </div>
 
 
-        {hasRSVP && <div>
+        {hasRSVP && <div className='status-container'>
           Current RSVP status: {RSVPDetails.status}
           <ul>
             Invited Members:
@@ -244,8 +245,9 @@ function Event () {
                     </form>                  
                   </div>}  
         </div>}
+        </div>
       </div>
-      </>
+      </div>
     );
   };
   

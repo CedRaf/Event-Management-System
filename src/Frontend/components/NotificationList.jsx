@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import "../../notification.css"
+import Sidebar from './Sidebar';
 
 function NotificationList () {
   const [token, setToken] = useState('');
@@ -93,32 +94,60 @@ function NotificationList () {
           }
     }
 
-    return (    
-    <div className="event-list">
-      <h2>NOTIFICATIONS</h2>
- 
-      <ul>
-        {currentNotifications.map((notification) => (
-          <li key={notification.notificationID}>
-            <p>{notification.message}</p> 
-            <p>{notification.opened}</p> 
-            <button onClick={() => markAsRead(notification)}>✉</button>
-            <button onClick={() => deleteNotification(notification)}>🗑</button>
-          </li>
-        ))}
-      </ul>
-
-      <div>
-        <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
-          Prev
-        </button>
-        <button onClick={() => paginate(currentPage + 1)} disabled={currentPage * notificationsPerPage >= notifications.length}>
-          Next
-        </button>
+    return (
+      <>
+      <Sidebar></Sidebar>
+      <div className='noti-parent'>
+      
+      <div className="notification-container">
+        <h2 className="title">Notifications</h2>
+        {error && <p className="error-message">{error}</p>}
+  
+        <ul className="notification-list">
+          {currentNotifications.map((notification) => (
+            <li key={notification.notificationID} className="notification-item">
+              <div className="notification-content">
+                <p className="message">{notification.message}</p>
+                <p className="status">{notification.opened ? 'Opened' : 'Unread'}</p>
+              </div>
+              <div className="actions">
+                <button
+                  className="mark-read-button"
+                  onClick={() => markAsRead(notification)}
+                >
+                  ✉ Mark as Read
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => deleteNotification(notification)}
+                >
+                  🗑 Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+  
+        <div className="pagination">
+          <button
+            className="prev-button"
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+          <button
+            className="next-button"
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage * notificationsPerPage >= notifications.length}
+          >
+            Next
+          </button>
+        </div>
       </div>
-
-    </div>
-  );
+      </div>
+      </>
+    );
 };
 
 export default NotificationList;

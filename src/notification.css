@@ -1,0 +1,141 @@
+#root {
+
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgba(205, 220, 255, 1);
+  }
+
+  .noti-parent{
+    height: 100%;
+    padding: 20px;
+
+  }
+
+  .notification-container {
+    margin: 0px 20px 20px auto;
+    padding-top: 20px;
+    width: 80%;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: left;
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 18px;
+  }
+  
+  .notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .notification-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .notification-content {
+    flex-grow: 1;
+  }
+  
+  .message {
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .status {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #888;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .mark-read-button,
+  .delete-button {
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .mark-read-button {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .mark-read-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .delete-button:hover {
+    background-color: #a71d2a;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+  
+  .prev-button,
+  .next-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #6c757d;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .prev-button:hover,
+  .next-button:hover {
+    background-color: #5a6268;
+  }
+  
+  .prev-button:disabled,
+  .next-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

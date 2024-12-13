@@ -1,0 +1,25 @@
+#root {
+
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgba(205, 220, 255, 1);
+  }
+
+  .rsvp-parent{
+    height: 100%;
+    padding: 20px;
+
+  }
+
+  .rsvp-list {
+    margin: 0px 20px 20px auto;
+    padding-top: 20px;
+    width: 80%;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
