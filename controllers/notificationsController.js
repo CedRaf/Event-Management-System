@@ -136,7 +136,7 @@ const generateRSVPNotification = async (newRSVP, senderUserID, eventID, users) =
         return { notifications };
     } catch (e) {
         console.error("Error generating RSVP notifications:", e);
-        throw new Error(e.message); // Propagate error
+        throw new Error(e.message);
     }
 };
 
