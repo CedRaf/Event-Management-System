@@ -3,7 +3,8 @@ import { getAllAPI, deleteAPI } from '../components/EventAPI';
 import AddEvent from '../Add/AddEvent'
 import axios from 'axios';
 import {useNavigate, useLocation} from 'react-router-dom';
-
+import Sidebar from "../components/Sidebar.jsx";
+import "../../event-list.css";
 
 function Event () {
   const navigate = useNavigate();
@@ -180,13 +181,16 @@ function Event () {
    
   
     return (
-      <div>
+      <>
+      <Sidebar></Sidebar>
+      <div className='event-list-container'>
         <h1>{event.event_title}</h1>
+        <div className='detail'>
         <p>Description: {event.event_description}</p>
         <p>Start Date: {new Date(event.eventStart_date).toLocaleString()}</p>
         <p>End Date: {new Date(event.eventEnd_date).toLocaleString()}</p>
         <p>Created At: {new Date(event.created_at).toLocaleString()}</p>
-
+        </div>
 
 
         {hasRSVP && <div>
@@ -201,7 +205,7 @@ function Event () {
             ))}
           </ul>
 
-          {isAdmin && <div> 
+          {isAdmin && <div className='event-edit-container'> 
             <form onSubmit={updateStatus}>
           <select value={eventStatus} onChange={(event) => setEventStatus(event.target.value)}>
             <option value="ACTIVE">Active</option>
@@ -225,11 +229,11 @@ function Event () {
  
         </div>}
 
-        {!isAdmin && <div>
+        {!isAdmin && <div className='event-edit-container'>
           <button>ACCEPT</button>
           <button>REJECT</button>
           </div>}
-        {!hasRSVP && isAdmin && <div>
+        {!hasRSVP && isAdmin && <div className='event-edit-container'>
           <button onClick={()=> setCreateToggle((prevState) => !prevState)}> Create RSVP! </button>
                   {createToggle && <div> 
                     <form onSubmit={createRSVP}>
@@ -241,6 +245,7 @@ function Event () {
                   </div>}  
         </div>}
       </div>
+      </>
     );
   };
   

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import "../../event-list.css";
 
 const AddEvent = ({createEvent, newEvent, setNewEvent, categories}) => {
 
@@ -18,7 +18,7 @@ const AddEvent = ({createEvent, newEvent, setNewEvent, categories}) => {
   return (
     <div className="event-creation">
       <h2>Add Event</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='add-category-form'>
                 <input type="text" name="event_title" placeholder="Event Title" value= {newEvent.event_title} onChange={handleChange}/>
                 <input type="text" name="event_description" placeholder="Event Description" value= {newEvent.event_description} onChange={handleChange}/>
                 <input type="text" name="location" placeholder="Event Location" value= {newEvent.location} onChange={handleChange}/>

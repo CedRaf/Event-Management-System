@@ -3,6 +3,8 @@ import { getAllAPI, deleteAPI } from '../components/EventAPI';
 import AddEvent from '../Add/AddEvent'
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import "../../event-list.css";
+import Sidebar from "../components/Sidebar.jsx";
 
 function EventList () {
   const [token, setToken] = useState('');
@@ -154,38 +156,67 @@ function EventList () {
   }
 
   return (
-    <div className="event-list">
-      <h2>Event List</h2>
-      <input type="text" placeholder="Find Event" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
-            <button onClick={() => searchEvent(searchTerm)}> SEARCH </button>
-      <ul>
+    <>
+    <Sidebar />
+    <div className='event-list-container'>
+    <div className="event-top-container">
+      <h1>Event List</h1>
+      <div className='event-input-container'>
+      <input type="text" 
+      placeholder="Find Event" 
+      value= {searchTerm} 
+      onChange={(e) => {
+        setSearchTerm(e.target.value)}} className='event-input'
+        />
+            <button onClick={() => searchEvent(searchTerm)} className='event-search-button'> SEARCH </button>
+      </div>
+      </div>
+      <div className='eventContainer'>
+       
+      <ul className='event-list'>
+      
         {events.map((event) => (
-          <li key={event.eventID}>
+          
+          <li key={event.eventID} className='event-item'>
+            <div className='ul-container'>
             <button onClick={()=> { 
                             navigate("/Event", { 
                                 state: { 
                                   event                                
                                 } 
                             });
-                        }}>{event.event_title}</button>
+                        }} className='event-button'>{event.event_title}</button>
+              </div>
+            <div className='date-btn-container'>
+            <div className='date-container'>
             <p>Start Date: {new Date(event.eventStart_date).toLocaleDateString()}</p>
             <p>End Date: {new Date(event.eventEnd_date).toLocaleDateString()}</p>
+            </div>
+            <div className='btn-container'>
             <button onClick={()=> { 
                             navigate("/editEvent", { 
                                 state: { 
                                   event                                
                                 } 
                             });
-                        }}>EDIT</button>  
-            <button onClick={() => deleteEvent(event.eventID)}>DELETE</button>
+                        }} className='edit-button'>EDIT</button>  
+            <button onClick={() => deleteEvent(event.eventID)} className='edit-button'>DELETE</button>
+            </div>
+            </div>
           </li>
         ))}
       </ul>
-        <button onClick={()=> setAddToggle((prevState) => !prevState)}> ADD </button>
+      </div>
+
+      
+      <div>
+        <button onClick={()=> setAddToggle((prevState) => !prevState)} className='toggle-create-event'> ADD </button>
                   {addtoggle && <div> 
                       <AddEvent createEvent= {createEvent} newEvent= {newEvent} setNewEvent = {setNewEvent} categories= {categories}/>                    
                   </div>}
+       </div>
     </div>
+    </>
   );
 };
 
