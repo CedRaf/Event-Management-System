@@ -43,7 +43,7 @@ const registerNewUser = async (req, res)=>{
 
         res.status(201).json({
             message: "User registered successfully",
-            user: { //delete this later, for testing purposes only
+            user: {
                 userID: newUser.userID,
                 username: newUser.username,
                 first_name: newUser.first_name,
