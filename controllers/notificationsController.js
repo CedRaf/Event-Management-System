@@ -147,13 +147,14 @@ const rsvpResponseNotification = async(rsvpID, userID, response) =>{
         const recipient = await helperFunc.getUserDetails(userID);
 
         const eventDetails = await helperFunc.getEventDetails(rsvp.eventID);
+        const date = eventDetails.eventStart_date.toDateString();
 
         const notification = await prisma.notifications.create({
             data:{
                 userID: rsvp.senderUserID,
                 eventID: rsvp.eventID,
                 rsvpID: Number(rsvpID),
-                message: `${recipient.first_name} ${recipient.last_name} ${response} your rsvp for ${eventDetails.event_title} on ${eventDetails.eventStart_date}`,
+                message: `${recipient.first_name} ${recipient.last_name} ${response} your rsvp for ${eventDetails.event_title} on ${date}`,
                 time_sent: new Date()
             }
         });
@@ -174,13 +175,13 @@ const cancelRSVPNotification = async(rsvpID, userID) =>{
         const recipient = await helperFunc.getUserDetails(userID);
 
         const eventDetails = await helperFunc.getEventDetails(rsvp.eventID);
-
+        const date = eventDetails.eventStart_date.toISOString();
         const notification = await prisma.notifications.create({
             data:{
                 userID: rsvp.senderUserID,
                 eventID: rsvp.eventID,
                 rsvpID: Number(rsvpID),
-                message: `${recipient.first_name} ${recipient.last_name} CANCELLED your rsvp for ${eventDetails.event_title} on ${eventDetails.event_date}`
+                message: `${recipient.first_name} ${recipient.last_name} CANCELLED your rsvp for ${eventDetails.event_title} on ${date}`
             }
         });
 
