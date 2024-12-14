@@ -1,6 +1,7 @@
 const prisma = require("../prisma/database");
 const helperFunc = require("../controllers/helper_functions");
 const userSchema = require("../schemas/userSchema");
+const bcrypt = require("bcrypt"); 
 
 const getUserInfo = async(req, res) =>{
     const {userID} = req.params;
@@ -14,13 +15,31 @@ const getUserInfo = async(req, res) =>{
     }
 }
 
+const checkPassword = async(req, res) =>{
+    const {userID} = req.params;
+    const {password} = req.body;
+    try{
+        const existingUser = await helperFunc.getUserDetails(userID); 
+        const validPassword = await bcrypt.compare(password, existingUser.password);
+        if(!validPassword){
+            return res.status(400).json({message: "Invalid Password"}); 
+        }
+
+        return res.status(200).json({message:"Valid password", existingUser});
+
+    }catch(e){
+        console.error('Error checking password', e);
+        return res.status(400).json({message:"Error validating password"});
+    }
+}
+
 const editUserInfo = async(req,res) =>{
     const {error} = userSchema.validate(req.body);
     if(error){
         return res.status(400).json({message: error.details[0].message});
     }
     const {userID} = req.params;
-    const {username, first_name, last_name, email_address} = req.body;
+    const {username, first_name, last_name, email_address, password} = req.body;
 
     try{
         const existingUser = await helperFunc.getUserDetails(userID);
@@ -32,7 +51,8 @@ const editUserInfo = async(req,res) =>{
                 username,
                 first_name, 
                 last_name,
-                email_address
+                email_address,
+                password
             }
         });
 
@@ -48,5 +68,6 @@ const editUserInfo = async(req,res) =>{
 
 module.exports ={
     getUserInfo,
+    checkPassword,
     editUserInfo
 }
