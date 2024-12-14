@@ -48,6 +48,9 @@ function RSVPList () {
   }, [token, user]);
 
   const handleRSVPResponse = async (rsvpID, newResponse) => {
+    if(!token && !user){ //because these arent initialized right away
+      return;
+    }
     try {
       const response = await axios.patch(`http://localhost:3000/recipient/rsvpStatusUpdate/${rsvpID}/${user.userID}`, {
         response: newResponse
@@ -57,8 +60,15 @@ function RSVPList () {
           Authorization: `Bearer: ${token}`
             }
       });
-      if(response){
-
+      if(response.data){
+        
+        setUserRSVPs((prevRSVPs) =>
+          prevRSVPs.map((invite) =>
+            invite.rsvpID === rsvpID
+              ? { ...invite, response: newResponse }
+              : invite
+          )
+        );
       }
   
 
@@ -67,15 +77,30 @@ function RSVPList () {
     }
   };
   const handleRSVPCancel = async (rsvpID) => {
+    if(!token && !user){ //because these arent initialized right away
+      return;
+    }
+    console.log(token);
     try {
-      const response = await axios.patch(`http://localhost:3000/recipient/cancelRSVP/${rsvpID}/${user.userID}`, 
+      const response = await axios.patch(`http://localhost:3000/recipient/cancelRSVP`, 
+        {
+          userID: user.userID,
+          rsvpID: rsvpID
+        },
         {
         headers: {
-          Authorization: `Bearer: ${token}`
+          Authorization: `Bearer ${token}`
             }
       });
       if(response){
 
+        setUserRSVPs((prevRSVPs) =>
+          prevRSVPs.map((invite) =>
+            invite.rsvpID === rsvpID
+              ? { ...invite, response: "DECLINED", cancelled: true }
+              : invite
+        )
+      );
       }
   
 

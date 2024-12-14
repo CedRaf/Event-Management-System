@@ -58,7 +58,11 @@ function NotificationList () {
 
     const markAsRead = async (notification) => {
         try {
-            const response = await axios.patch(`http://localhost:3000/notifications/markAsRead/${notification.notificationID}`, {
+            const response = await axios.patch(`http://localhost:3000/notifications/markAsRead`, 
+              {
+                notificationID: notification.notificationID
+              },
+              {
               headers: {
                 Authorization: `Bearer ${token}`
               }

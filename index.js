@@ -26,7 +26,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json()); 
-app.use(rateLimiter);
+// app.use(rateLimiter);
 app.use(loggingMiddleware);
 app.use('/authenticate', userRoutes); 
 app.use("/eventCategory", eventCategoryRoutes); 

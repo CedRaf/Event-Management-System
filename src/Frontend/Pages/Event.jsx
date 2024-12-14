@@ -101,11 +101,8 @@ function Event () {
             }
           );
           if(response && response.data){
-            console.log(response)
-            setRSVPDetails((prevDetails) => ({
-              ...prevDetails, // Retain existing values
-              ...response,    // Apply new values on included attribtues
-            }));
+          
+            window.location.reload()
           }
 
         }catch(e){
@@ -117,7 +114,7 @@ function Event () {
 
     const updateStatus = async(e) =>{
       e.preventDefault();
-      console.log(event.eventID, eventStatus, recipients )
+      
       try{
       const response = await axios.patch(`http://localhost:3000/rsvp/edit/${RSVPDetails.rsvpID}`, 
         {
@@ -131,7 +128,11 @@ function Event () {
         }
       );
       if(response && response.data){
-
+        console.log(response.data.editedRSVP, response.data.recipientData)
+        setRSVPDetails((prevState) => ({
+          ...prevState, // keep other properties of RSVPDetails unchanged
+          status: response.data.editedRSVP.status, // update only the status property
+        }));
       }
       }catch (e){
         setError("Unable to invite members");
@@ -139,43 +140,42 @@ function Event () {
        
     }
   
-    const inviteMembers = async(e) =>{
+    const inviteMembers = async (e) => {
       e.preventDefault();
+    
       const formattedRecipients = newRecipients
-      .split(',')
-      .map(email => email.trim()) // Remove any extra spaces around the emails
-      .filter(email => email !== '');
-
-      setRecipients((prevRecipients) => [
-        ...prevRecipients,
-        ...formattedRecipients,
-      ]);
-
-
-      const PAYLOAD= {
+        .split(',')
+        .map((email) => email.trim()) 
+        .filter((email) => email !== '');
+    
+      
+      setRecipients((prevRecipients) => [...prevRecipients, ...formattedRecipients]);
+    
+      
+      const PAYLOAD = {
         eventID: event.eventID,
         status: eventStatus,
-        recipients: recipients  
-      }
-      console.log(user.userID, PAYLOAD)
-      try{
-        const response = await axios.patch(`http://localhost:3000/rsvp/edit/${RSVPDetails.rsvpID}`, PAYLOAD , {
-          headers: { //if payload doesnt work format to same as status ^^
-            Authorization: `Bearer ${token}`
-          }
+        recipients: [...recipients, ...formattedRecipients], 
+      };
+    
+      try {
+        const response = await axios.patch(
+          `http://localhost:3000/rsvp/edit/${RSVPDetails.rsvpID}`,
+          PAYLOAD,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
-        if(response && response.data){
-            console.log(response);
+        if (response && response.data) {
+          console.log(response);
+          window.location.reload();
         }
-
-      }catch(e){
-        setError("unable to create RSVP");
-
+      } catch (e) {
+        setError('Unable to invite members');
       }
-
-  }
-  
+    };
       
   
    

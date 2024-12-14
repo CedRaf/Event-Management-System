@@ -26,8 +26,7 @@ const createEvent = async (req, res) =>{
                 eventEnd_date: eventEnd_date ? new Date(eventEnd_date) : undefined,
                 location,
                 userID,
-                categoryID
-            }
+                categoryID: Number(categoryID)           }
         });
         return res.status(200).json({message:"Event successfully created", newEvent});
 
@@ -89,7 +88,7 @@ const editEvent = async(req, res) =>{
                 eventEnd_date: eventEnd_date ? new Date(eventEnd_date) : undefined,
                 location,
                 userID,
-                categoryID
+                categoryID: Number(categoryID)
             }
         })
         return res.status(200).json({message:"Successfully edited event", updatedEvent}); 

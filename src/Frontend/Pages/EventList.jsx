@@ -97,8 +97,7 @@ function EventList () {
         const eventData = {
           ...newEvent,
           userID: user.userID, // Make sure userID is set
-          categoryID: 1
-          // Set categoryID
+         
       };
       
       try{
@@ -115,7 +114,7 @@ function EventList () {
           setError('Could not register category. Please try again later.');
       }
   }
-
+  
   const deleteEvent = async (eventID) => {
     //eventID params
     //returns deletedEvent
@@ -133,6 +132,24 @@ function EventList () {
       alert('Error deleting the Event', error);
     }
   };
+
+  
+  const sortByCategory = () => {
+
+  };
+
+  const sortByLocation = () => {
+
+  }
+
+  const ResetView = () => {
+
+  }
+
+  const sortByStartdate = () => {
+
+  }
+
 
   const searchEvent = (searchTerm) =>{
 
