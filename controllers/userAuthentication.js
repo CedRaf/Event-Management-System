@@ -10,7 +10,6 @@ const crypto = require('crypto');
 const sendEmail = require('../controllers/sendEmail');
 
 const registerNewUser = async (req, res)=>{
-    console.log(req.body) //for testing purposes
     const {error} = registerSchema.validate(req.body); 
     if(error){
         return res.status(400).json({message: error.details[0].message});
