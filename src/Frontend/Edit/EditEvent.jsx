@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-
+import "../../event-list.css";
 function EditEvent() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,10 +73,14 @@ function EditEvent() {
   };
 
   return (
-    <div>
-      <button onClick={() => navigate('/eventList')}>Back</button>
+  
+    <div className='edit-list-container'>
+      <div className='event-top-container'>
+      <button onClick={() => navigate('/eventList')} className='back-btn'>◀︎Back</button>
       {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
+      
+      <form onSubmit={handleSubmit} className='edit-form'>
+
         <input
           type="text"
           placeholder="Event Title"
@@ -137,6 +141,8 @@ function EditEvent() {
         <button type="submit">Update</button>
       </form>
     </div>
+    </div>
+  
   );
 }
 

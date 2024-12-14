@@ -181,73 +181,112 @@ function Event () {
    
   
     return (
-      <div className='Parent'>
-      <Sidebar></Sidebar>
-      <div className='event-parent'>
-        <div className='event-container'>
-        <h1>{event.event_title}</h1>
-        <div className='detail'>
-        <p>Description: {event.event_description}</p>
-        <p>Start Date: {new Date(event.eventStart_date).toLocaleString()}</p>
-        <p>End Date: {new Date(event.eventEnd_date).toLocaleString()}</p>
-        <p>Created At: {new Date(event.created_at).toLocaleString()}</p>
-        </div>
+      <>
+      
+  <Sidebar />
+  <div className='event-parent'>
+  <div className='event-container'>
+    <h1 className='event-title'>{event.event_title}</h1>
+    <div className='event-detail'>
+      <p className='event-description'>Description: {event.event_description}</p>
+      <p className='event-start-date'>Start Date: {new Date(event.eventStart_date).toLocaleString()}</p>
+      <p className='event-end-date'>End Date: {new Date(event.eventEnd_date).toLocaleString()}</p>
+      <p className='event-created-at'>Created At: {new Date(event.created_at).toLocaleString()}</p>
+    </div>
 
-
-        {hasRSVP && <div className='status-container'>
-          Current RSVP status: {RSVPDetails.status}
-          <ul>
-            Invited Members:
-            {RSVPDetails.recipients.map((recipient) => (
-              <li key={recipient.user.email_address}>
-                {recipient.user.first_name} {recipient.user.last_name} ({recipient.user.email_address})
-                {recipient.response}
-              </li>
-            ))}
-          </ul>
-
-          {isAdmin && <div className='event-edit-container'> 
-            <form onSubmit={updateStatus}>
-          <select value={eventStatus} onChange={(event) => setEventStatus(event.target.value)}>
-            <option value="ACTIVE">Active</option>
-            <option value="CANCELLED">Cancelled</option>
-            <option value="COMPLETED">Complete</option>
-          </select>
-          <button type="submit">Update Status</button>
-          </form>
-
-
-          <button onClick={()=> setInviteToggle((prevState) => !prevState)}> Invite members! </button>
-                  {inviteToggle && <div> 
-                    <form onSubmit={inviteMembers}>
-                        <input
-                          value={newRecipients} onChange={(e) => setNewRecipients(e.target.value)} placeholder="Enter member emails separated by a comma"
-                        />
-                        <button type="submit">Submit</button>
-                    </form>                  
-                  </div>}  
-            </div>}
- 
-        </div>}
-
-        {!isAdmin && <div className='event-edit-container'>
-          <button>ACCEPT</button>
-          <button>REJECT</button>
-          </div>}
-        {!hasRSVP && isAdmin && <div className='event-edit-container'>
-          <button onClick={()=> setCreateToggle((prevState) => !prevState)}> Create RSVP! </button>
-                  {createToggle && <div> 
-                    <form onSubmit={createRSVP}>
-                        <input
-                          value={newRecipients} onChange={(e) => setNewRecipients(e.target.value)} placeholder="Enter member emails separated by a comma"
-                        />
-                        <button type="submit">Submit</button>
-                    </form>                  
-                  </div>}  
-        </div>}
-        </div>
+    {hasRSVP && (
+      <div className='rsvp-details'>
+        <p className='rsvp-status'>Current RSVP status: {RSVPDetails.status}</p>
+        <ul className='rsvp-invited-members'>
+          {RSVPDetails.recipients.map((recipient) => (
+            <li className='rsvp-member' key={recipient.user.email_address}>
+              {recipient.user.first_name} {recipient.user.last_name} (
+              {recipient.user.email_address}) - {recipient.response}
+            </li>
+          ))}
+        </ul>
+     
+        {isAdmin && (
+          <div className='event-edit-container'>
+            <form className='status-update-form' onSubmit={updateStatus}>
+              <select
+                className='status-select'
+                value={eventStatus}
+                onChange={(event) => setEventStatus(event.target.value)}
+              >
+                <option value='ACTIVE'>Active</option>
+                <option value='CANCELLED'>Cancelled</option>
+                <option value='COMPLETED'>Complete</option>
+              </select>
+              <button type='submit' className='update-button'>
+                Update Status
+              </button>
+            </form>
+          <div className='invite-members'>
+            <button
+              className='invite-button'
+              onClick={() => setInviteToggle((prevState) => !prevState)}
+            >
+              Invite Members!
+            </button>
+            {inviteToggle && (
+              <div className='invite-members-form-container'>
+                <form className='invite-members-form' onSubmit={inviteMembers}>
+                  <input
+                    className='invite-input'
+                    value={newRecipients}
+                    onChange={(e) => setNewRecipients(e.target.value)}
+                    placeholder='Enter member emails separated by a comma'
+                  />
+                  <button type='submit' className='submit-invite-button'>
+                    Submit
+                  </button>
+                </form>
+              </div>
+            )}
+            </div>
+          </div>
+        )}
       </div>
+
+    )}
+   
+
+    {!isAdmin && (
+      <div className='rsvp-action-buttons'>
+        <button className='accept-button'>ACCEPT</button>
+        <button className='reject-button'>REJECT</button>
       </div>
+    )}
+
+    {!hasRSVP && isAdmin && (
+      <div className='create-rsvp-container'>
+        <button
+          className='create-rsvp-button'
+          onClick={() => setCreateToggle((prevState) => !prevState)}
+        >
+          Create RSVP!
+        </button>
+        {createToggle && (
+          <div className='create-rsvp-form-container'>
+            <form className='create-rsvp-form' onSubmit={createRSVP}>
+              <input
+                className='create-input'
+                value={newRecipients}
+                onChange={(e) => setNewRecipients(e.target.value)}
+                placeholder='Enter member emails separated by a comma'
+              />
+              <button type='submit' className='submit-create-button'>
+                Submit
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</div>
+</>
     );
   };
   

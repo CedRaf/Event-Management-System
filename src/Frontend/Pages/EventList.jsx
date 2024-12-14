@@ -209,15 +209,15 @@ function EventList () {
             <p>Start Date: {new Date(event.eventStart_date).toLocaleDateString()}</p>
             <p>End Date: {new Date(event.eventEnd_date).toLocaleDateString()}</p>
             </div>
-            <div className='btn-container'>
+            <div className='btnContainer'>
             <button onClick={()=> { 
                             navigate("/editEvent", { 
                                 state: { 
                                   event                                
                                 } 
                             });
-                        }} className='edit-button'>EDIT</button>  
-            <button onClick={() => deleteEvent(event.eventID)} className='edit-button'>DELETE</button>
+                        }} className='editButton'>EDIT</button>  
+            <button onClick={() => deleteEvent(event.eventID)} className='deleteButton'>DELETE</button>
             </div>
             </div>
           </li>
@@ -226,7 +226,7 @@ function EventList () {
       </div>
 
       
-      <div className='add-event-container'>
+      <div className='add-event-form'>
         <button onClick={()=> setAddToggle((prevState) => !prevState)} className='toggle-create-event'> ADD </button>
                   {addtoggle && <div> 
                       <AddEvent createEvent= {createEvent} newEvent= {newEvent} setNewEvent = {setNewEvent} categories= {categories}/>                    

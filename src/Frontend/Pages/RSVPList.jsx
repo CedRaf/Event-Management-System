@@ -110,59 +110,77 @@ function RSVPList () {
   };
  
   return (
-    <>
-    <Sidebar></Sidebar>
-    <div className='rsvp-parent'>
-    <div className="rsvp-list">
-      <h2>RSVP List</h2>
-      {/* <input type="text" placeholder="Find Event" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
+    <div className='RSVP'>
+      <Sidebar></Sidebar>
+      <div className="rsvp-parent">
+        <div className="rsvp-container">
+          <h2 className='title'>RSVP List</h2>
+          {/* <input type="text" placeholder="Find Event" value= {searchTerm} onChange={(e) => {setSearchTerm(e.target.value)}}/>
             <button onClick={() => searchEvent(searchTerm)}> SEARCH </button> */}
-      <ul>
-        {userRSVPs.map((invite) => (
-          <li key={invite.rsvpID}>
-          
-               
-              <button onClick={()=> { 
-                            navigate("/Event", { 
-                                state: { 
-                                  event: invite.rsvp.event                                
-                                } 
-                            });
-                        }}>{invite.rsvp.event.event_title}</button>
-              {invite.rsvp.event.location} {invite.rsvp.event.eventStart_date} {invite.rsvp.event.eventEnd_date}  
-              Current response: {invite.response}
-
-              {invite.response === "PENDING" && (
-              <div>
-                <button 
-                  onClick={() => handleRSVPResponse(invite.rsvpID, "ACCEPTED")}
-                >
-                  ACCEPT
-                </button>
-                <button 
-                  onClick={() => handleRSVPResponse(invite.rsvpID, "DECLINED")}
-                >
-                  DECLINE
-                </button>
-              </div>
-            )}
-
-              {invite.response === "ACCEPTED" && (
-              <div>
-                <button 
-                  onClick={() => handleRSVPCancel(invite.rsvpID)}
-                >
-                  CANCEL
-                </button>
-              </div>
-            )}
+            
+          <ul className="rsvp-list">
+            {userRSVPs.map((invite) => (
               
-          </li>
-        ))}
-      </ul>
+              <li key={invite.rsvpID} className="rsvp-item">
+                <button
+                  onClick={() => {
+                    navigate("/Event", {
+                      state: {
+                        event: invite.rsvp.event,
+                      },
+                    });
+                  }}
+                  className="event-button"
+                >
+                  {invite.rsvp.event.event_title}
+                </button>
+                <div className="btn-container">
+                  <div className="event-date-time">
+                  <div>Starting from:</div>
+                {invite.rsvp.event.location} 
+                {invite.rsvp.event.eventStart_date}{" "}
+                <div>Ending on:</div>
+                {invite.rsvp.event.eventEnd_date}
+                <div>
+                Current response: {invite.response}
+                </div>
+                </div>
+                {invite.response === "PENDING" && (
+                  <div className="respond-btn">
+                    <button
+                      onClick={() =>
+                        handleRSVPResponse(invite.rsvpID, "ACCEPTED")
+                      }
+                    >
+                      ACCEPT
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleRSVPResponse(invite.rsvpID, "DECLINED")
+                      }
+                    >
+                      DECLINE
+                    </button>
+                  </div>
+                  
+                )}
+                
+                
+                {invite.response === "ACCEPTED" && (
+                  <div>
+                    <button onClick={() => handleRSVPCancel(invite.rsvpID)}>
+                      CANCEL
+                    </button>
+                  </div>
+                )}
+                </div>
+              </li>
+            ))}
+          </ul>
+          </div>
+        </div>
+   
     </div>
-    </div>
-    </>
   );
 };
 

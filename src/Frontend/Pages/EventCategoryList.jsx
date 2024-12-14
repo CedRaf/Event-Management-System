@@ -178,7 +178,7 @@ function EventCategory() {
   };
 
   return (
-    <>
+    <div className="eventCategory">
       <Sidebar />
       <div className="cat-list-container">
         <div className="category-top-container">
@@ -239,7 +239,7 @@ function EventCategory() {
         </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 export default EventCategory;

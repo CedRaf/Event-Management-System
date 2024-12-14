@@ -99,13 +99,13 @@ function NotificationList () {
     }
 
     return (
-      <>
+      <div className="notification" >
       <Sidebar></Sidebar>
       <div className='noti-parent'>
       
       <div className="notification-container">
         <h2 className="title">Notifications</h2>
-        {error && <p className="error-message">{error}</p>}
+   
   
         <ul className="notification-list">
           {currentNotifications.map((notification) => (
@@ -122,7 +122,7 @@ function NotificationList () {
                   ✉ Mark as Read
                 </button>
                 <button
-                  className="delete-button"
+                  className="delete"
                   onClick={() => deleteNotification(notification)}
                 >
                   🗑 Delete
@@ -150,7 +150,7 @@ function NotificationList () {
         </div>
       </div>
       </div>
-      </>
+      </div>
     );
 };
 

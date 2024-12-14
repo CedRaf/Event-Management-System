@@ -5,22 +5,25 @@
     padding: 0;
     box-sizing: border-box;
   }
+
+  .mainDashboard{
+    overflow-y: hidden;
+  }
   
   .BODY {
-    display: flex;
-    height: 100vh; /* Full height */
-    padding-left: 250px; /* Account for the sidebar width */
-    box-sizing: border-box;
+    height: 100%;
+    padding: 20px;
   }
   
   .dashboard {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Ensure it fills remaining space */
-    background-color: #f7f9fc;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    margin: 0px 20px 20px auto;
+    padding-top: 20px;
+    width: 80%;
+    height: 90vh;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .upper-dashboard {

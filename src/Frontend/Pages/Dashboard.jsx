@@ -137,12 +137,12 @@ function Dashboard () {
 
 
     return (    
-  <>
+  <div className='mainDashboard'>
   <Sidebar/>
     <div className= "BODY">
       
       <div className="dashboard">
-        
+        <h2 className='title'>Dashboard</h2>
         <div className= "upper-dashboard">
           <div className="notifs">
             <h2>Notifications</h2>
@@ -212,7 +212,7 @@ function Dashboard () {
           </div>
       </div>
     </div>
-  </>
+  </div>
   );
 };
 

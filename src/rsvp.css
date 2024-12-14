@@ -1,5 +1,5 @@
 #root {
-
+    height: 100vh;
     width: 100vw;
     margin: 0;
     padding: 0;
@@ -13,7 +13,7 @@
 
   }
 
-  .rsvp-list {
+  .rsvp-container {
     margin: 0px 20px 20px auto;
     padding-top: 20px;
     width: 80%;
@@ -22,4 +22,89 @@
     border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: left;
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  
+  
+  .rsvp-list {
+    list-style: none;
+    padding: 0;
+    margin: 18px;
+  }
+  
+  .rsvp-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .rsvp-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .rsvp-content {
+    flex-grow: 1;
+  }
+  
+  .RSVP{
+    overflow-y: hidden;
+  }
+ 
+
+  .btn-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin-left: 1rem;
+  }
+
+  .btn-container button {
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+   
+  }
+  
+  .btn-container button:hover {
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+
+  .btn-container button:first-of-type {
+    background-color: #5286ff ;
+    color: #fff;
+  }
+  
+  .btn-container button:first-of-type:hover {
+    background-color: #31519b;
+  }
+  
+
+  .btn-container button:last-of-type {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .btn-container button:last-of-type:hover {
+    background-color: #a71d2a;
   }

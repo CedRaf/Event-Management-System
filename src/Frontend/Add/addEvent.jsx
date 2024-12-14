@@ -60,7 +60,7 @@ const AddEvent = ({createEvent, newEvent, setNewEvent, categories}) => {
                     ))}
                </select>
 
-                <button type="submit">Submit</button>   
+                <button type="submit" className='submitBtn'>Submit</button>   
             </form>
 
 
