@@ -59,7 +59,7 @@ const rsvpResponse = async(req, res) =>{
 }
 
 const cancelRSVP = async(req, res) =>{
-    const{rsvpID, userID} = req.params;
+    const{rsvpID, userID} = req.body;
     try{
         await helperFunc.checkIfExistingRSVP(rsvpID);
     

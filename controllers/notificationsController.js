@@ -32,7 +32,7 @@ const getAllNotifications = async(req, res) =>{
 
 const markAsRead = async(req, res) =>{
     
-    const {notificationID} = req.params;
+    const {notificationID} = req.body;
 
     try{
         const existingNotification =  await helperFunc.checkIfExistingNotification(notificationID, res);

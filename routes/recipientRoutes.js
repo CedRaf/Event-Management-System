@@ -4,6 +4,6 @@ const authMiddleware = require("../middlewares/authenticateToken");
 
 const recipientRouter = express.Router(); 
 recipientRouter.patch("/rsvpStatusUpdate/:rsvpID/:userID", authMiddleware, recipientController.rsvpResponse);
-recipientRouter.patch("/cancelRSVP/:rsvpID/:userID", authMiddleware, recipientController.cancelRSVP);
+recipientRouter.patch("/cancelRSVP", authMiddleware, recipientController.cancelRSVP);
 
 module.exports = recipientRouter;
