@@ -188,6 +188,7 @@ function Dashboard () {
                   )}
               </div>
           </div>
+          <div className="lower-dashboard">
           <div className="ongoing-events">
           <h2>Ongoing-Events</h2>
                   {ongoingEvents.length > 0 ? ( //map all events of the selectedDate, the reason this changes when selected date changes is because its part of its update process 
@@ -207,6 +208,7 @@ function Dashboard () {
                   ) : (
                     <p>No ongoing events</p> //ternary statement, if no events states no events
                   )}
+          </div>
           </div>
       </div>
     </div>
