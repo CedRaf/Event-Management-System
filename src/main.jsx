@@ -17,6 +17,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './index.css'
 import Calendar from './Frontend/Pages/Calendar.jsx'
 import NotificationList from './Frontend/components/NotificationList.jsx'
+import Dashboard from './Frontend/Pages/Dashboard.jsx'
 
 
 
@@ -79,7 +80,12 @@ const router = createBrowserRouter([
 {
   path: '/notifications',
   element: <NotificationList/>
+},
+{
+  path: '/dashboard',
+  element: <Dashboard/>
 }
+
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

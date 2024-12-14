@@ -42,7 +42,7 @@ function Login() {
                 };
                 localStorage.setItem('user', JSON.stringify(user)); //what 
                 //redirect to dashboard page
-                navigate('/event-category');
+                navigate('/dashboard');
             }
 
         } catch (error) {
@@ -89,7 +89,7 @@ function Login() {
                 localStorage.setItem('user', JSON.stringify(userData));
 
                 // Redirect to the dashboard
-                navigate('/event-category');
+                navigate('/dashboard');
             }
         } catch (error) {
             console.error('Error logging in with Google:', error);

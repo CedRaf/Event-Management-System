@@ -22,14 +22,10 @@ const AddEvent = ({createEvent, newEvent, setNewEvent, categories}) => {
                 <input type="text" name="event_title" placeholder="Event Title" value= {newEvent.event_title} onChange={handleChange}/>
                 <input type="text" name="event_description" placeholder="Event Description" value= {newEvent.event_description} onChange={handleChange}/>
                 <input type="text" name="location" placeholder="Event Location" value= {newEvent.location} onChange={handleChange}/>
-                <label className='dateLabel'>Starting Date</label>
-                <input type="date" name="eventStart_date" placeholder="Starting Date" value= {newEvent.eventStart_date} onChange={handleChange}/>
-                <input type="time" name="eventStart_time" placeholder="Starting Time" value= {newEvent.eventStart_time} onChange={handleChange}/>
-                <label className='dateLabel'>Ending Date</label>
-                <input type="date" name="eventEnd_date" placeholder="Ending Date" value= {newEvent.eventEnd_date} onChange={handleChange}/>
-                <input type="time" name="eventEnd_time" placeholder="Ending Time" value= {newEvent.eventEnd_time} onChange={handleChange}/>
+                <input type="date" name="eventStart_date" placeholder="Event Date" value= {newEvent.eventStart_date} onChange={handleChange}/>
+                <input type="date" name="eventEnd_date" placeholder="Event Date" value= {newEvent.eventEnd_date} onChange={handleChange}/>
 
-                <select 
+                <select
                     name="categoryID"
                     value={newEvent.categoryID}
                     onChange={(e) =>
@@ -49,7 +45,7 @@ const AddEvent = ({createEvent, newEvent, setNewEvent, categories}) => {
                     ))}
                </select>
 
-                <button type="submit" className='submitBtn'>Submit</button>   
+                <button type="submit">Submit</button>   
             </form>
 
 
