@@ -64,10 +64,6 @@ const deleteEvent = async(req, res) =>{
 
 const editEvent = async(req, res) =>{
     const {eventID} = req.params; 
-    const {error} = newEventSchema.validate(req.body);
-    if(error){
-        return res.status(400).json({message:error.details[0].message}); 
-    }
     const {event_title, event_description, eventStart_date, eventEnd_date, location, userID, categoryID} = req.body;
 
     try{
@@ -87,7 +83,7 @@ const editEvent = async(req, res) =>{
                 eventStart_date: eventStart_date ? new Date(eventStart_date) : undefined,
                 eventEnd_date: eventEnd_date ? new Date(eventEnd_date) : undefined,
                 location,
-                userID,
+                userID: Number(userID),
                 categoryID: Number(categoryID)
             }
         })

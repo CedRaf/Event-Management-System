@@ -35,8 +35,7 @@ function EditEvent() {
     }
   }, []);
 
-  const editEvent = async (updatedEvent) => {
-    console.log(token, updatedEvent);
+  const editEvent = async (updatedEvent) => {  
     if (!token) return;
     try {
       const response = await axios.patch(
