@@ -9,9 +9,13 @@ import Sidebar from "../components/Sidebar.jsx";
 function EventList () {
   const [token, setToken] = useState('');
   const [user, setUser] = useState('');
-  const [events, setEvents] = useState([]);
+  const [event, setEvent] = useState([]);
   const [error, setError] = useState(null);
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 4;
+  const [addtoggle, setAddToggle]= useState(false);
+
   const [newEvent, setNewEvent] = useState({
     event_title: '',
     event_description: '',
@@ -22,7 +26,7 @@ function EventList () {
 
 
   });
-  const [addtoggle, setAddToggle]= useState(false);
+  
   const [searchTerm, setSearchTerm]= useState('');
   const [categories, setCategories]= useState([]);
   const navigate= useNavigate(); 
@@ -51,7 +55,7 @@ function EventList () {
             Authorization: `Bearer: ${token}`
               }});
         if(response){ 
-          setEvents(response.data.eventList);
+          setEvent(response.data.eventList);
           setFilteredEvents(response.data.eventList);
           console.log(token);
         }
@@ -63,6 +67,12 @@ function EventList () {
 
     getEvents();
   }, [token, user]);
+
+  const lastIndex = currentPage * eventsPerPage;
+    const firstIndex = lastIndex - eventsPerPage;
+    const currentEvents = event.slice(firstIndex, lastIndex);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -107,7 +117,7 @@ function EventList () {
                   Authorization: `Bearer: ${token}`
                       }}); 
           if(response && response.data){
-              setEvents((prevEvents) => [...prevEvents, response.data.newEvent]);
+              setEvent((prevEvents) => [...prevEvents, response.data.newEvent]);
               
           }
       }catch(e){
@@ -126,7 +136,7 @@ function EventList () {
       });
       if(response && response.data){
         setError(response.data.message);
-        setEvents((prevEvents) => prevEvents.filter((event) => event.eventID !== response.data.deletedEvent.eventID));
+        setEvent((prevEvents) => prevEvents.filter((event) => event.eventID !== response.data.deletedEvent.eventID));
     }
     } catch (err) {
       alert('Error deleting the Event', error);
@@ -154,15 +164,15 @@ function EventList () {
   const searchEvent = (searchTerm) =>{
 
     if(searchTerm){
-    const results = events.filter((event) =>
+    const results = event.filter((event) =>
       event.event_title
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) // Case-insensitive search
     );
-        setEvents(results);
+        setEvent(results);
     }
     else{
-      setEvents(events);
+      setEvent(event);
     }
   }
 
@@ -173,7 +183,7 @@ function EventList () {
   }
 
   return (
-    <>
+    <div className='eventListMain'>
     <Sidebar />
     <div className='event-list-container'>
     <div className='event-top-container'>
@@ -188,13 +198,15 @@ function EventList () {
             <button onClick={() => searchEvent(searchTerm)} className='event-search-button'> SEARCH </button>
       </div>
      
-      <div className='eventContainer'>
+      
        
       <ul className='event-list'>
+     
       
-        {events.map((event) => (
+        {currentEvents.map((event) => (
           
           <li key={event.eventID} className='event-item'>
+             <div className='eventContainer'>
             <div className='ul-container'>
             <button onClick={()=> { 
                             navigate("/Event", { 
@@ -220,21 +232,47 @@ function EventList () {
             <button onClick={() => deleteEvent(event.eventID)} className='edit-button'>DELETE</button>
             </div>
             </div>
+            </div>
           </li>
         ))}
+        
       </ul>
-      </div>
+      <div className="pagination">
+          <button
+            className="prev-button"
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+          <button
+            className="next-button"
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage * eventsPerPage >= event.length}
+          >
+            Next
+          </button>
+        </div>
+     
+     
 
       
       <div className='add-event-container'>
         <button onClick={()=> setAddToggle((prevState) => !prevState)} className='toggle-create-event'> ADD </button>
-                  {addtoggle && <div> 
-                      <AddEvent createEvent= {createEvent} newEvent= {newEvent} setNewEvent = {setNewEvent} categories= {categories}/>                    
-                  </div>}
+                  {addtoggle && <div>
+      <AddEvent
+        createEvent={createEvent}
+        newEvent={newEvent}
+        setNewEvent={setNewEvent}
+        categories={categories}
+        toggleModal={addtoggle} 
+        setToggleModal={setAddToggle} 
+      />
+    </div>}
        </div>
        </div>
     </div>
-    </>
+    </div>
   );
 };
 

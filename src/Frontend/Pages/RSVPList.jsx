@@ -11,6 +11,8 @@ function RSVPList () {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm]= useState('');
   const navigate= useNavigate(); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const rsvpPerPage = 4;
 
   useEffect(() =>{
     const storedToken = localStorage.getItem('token');
@@ -46,6 +48,13 @@ function RSVPList () {
 
     getEvents();
   }, [token, user]);
+
+  const lastIndex = currentPage * rsvpPerPage;
+  const firstIndex = lastIndex - rsvpPerPage;
+  const currentCategories = userRSVPs.slice(firstIndex, lastIndex);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 
   const handleRSVPResponse = async (rsvpID, newResponse) => {
     if(!token && !user){ //because these arent initialized right away
@@ -177,7 +186,25 @@ function RSVPList () {
               </li>
             ))}
           </ul>
+
+          <div className="pagination">
+          <button
+            className="prev-button"
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+          <button
+            className="next-button"
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage * rsvpPerPage >= userRSVPs.length}
+          >
+            Next
+          </button>
+        </div>
           </div>
+
         </div>
    
     </div>

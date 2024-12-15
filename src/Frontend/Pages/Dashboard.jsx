@@ -64,7 +64,7 @@ function Dashboard () {
         if(response){ 
           setNotifications(response.data.allNotifications);
           console.log(response);
-          console.log=(notifications);
+          // console.log=(notifications);
         }
         
       } catch (err) {

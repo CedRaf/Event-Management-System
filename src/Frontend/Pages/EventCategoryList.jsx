@@ -22,6 +22,8 @@ function EventCategory() {
   const [user, setUser] = useState("");
   const [error, setError] = useState(null);
   const [filteredCategories, setFilteredCategories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const categoriesPerPage = 4;
 
   const navigate = useNavigate();
 
@@ -62,6 +64,12 @@ function EventCategory() {
     getCategories();
   }, [token, user]);
 
+  const lastIndex = currentPage * categoriesPerPage;
+    const firstIndex = lastIndex - categoriesPerPage;
+    const currentCategories = categories.slice(firstIndex, lastIndex);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   const searchCategory = (searchTerm) => {
     if (searchTerm) {
       const results = categories.filter(
@@ -71,7 +79,6 @@ function EventCategory() {
             .includes(searchTerm.toLowerCase()) // Case-insensitive search
       );
       setFilteredCategories(results);
-      
     } else {
       setFilteredCategories(categories);
     }
@@ -101,11 +108,14 @@ function EventCategory() {
       );
       if (response && response.data.newCategory) {
         setCategories((prevCategories) => {
-          const updatedCategories = [...prevCategories, response.data.newCategory];
+          const updatedCategories = [
+            ...prevCategories,
+            response.data.newCategory,
+          ];
           setFilteredCategories(updatedCategories); // Update another dependent state
           return updatedCategories; // This becomes the new categories state
         });
-        
+
         setNewCategory({
           category_name: "",
           category_description: "",
@@ -139,7 +149,6 @@ function EventCategory() {
               category.categoryID !== response.data.deletedCategory.categoryID
           )
         );
-        
       }
     } catch (e) {
       setError("Could not delete category. Please try again later.");
@@ -165,10 +174,10 @@ function EventCategory() {
               ? response.data.updatedCategory
               : cat
           );
-        
+
           // Use the updated categories to immediately update filteredCategories
           setFilteredCategories(updatedCategories);
-        
+
           return updatedCategories; // Return the updated state for `setCategories`
         });
       }
@@ -201,42 +210,62 @@ function EventCategory() {
               Search{" "}
             </button>
           </div>
-       
-        <div className="category-list-box">
-        <ul className="category-list">
-          {filteredCategories.map((category) => {
-            <li key={category.categoryID} ></li>
-            return (
-              <Category
-                category={category}
-                editCategory={editCategory}
-                deleteCategory={deleteCategory}
-              >
-                {" "}
-              </Category>
-              
-            );
-          })}
-        </ul>
-        </div>
-        <div className="create-category-container">
+
+          
+
+          <div className="category-list-box">
+            <ul className="category-list">
+              {filteredCategories.map((category) => {
+                <li key={category.categoryID}></li>;
+                return (
+                  <Category
+                    category={category}
+                    editCategory={editCategory}
+                    deleteCategory={deleteCategory}
+                  >
+                    {" "}
+                  </Category>
+                );
+              })}
+            </ul>
+          </div>
+
+          <div className="pagination">
           <button
-            onClick={() => setAddToggle((prevState) => !prevState)}
-            className="toggle-create-category"
+            className="prev-button"
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
           >
-            {" "}
-            Create a New Category{" "}
+            Prev
           </button>
-          {addtoggle && (
-            <div>
-              <AddEventCategory
-                createCategory={createCategory}
-                newCategory={newCategory}
-                setNewCategory={setNewCategory}
-              />
-            </div>
-          )}
+          <button
+            className="next-button"
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage * categoriesPerPage >= categories.length}
+          >
+            Next
+          </button>
         </div>
+          <div className="create-category-container">
+            <button
+              onClick={() => setAddToggle((prevState) => !prevState)}
+              className="toggle-create-category"
+            >
+              {" "}
+              Create a New Category{" "}
+            </button>
+            {addtoggle && (
+              <div>
+                <AddEventCategory
+                  createCategory={createCategory}
+                  newCategory={newCategory}
+                  setNewCategory={setNewCategory}
+                  toggleModal={addtoggle}
+                  setToggleModal={setAddToggle}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

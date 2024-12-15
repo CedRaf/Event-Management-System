@@ -92,13 +92,20 @@ h1 {
 }
 
 .category-text-wrapper {
-  margin: .5rem 2rem .5rem 2rem;
-  padding: 1rem;
+  margin: .5rem 2rem 0rem 2rem;
+  padding: .5rem;
   border: 1px solid #eee;
   border-radius: 6px;
-  background-color: #fafafa;
+  background-color: #fff;
   transition: box-shadow 0.3s ease-in-out;
 }
+
+.add-cancel-btn{
+  display: flex;
+
+}
+
+
 
 .category-text-wrapper:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -214,13 +221,22 @@ button.delete-button:hover {
 }
 
 .add-category-form { 
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  width: 60%;
+  background-color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .add-category-form input, select { 
-  width: 50%;
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 4px;
