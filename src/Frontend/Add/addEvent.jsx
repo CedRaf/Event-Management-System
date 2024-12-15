@@ -22,7 +22,7 @@ const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleMo
       eventEnd_date,
     };
 
-
+    console.log(updatedEvent);
     createEvent(updatedEvent);
     setToggleModal(false);
   };
@@ -92,12 +92,17 @@ const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleMo
           name="categoryID"
           id="category"
           value={newEvent.categoryID}
-          onChange={(e) =>
+          onChange={(e) => {
+            // Find the selected category by matching the category name
+            const selectedCategory = categories.find(
+              (category) => category.category_name === e.target.value
+            );
+            // Set the selected category's ID in the newEvent state
             setNewEvent((prevState) => ({
               ...prevState,
-              categoryID: e.target.value, // Set the selected category's ID
-            }))
-          }
+              categoryID: selectedCategory?.categoryID, // Assign categoryID
+            }));
+          }}
         >
           <option value="" disabled>
             Select a Category
