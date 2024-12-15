@@ -29,8 +29,8 @@ const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleMo
 
   return (
     <div className="event-creation">
-      <h2>Add Event</h2>
-      <form onSubmit={handleSubmit} className="add-category-form">
+<h2>Add Event</h2>
+      <form onSubmit={handleSubmit} className="eventForm">
         <input
           type="text"
           id = "event_title"
