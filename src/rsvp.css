@@ -10,6 +10,7 @@
   .rsvp-parent{
     height: 100%;
     padding: 20px;
+    overflow-y: hidden;
 
   }
 
@@ -17,7 +18,6 @@
     margin: 0px 20px 20px auto;
     padding-top: 20px;
     width: 80%;
-    height: 100%;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
@@ -26,7 +26,7 @@
   
   .title {
     text-align: left;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     margin-left: 1.5rem;
     font-size: 1.8rem;
     color: #333;
@@ -44,8 +44,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    padding: 1rem;
+    margin-bottom: .5rem;
+    padding: .5rem;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #fff;

@@ -9,7 +9,7 @@ function NotificationList () {
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const notificationsPerPage = 10;
+  const notificationsPerPage = 5;
 
  
 

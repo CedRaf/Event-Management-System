@@ -2,7 +2,11 @@
   list-style: none;
   padding: 0;
   margin: 0;
+}
 
+.eventListMain{
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 .event-list-container{
@@ -12,8 +16,8 @@
 }
 
 .eventContainer{
-  margin: .5rem 1rem .5rem 1rem;
-  padding: 1rem;
+  margin: 0rem 1rem 0rem 1rem;
+  padding: .5rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #fff;
@@ -36,9 +40,16 @@
 }
 
 .event-creation{
-  display: flex;
-  flex-direction: column;
-
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  background-color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  width: 40%;
 }
 
 .dateLabel{
@@ -63,8 +74,6 @@ padding: 1rem;
   
 }
 
-
-
 .event-input-container {
   display: flex;
   flex-direction: row;
@@ -73,13 +82,11 @@ padding: 1rem;
 
 .event-input {
   width: 60%;
-  height: 40px;
   font-size: 1rem;
   padding: 0 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 30px;
-  margin-top:1rem;
+  margin-left: 4%;
 }
 
 
