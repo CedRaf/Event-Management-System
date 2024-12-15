@@ -12,6 +12,7 @@ function Sidebar() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+    console.log("Parsed user:", parsedUser); 
     setUser(parsedUser);
   }, []);
 
@@ -38,7 +39,7 @@ function Sidebar() {
           onClick={() => navigate("/profile")}
           style={{ cursor: "pointer" }}
         >
-          <p className="profile-name">Hello,{user.username}!</p>
+          <p className="profile-name">Hello,{user?.userName||"Guest"}!</p>
         </div>
       )}
 
