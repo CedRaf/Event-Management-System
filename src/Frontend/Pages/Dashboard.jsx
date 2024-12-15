@@ -95,25 +95,27 @@ function Dashboard () {
       },
     })), [upcomingEvents]);
 
-  const nextWeek = Array.from({ length: 7 }, (_, i) => {
+
+  const nextWeek = Array.from({ length: 7 }, (_, i) => { //is an array of dates (is ISO foramt?)
       const date = new Date();
       date.setDate(date.getDate() + i);
       return date;
   });
- 
-  const eventsOfDate = formattedEvents.filter((event) => {
-      const eventDate = new Date(event.start).toDateString();
-      return eventDate === selectedDate.toDateString();
+
+
+  const eventsOfDate = formattedEvents.filter((event) => { //checks 
+    const eventDate = new Date(event.start).toDateString();
+    return eventDate === selectedDate.toDateString(); // This checks if it's today's date
   });
+
+  
 
 
   const handleDateClick = (date) => {
       //navigate the to render events on the next day
       setSelectedDate(new Date(date)); 
+     
   };
-    const handleEventClick = (arg) => {
-      //
-    };
 
 
 
@@ -123,15 +125,16 @@ function Dashboard () {
     
     useEffect(() => {
       const now = new Date();
-  
-      const ongoing = formattedEvents.filter((event) => {
+    
+      const ongoing = eventsOfDate.filter((event) => {
         const start = new Date(event.start);
-        const end = new Date(event.end);
-        return now >= start && now <= end; // Current time is between start and end
+        const end = new Date(event.extendedProps.end);
+        return now >= start && now <= end; 
       });
-  
+      
       setOngoingEvents(ongoing); // Set ongoing events
     }, [formattedEvents]);
+    
 
 
 

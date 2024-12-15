@@ -252,12 +252,7 @@ function Event () {
     )}
    
 
-    {!isAdmin && (
-      <div className='rsvp-action-buttons'>
-        <button className='accept-button'>ACCEPT</button>
-        <button className='reject-button'>REJECT</button>
-      </div>
-    )}
+
 
     {!hasRSVP && isAdmin && (
       <div className='create-rsvp-container'>

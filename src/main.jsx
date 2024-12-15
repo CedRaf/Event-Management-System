@@ -18,6 +18,7 @@ import './index.css'
 import Calendar from './Frontend/Pages/Calendar.jsx'
 import NotificationList from './Frontend/components/NotificationList.jsx'
 import Dashboard from './Frontend/Pages/Dashboard.jsx'
+import Profile from './Frontend/Pages/Profile.jsx'
 
 
 
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
 {
   path: '/dashboard',
   element: <Dashboard/>
+},
+{
+  path: '/profile',
+  element: <Profile/>
 }
 
 ])

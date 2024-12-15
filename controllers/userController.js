@@ -20,7 +20,7 @@ const checkPassword = async(req, res) =>{
     const {password} = req.body;
     try{
         const existingUser = await helperFunc.getUserDetails(userID); 
-        const validPassword = await bcrypt.compare(password, existingUser.password);
+        const validPassword =  bcrypt.compare(password, existingUser.password);
         if(!validPassword){
             return res.status(400).json({message: "Invalid Password"}); 
         }
