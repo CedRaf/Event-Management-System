@@ -16,6 +16,10 @@
   position: absolute;
 }
 
+.sidebarList{
+  margin-top: 3rem;
+}
+
 .sidebarList li {
   font-size: 1.2rem;
   list-style: none;
@@ -79,6 +83,7 @@
 .profile-name {
   font-weight: bold;
   font-size: 15px;
+  color: white;
 }
 
 .profile-type {

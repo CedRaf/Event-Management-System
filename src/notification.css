@@ -53,6 +53,17 @@
     background-color: #fff;
     transition: box-shadow 0.3s ease-in-out;
   }
+
+  .notification-item.read {
+    background-color: #f0f0f0; 
+    color: #888; 
+  }
+  
+  .notification-item.unread {
+    background-color: #ffffff; 
+    font-weight: bold; 
+    color: #333; 
+  }
   
   .notification-item:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

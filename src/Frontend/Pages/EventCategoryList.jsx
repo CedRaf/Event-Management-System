@@ -215,7 +215,7 @@ function EventCategory() {
 
           <div className="category-list-box">
             <ul className="category-list">
-              {filteredCategories.map((category) => {
+              {currentCategories.map((category) => {
                 <li key={category.categoryID}></li>;
                 return (
                   <Category

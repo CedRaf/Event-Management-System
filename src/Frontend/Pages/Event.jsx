@@ -205,7 +205,7 @@ function Event () {
             </li>
           ))}
         </ul>
-     
+        <div className='admin-task'>
         {isAdmin && (
           <div className='event-edit-container'>
             <form className='status-update-form' onSubmit={updateStatus}>
@@ -248,11 +248,16 @@ function Event () {
           </div>
         )}
       </div>
-
+      </div>
     )}
    
 
-
+    {!isAdmin && (
+      <div className='rsvp-action-buttons'>
+        <button className='accept-button'>ACCEPT</button>
+        <button className='reject-button'>REJECT</button>
+      </div>
+    )}
 
     {!hasRSVP && isAdmin && (
       <div className='create-rsvp-container'>

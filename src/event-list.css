@@ -61,6 +61,37 @@
   background-color: #5286ff;
 }
 
+.editBtn{
+  padding: 0.3rem 1rem;
+  font-size: 1rem;
+  background-color: gray;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left:1rem;
+
+}
+
+.editBtn:hover{
+  background-color: #31519b;
+}
+
+.deleteBtn{
+  padding: 0.3rem 1rem;
+  font-size: 1rem;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left:1rem;
+}
+
+.deleteBtn:hover{
+  background-color: #a71d2a;
+}
+
 .event-item{
 display: flex;
 flex-direction: column;
@@ -131,7 +162,7 @@ padding: 1rem;
 .editButton{
   padding: 0.3rem 1rem;
   font-size: 1rem;
-  background-color: #5286ff;
+  background-color: gray;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -140,7 +171,7 @@ padding: 1rem;
 }
 
 .editButton:hover{
-  background-color: #31519b;
+  background-color: #4f4f4f;
 }
 
 .deleteButton{
