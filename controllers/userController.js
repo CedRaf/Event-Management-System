@@ -43,6 +43,7 @@ const editUserInfo = async(req,res) =>{
 
     try{
         const existingUser = await helperFunc.getUserDetails(userID);
+        const hashedPassword = await bcrypt.hash(password, 10); 
         const newUserDetails = await prisma.user.update({
             where:{
                 userID: Number(existingUser.userID) 
@@ -52,7 +53,7 @@ const editUserInfo = async(req,res) =>{
                 first_name, 
                 last_name,
                 email_address,
-                password
+                password: hashedPassword
             }
         });
 
