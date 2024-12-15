@@ -147,6 +147,7 @@ const getAllEvents = async(req, res) =>{
 const getUpcomingEvents = async(userID) =>{
     try{
         const today = new Date();
+        today.setHours(0,0,0,0);
         const nextWeek = new Date();
         nextWeek.setDate(today.getDate() + 7);
 

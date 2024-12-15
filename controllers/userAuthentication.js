@@ -135,7 +135,7 @@ const googleSignIn = async(req, res) =>{
                     email_address: payload.email,
                     first_name: payload.given_name,
                     last_name: payload.family_name,
-                    username: "MIKE TYSON",
+                    username: payload.name,
                     password: null,
                 }
             })
