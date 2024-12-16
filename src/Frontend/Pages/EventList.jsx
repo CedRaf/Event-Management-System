@@ -118,6 +118,7 @@ function EventList () {
                       }}); 
           if(response && response.data){
               setEvent((prevEvents) => [...prevEvents, response.data.newEvent]);
+              setFilteredEvents((prevEvents) => [...prevEvents, response.data.newEvent]);
               
           }
       }catch(e){
@@ -137,6 +138,7 @@ function EventList () {
       if(response && response.data){
         setError(response.data.message);
         setEvent((prevEvents) => prevEvents.filter((event) => event.eventID !== response.data.deletedEvent.eventID));
+        setFilteredEvents((prevEvents) => prevEvents.filter((event) => event.eventID !== response.data.deletedEvent.eventID));
     }
     } catch (err) {
       alert('Error deleting the Event', error);
