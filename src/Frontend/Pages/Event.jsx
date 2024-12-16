@@ -128,7 +128,7 @@ function Event () {
         }
       );
       if(response && response.data){
-        console.log(response.data.editedRSVP, response.data.recipientData)
+       
         setRSVPDetails((prevState) => ({
           ...prevState, // keep other properties of RSVPDetails unchanged
           status: response.data.editedRSVP.status, // update only the status property
@@ -169,7 +169,7 @@ function Event () {
           }
         );
         if (response && response.data) {
-          console.log(response);
+         
           window.location.reload();
         }
       } catch (e) {
@@ -191,7 +191,7 @@ function Event () {
       <p className='event-description'>Description: {event.event_description}</p>
       <p className='event-start-date'>Start Date: {new Date(event.eventStart_date).toLocaleString()}</p>
       <p className='event-end-date'>End Date: {new Date(event.eventEnd_date).toLocaleString()}</p>
-      <p className='event-created-at'>Created At: {new Date(event.created_at).toLocaleString()}</p>
+      {/* <p className='event-created-at'>Created At: {new Date(event.created_at).toLocaleString()}</p> */}
     </div>
 
     {hasRSVP && (
@@ -252,12 +252,7 @@ function Event () {
     )}
    
 
-    {!isAdmin && (
-      <div className='rsvp-action-buttons'>
-        <button className='accept-button'>ACCEPT</button>
-        <button className='reject-button'>REJECT</button>
-      </div>
-    )}
+
 
     {!hasRSVP && isAdmin && (
       <div className='create-rsvp-container'>

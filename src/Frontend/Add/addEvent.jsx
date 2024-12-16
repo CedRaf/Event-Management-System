@@ -19,17 +19,17 @@ const AddEvent = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const eventStart_date = `${newEvent.eventStart_date}T${startTime}:00`;
-    const eventEnd_date = `${newEvent.eventEnd_date}T${endTime}:00`;
+    const trueStart = `${newEvent.eventStart_date}T${startTime}:00`;
+    const trueEnd = `${newEvent.eventEnd_date}T${endTime}:00`;
 
     // Update newEvent with the concatenated datetime
     const updatedEvent = {
       ...newEvent,
-      eventStart_date,
-      eventEnd_date,
+      eventStart_date: trueStart,
+      eventEnd_date: trueEnd,
     };
 
-    console.log(updatedEvent);
+    console.log(updatedEvent, trueStart, trueEnd, newEvent);
     createEvent(updatedEvent);
     setToggleModal(false);
   };
@@ -73,7 +73,7 @@ const AddEvent = ({
         <input
           type="time"
           id="eventStart_time"
-          name="eventStart_time"
+          
           placeholder="Event Start Time"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
@@ -89,7 +89,7 @@ const AddEvent = ({
         <input
           type="time"
           id="eventEnd_time"
-          name="eventEnd_time"
+          
           placeholder="Event End Time"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}

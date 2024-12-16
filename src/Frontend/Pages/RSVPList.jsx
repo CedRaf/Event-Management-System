@@ -91,7 +91,7 @@ function RSVPList() {
       //because these arent initialized right away
       return;
     }
-    console.log(token);
+   
     try {
       const response = await axios.patch(
         `http://localhost:3000/recipient/cancelRSVP`,

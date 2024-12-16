@@ -60,7 +60,7 @@ function Profile() {
   //prompt for current password call checkPassword , popup format
   //if receive existingUser in response allow  user to edit
   const checkPassword = async () => {
-    console.log(token);
+    
     try {
       const response = await axios.post(
         `http://localhost:3000/userProfile/checkPassword/${user.userID}`,
@@ -77,7 +77,7 @@ function Profile() {
         setExistingUser(response.data.existingUser);
         setAskPassword(false);
         setPassword("");
-        console.log(existingUser);
+        
       }
     } catch (err) {
       setError("Error checking password", err);
@@ -89,7 +89,7 @@ function Profile() {
 
   const editUserInfo = async (e) => {
     e.preventDefault();
-    console.log(updatedUser);
+    
     try {
       const response = await axios.patch(
         `http://localhost:3000/userProfile/edit/${user.userID}`,

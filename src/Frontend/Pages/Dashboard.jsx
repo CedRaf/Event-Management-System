@@ -42,7 +42,7 @@ function Dashboard() {
         );
         if (response) {
           setUpcomingEvents(response.data.upcomingEvents);
-          console.log(response);
+          
         }
       } catch (err) {
         setError("Error fetching the Event");
@@ -65,8 +65,8 @@ function Dashboard() {
         );
         if (response) {
           setNotifications(response.data.allNotifications);
-          console.log(response);
-          // console.log=(notifications);
+         
+         
         }
       } catch (err) {
         setError("Error fetching the Event");

@@ -19,9 +19,7 @@ function EventList() {
   const [newEvent, setNewEvent] = useState({
     event_title: "",
     event_description: "",
-    eventEnd_date: "",
-    eventStart_time:"",
-    eventEnd_time:"",
+    eventEnd_date: "",   
     eventStart_date: "",
     location: "",
     categoryID: "",
@@ -59,7 +57,7 @@ function EventList() {
         if (response) {
           setEvent(response.data.eventList);
           setFilteredEvents(response.data.eventList);
-          console.log(token);
+          
         }
       } catch (err) {
         setError("Error fetching the Event");
@@ -104,14 +102,14 @@ function EventList() {
   const createEvent = async (newEvent) => {
     //new Event body
     //returns newEvent
-    console.log(newEvent);
+    
     const eventData = {
       ...newEvent,
       userID: user.userID, // Make sure userID is set
     };
 
     try {
-      console.log(eventData, token);
+      
       const response = await axios.post(
         `http://localhost:3000/events/create`,
         eventData,
@@ -164,7 +162,7 @@ const sortEvents = async (criteria) => {
     );
     if (response && response.data) {
       setError(response.data.message);
-      console.log(response);
+    
       setFilteredEvents(response.data.data);
       setCurrentPage(1);
 

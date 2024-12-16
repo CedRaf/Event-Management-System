@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../../../src/OTP.css'
+
+
 
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -10,6 +12,7 @@ function ResetPassword() {
   const [error, setError] = useState("");
   const query = new URLSearchParams(useLocation().search); // Extract the query params
   const resetToken = query.get('token');
+  const navigate = useNavigate();
 
 
   const handlePasswordReset = async (e) =>{
@@ -19,6 +22,9 @@ function ResetPassword() {
       const response = await axios.patch("http://localhost:3000/authenticate/reset-password", { token: resetToken, newPassword:newPassword, });
       setMessage("Password reset successfully!");
       console.log(response);
+      setTimeout(() => {
+        navigate("/"); 
+      }, 2000); 
     }catch (err){
       setError(err.response.data.message);
     }

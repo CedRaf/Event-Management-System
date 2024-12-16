@@ -170,6 +170,7 @@ function Calendar() {
   };
 
   const deleteEventHandler = async (eventId) => {
+    
     try {
       await axios.delete(`http://localhost:3000/events/delete/${eventId}`, {
         headers: {
