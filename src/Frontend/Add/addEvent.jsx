@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../event-list.css";
 
-const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleModal,categories }) => {
+const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleModal, categories }) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -88,31 +88,30 @@ const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleMo
           onChange={(e) => setEndTime(e.target.value)}
         />
 
-        <select
-          name="categoryID"
-          id="category"
-          value={newEvent.categoryID}
-          onChange={(e) => {
-            // Find the selected category by matching the category name
-            const selectedCategory = categories.find(
-              (category) => category.category_name === e.target.value
-            );
-            // Set the selected category's ID in the newEvent state
-            setNewEvent((prevState) => ({
-              ...prevState,
-              categoryID: selectedCategory?.categoryID, // Assign categoryID
-            }));
-          }}
-        >
-          <option value="" disabled>
-            Select a Category
-          </option>
-          {categories.map((category) => (
-            <option key={category.categoryID} value={category.category_name}>
-              {category.category_name}
+          <select
+            name="categoryID"
+            id="category"
+            value={newEvent.categoryID || ""} 
+            onChange={(e) => {
+              const selectedCategory = categories.find(
+                (category) => String(category.categoryID) === e.target.value
+              );
+              setNewEvent((prevState) => ({
+                ...prevState,
+                categoryID: selectedCategory?.categoryID, // Set categoryID
+              }));
+            }}
+          >
+            <option value="" disabled>
+              Select a Category
             </option>
-          ))}
-        </select>
+            {categories.map((category) => (
+              <option key={category.categoryID} value={category.categoryID}>
+                {category.category_name}
+              </option>
+            ))}
+          </select>
+
         
           <div className="cancel-submit-container">
           <button onClick={() => setToggleModal(!toggleModal)}

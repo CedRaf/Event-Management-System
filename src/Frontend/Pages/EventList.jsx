@@ -69,7 +69,7 @@ function EventList() {
 
   const lastIndex = currentPage * eventsPerPage;
   const firstIndex = lastIndex - eventsPerPage;
-  const currentEvents = event.slice(firstIndex, lastIndex);
+  const currentEvents = filteredEvents.slice(firstIndex, lastIndex);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -102,7 +102,7 @@ function EventList() {
   const createEvent = async (newEvent) => {
     //new Event body
     //returns newEvent
-
+    console.log(newEvent);
     const eventData = {
       ...newEvent,
       userID: user.userID, // Make sure userID is set
@@ -121,6 +121,7 @@ function EventList() {
       );
       if (response && response.data) {
         setEvent((prevEvents) => [...prevEvents, response.data.newEvent]);
+        setFilteredEvents((prevEvents) => [...prevEvents, response.data.newEvent]);
       }
     } catch (e) {
       setError("Could not register category. Please try again later.");
@@ -149,13 +150,31 @@ function EventList() {
     }
   };
 
-  const sortByCategory = () => {};
+const sortEvents = async (criteria) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/events/sort/${user.userID}/${criteria}/`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response && response.data) {
+      setError(response.data.message);
+      console.log(response);
+      setFilteredEvents(response.data.data);
+      setCurrentPage(1);
 
-  const sortByLocation = () => {};
+    }
+  } catch (err) {
+    alert(`Error sorting by ${criteria}`, err);
+  }
+};
+const resetView = () => {
 
-  const ResetView = () => {};
-
-  const sortByStartdate = () => {};
+    setFilteredEvents(event);
+};
 
   const searchEvent = (searchTerm) => {
     if (searchTerm) {
@@ -163,17 +182,13 @@ function EventList() {
         (event) =>
           event.event_title.toLowerCase().includes(searchTerm.toLowerCase()) // Case-insensitive search
       );
-      setEvent(results);
+      setFilteredEvents(results);
     } else {
-      setEvent(event);
+      setFilteredEvents(event);
     }
   };
 
-  const editEvent = (editedEvent) => {
-    //eventID params
-    //editedEvent entity body
-    //returns updatedEvent , may be removed
-  };
+
 
   return (
     <div className="eventListMain">
@@ -222,7 +237,20 @@ function EventList() {
               )}
             </div>
           </div>
-
+          <div className="event-sort-buttons">
+              <button onClick={() => sortEvents("location")} className="sort-button">
+                Sort by Location
+              </button>
+              <button onClick={() => sortEvents("event_title")} className="sort-button">
+                Sort by Title
+              </button>
+              <button onClick={() => sortEvents("eventStart_date")} className="sort-button">
+                Sort by Start Date
+              </button>
+              <button onClick={resetView} className="reset-button">
+                Reset View
+              </button>
+            </div>
           <ul className="event-list">
             {currentEvents.map((event) => (
               <li key={event.eventID} className="event-item">

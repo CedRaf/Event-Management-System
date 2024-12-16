@@ -198,7 +198,7 @@ const getEventsByCategory = async(req, res) =>{
 
 const sortEvents = async(req, res) =>{
     const{userID, sortBy, orderBy = 'asc'} = req.params;
-    const validFields = ['event_title', 'event_date', 'created_at', 'location'];
+    const validFields = ['event_title', 'eventStart_date', 'eventEnd_date', 'location'];
     
     if(!validFields.includes(sortBy)){
         return res.status(400).json({message:`Invalid order: ${sortBy}`});

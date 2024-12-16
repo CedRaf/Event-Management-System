@@ -66,7 +66,7 @@ function EventCategory() {
 
   const lastIndex = currentPage * categoriesPerPage;
     const firstIndex = lastIndex - categoriesPerPage;
-    const currentCategories = categories.slice(firstIndex, lastIndex);
+    const currentCategories = filteredCategories.slice(firstIndex, lastIndex);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -129,6 +129,7 @@ function EventCategory() {
   const deleteCategory = async (category_name) => {
     //category_name, userID body
     //returns deletedCategory
+    
     try {
       const response = await axios.delete(
         `http://localhost:3000/eventCategory/delete`,

@@ -147,9 +147,9 @@ function RSVPList () {
                   <div className="event-date-time">
                   <div>Starting from:</div>
                 {invite.rsvp.event.location} 
-                {invite.rsvp.event.eventStart_date}{" "}
+                {new Date(invite.rsvp.event.eventStart_date).toDateString()}{" "}
                 <div>Ending on:</div>
-                {invite.rsvp.event.eventEnd_date}
+                {new Date(invite.rsvp.event.eventEnd_date).toDateString()}
                 <div>
                 Current response: {invite.response}
                 </div>
