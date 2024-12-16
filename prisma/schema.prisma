@@ -10,14 +10,14 @@ datasource db {
 model event {
   eventID           Int             @id @default(autoincrement())
   userID            Int
-  categoryID        Int
+  categoryID        Int?
   event_title       String          @db.VarChar(255)
   event_description String          @db.VarChar(255)
   eventStart_date   DateTime        @default(now())
   eventEnd_date     DateTime        @default(now())
   created_at        DateTime        @default(now())
   location          String?         @db.VarChar(255)
-  eventcategory     eventcategory   @relation(fields: [categoryID], references: [categoryID], map: "Event_categoryID_fkey")
+  eventcategory     eventcategory?   @relation(fields: [categoryID], references: [categoryID], map: "Event_categoryID_fkey")
   user              user            @relation(fields: [userID], references: [userID], map: "Event_userID_fkey")
   notifications     notifications[] 
   rsvp              rsvp[]          

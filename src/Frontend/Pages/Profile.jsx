@@ -124,7 +124,7 @@ function Profile() {
             <div className="pfp-name-email">
               <div className="image">
                 <img
-                  src="../src/img/user-solid.svg"
+                  src="../src/user-solid.svg"
                   alt="profileimg"
                   className="pfp"
                 />
