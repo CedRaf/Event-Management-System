@@ -39,6 +39,31 @@
     padding: 0;
     margin: 18px;
   }
+
+  .event-date-time{
+    display: flex;
+  }
+  .event-deets{
+    margin-right: 1rem;
+  }
+
+  .current-res{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .current-res p{
+    font-size: .9rem;
+    color: gray;
+    margin-right: .3rem;
+  }
+
+  .deet-title{
+    font-size: .9rem;
+    color: gray;
+    margin-bottom: .3rem;
+  }
   
   .rsvp-item {
     display: flex;

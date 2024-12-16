@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllAPI, deleteAPI } from '../components/EventAPI';
-import AddEvent from '../Add/AddEvent'
+import AddEvent from '../Add/addEvent.jsx';
 import axios from 'axios';
 import {useNavigate, useLocation} from 'react-router-dom';
 import Sidebar from "../components/Sidebar.jsx";

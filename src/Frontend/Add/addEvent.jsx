@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import "../../event-list.css";
 
-const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleModal, categories }) => {
+const AddEvent = ({
+  createEvent,
+  newEvent,
+  setNewEvent,
+  toggleModal,
+  setToggleModal,
+  categories,
+}) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -29,11 +36,11 @@ const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleMo
 
   return (
     <div className="event-creation">
-<h2>Add Event</h2>
+      <h2>Add Event</h2>
       <form onSubmit={handleSubmit} className="eventForm">
         <input
           type="text"
-          id = "event_title"
+          id="event_title"
           name="event_title"
           placeholder="Event Title"
           value={newEvent.event_title}
@@ -88,40 +95,38 @@ const AddEvent = ({ createEvent, newEvent, setNewEvent, toggleModal, setToggleMo
           onChange={(e) => setEndTime(e.target.value)}
         />
 
-          <select
-            name="categoryID"
-            id="category"
-            value={newEvent.categoryID || ""} 
-            onChange={(e) => {
-              const selectedCategory = categories.find(
-                (category) => String(category.categoryID) === e.target.value
-              );
-              setNewEvent((prevState) => ({
-                ...prevState,
-                categoryID: selectedCategory?.categoryID, // Set categoryID
-              }));
-            }}
-          >
-            <option value="" disabled>
-              Select a Category
+        <select
+          name="categoryID"
+          id="category"
+          value={newEvent.categoryID || ""}
+          onChange={(e) => {
+            const selectedCategory = categories.find(
+              (category) => String(category.categoryID) === e.target.value
+            );
+            setNewEvent((prevState) => ({
+              ...prevState,
+              categoryID: selectedCategory?.categoryID, // Set categoryID
+            }));
+          }}
+        >
+          <option value="" disabled>
+            Select a Category
+          </option>
+          {categories.map((category) => (
+            <option key={category.categoryID} value={category.categoryID}>
+              {category.category_name}
             </option>
-            {categories.map((category) => (
-              <option key={category.categoryID} value={category.categoryID}>
-                {category.category_name}
-              </option>
-            ))}
-          </select>
+          ))}
+        </select>
 
-        
-          <div className="cancel-submit-container">
-          <button onClick={() => setToggleModal(!toggleModal)}
-          className="close-add-event-button">
-          Cancel
-        </button>
-        <button type="submit" >
-          Submit
-        </button>
-        
+        <div className="cancel-submit-container">
+          <button
+            onClick={() => setToggleModal(!toggleModal)}
+            className="close-add-event-button"
+          >
+            Cancel
+          </button>
+          <button type="submit">Submit</button>
         </div>
       </form>
     </div>

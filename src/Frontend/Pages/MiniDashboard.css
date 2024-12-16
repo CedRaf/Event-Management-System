@@ -138,9 +138,10 @@
     color: #4169e1;
     font-weight: bold;
   }
-  
-  .event-card {
+
+  .upComingevent-card {
     display: flex;
+    align-items: center;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -149,18 +150,50 @@
     background-color: #dce4fc;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
   }
-  
-  .event-card b {
-    display: block;
+
+  .upComingevent-card b {
     font-size: 16px;
     color: #333;
-    margin-bottom: 5px;
+    margin-right: .5rem;
+  }
+  .upcoming-loc{
+    margin-right: .5em;
+  }
+
+  .upcoming-loc, .upcoming-time{
+    color: #555;
+    font-size: 14px;
+  }
+ 
+  
+  .event-card {
+    display: flex;
+    align-items: center;
+
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    margin: 1rem;
+    background-color: #dce4fc;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .event-card b {
+    font-size: 16px;
+    color: #333;
+
+    margin-right: 1rem;
   }
   
   .event-card p {
-    margin: 5px 0;
     font-size: 14px;
     color: #555;
+  }
+
+  .ongoing-loc{
+    margin-right: .5rem;
   }
 
   .ongoing-events-list{

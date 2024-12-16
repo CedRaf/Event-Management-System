@@ -135,13 +135,13 @@ function NotificationList() {
                     className="mark-read-button"
                     onClick={() => markAsRead(notification)}
                   >
-                    ✉ Mark as Read
+                    Mark as Read
                   </button>
                   <button
                     className="delete"
                     onClick={() => deleteNotification(notification)}
                   >
-                    🗑 Delete
+                    🗑 
                   </button>
                 </div>
               </li>

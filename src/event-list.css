@@ -381,6 +381,30 @@ padding: 1rem;
   margin-left:1rem;
 }
 
+.event-sort-buttons{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin: .5rem 2rem;
+}
+
+.event-sort-buttons button{
+  border: none;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  background-color: transparent;
+  border-right: 1px gray solid;
+}
+
+.event-sort-buttons button:hover{
+  font-size: .8rem;
+}
+
+.date-container{
+  display: flex;
+}
+
+
 @media screen and (max-width: 1300px) {
 
   .toggle-create-event{

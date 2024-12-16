@@ -20,6 +20,8 @@ function EventList() {
     event_title: "",
     event_description: "",
     eventEnd_date: "",
+    eventStart_time:"",
+    eventEnd_time:"",
     eventStart_date: "",
     location: "",
     categoryID: "",
@@ -272,12 +274,17 @@ const resetView = () => {
                   <div className="date-btn-container">
                     <div className="date-container">
                       <p>
-                        Start Date:{" "}
+                        {" "}
                         {new Date(event.eventStart_date).toLocaleDateString()}
                       </p>
                       <p>
-                        End Date:{" "}
+                        {" "}~
                         {new Date(event.eventEnd_date).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="time-container">
+                      <p>
+                      {new Date(`${event.eventStart_date}T${event.eventStart_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
                     <div className="btnContainer">
