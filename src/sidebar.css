@@ -1,0 +1,106 @@
+#root {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+.sidebar {
+  height:100% ;
+  width: 15%;
+  background: linear-gradient(45deg, rgb(25, 25, 112), rgb(135, 206, 250));
+  padding: 30px;
+  position: absolute;
+}
+
+.sidebarList{
+  margin-top: 1rem;
+}
+
+.sidebarList li {
+  font-size: 1.2rem;
+  list-style: none;
+  align-items: center;
+  height: auto;
+  color: white;
+  margin-top: 20px;
+}
+
+.sidebarList li:hover {
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+
+.dropdown-container {
+  margin-bottom: 10px;
+}
+
+.dropdown {
+  list-style-type: none;
+  padding-left:3px;
+  margin-top: 5px;
+}
+
+.dropdown li {
+  cursor: pointer;
+  height: auto;
+  margin-bottom: 5px;
+}
+
+.dropdown-item {
+  font-size: 12px;
+}
+
+.dropdown li:hover {
+  font-size: 13px;
+}
+
+.profile-box {
+  display: flex;
+  height: 60px;
+  padding: 30px 20px 10px;
+  border-bottom: 1px solid white;
+  text-align: left;
+}
+
+.profile-name {
+  height: 30px;
+}
+
+
+.nameNtype {
+  flex-direction: column;
+}
+
+.profile-name {
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+}
+
+.profile-type {
+  color: white;
+  font-size: 10px;
+}
+
+
+@media screen and (max-width: 1000px) {
+
+  .profile-name{
+    font-size: .8rem;
+  }
+
+  .sidebarList li {
+    font-size: .8rem;
+    margin-top: 25px;
+  }
+
+  .sidebarList li:hover {
+    font-size: .9rem;
+    margin-top: 25px;
+  }
+
+
+}

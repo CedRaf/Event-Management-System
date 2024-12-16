@@ -1,0 +1,188 @@
+
+.main-container{
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  
+}
+
+.userInfo-container{
+margin: 0rem 1rem 0rem 1rem;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 80%;
+  width: 80%;
+  background-color: #fff;
+  transition: box-shadow 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.pfp{
+    width: 25px;
+}
+
+.allInfo-with-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+}
+
+.edit-btn button{
+padding: 0.3rem 1rem;
+  font-size: 1rem;
+  background-color: #5286ff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left:1rem;
+}
+
+.edit-btn button:hover{
+    background-color: #31519b;
+}
+
+.userpfp-container{
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    
+}
+
+.firstname, .lastname{
+    font-size: 1rem;
+    margin-left: .5rem;
+}
+
+.user-full-name{
+    display: flex;
+}
+
+.userpfp-container{
+    display: flex;
+    flex-direction: column;
+    align-items:start ;
+}
+
+
+.pfp-name-email{
+    display: flex;
+}
+.name-email{
+    display: flex;
+    flex-direction: column;
+    
+}
+.username{
+    display: flex;
+    margin: 1rem 0rem ;
+}
+
+.userlabel{
+    margin-right: .5rem;
+}
+
+
+.email{
+    margin-left: .5rem;
+    font-size: .8rem;
+    color: gray;
+}
+
+.enterPassword{
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  width: 60%;
+  background-color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+}
+
+.backBtn{
+    font-size: 1rem;
+    background-color: transparent;
+    color: black;
+    height: 30px;
+    width: 4rem;
+    font-size: .8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+
+}
+
+.enterPassword button{
+    padding: 0.3rem 1rem;
+    font-size: 1rem;
+    background-color: #5286ff;
+    color: #fff;
+    height: 35px;
+    width: 5rem;
+    font-size: .8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left:1rem;
+}
+
+.btns{
+    margin-left: auto;
+}
+
+.btns button:hover{
+    background-color: #31519b;
+}
+
+.enterPassword input{
+    width: 12rem;
+    border: gray 1px solid;
+    border-radius: 6px;
+    padding: .5rem;
+
+}
+
+.pass-and-btn{
+    display: flex;
+}
+
+.editUserInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.editUserInfo input{
+    margin: 5px;
+    border: rgb(191, 191, 191) 1px solid;
+    padding: .5em;
+    border-radius: 6px;
+}
+
+.submitBtn{
+
+    font-size: 1rem;
+    background-color: #5286ff;
+    color: #fff;
+    height: 30px;
+    width: 5rem;
+    font-size: .8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+
+}
+

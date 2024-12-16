@@ -1,68 +1,196 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+*{
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+#root {
+  width: 100vw;
+  margin: 0 ;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.container{
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+}
+.intro{
+  width: 50%;
+  height: 100vh;
+  background: linear-gradient(45deg, rgb(25, 25, 112), rgb(135, 206, 250));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.logo{
+  margin-top: -20rem;
+  margin-bottom: -10rem;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.systemName{
+  display:flex;
+  font-size: 4rem;
+  color:white;
+  margin-bottom: 0.3rem;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.helloTxt{
+  display: flex;
+  color: white;
+}
+
+.formBox{
+  width: 50%;
+}
+.noAccount{
+  width: 100%;
+  font-size: 13px;
+  display: flex;
+  margin-top: 40px;
+}
+
+
+.noAccount div{
+  margin-left:auto;
+}
+
+.noAccount a{
+  margin-right: 30px;
+  margin-left: 10px;
+}
+
+.loginForm{
+    margin-top: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+.loginForm input {
+  margin: 10px 0; 
+  width: 100%;
+  max-width: 300px; 
+  height: 35px;
+  border-radius: 7px;
+  border: 1px gray solid;
+  padding-left: 10px;
+}
+
+.loginForm button{
+  width: 300px;
+  height: 30px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-color: rgb(109, 109, 255);
+  border: none;
+  border-radius: 7px;
+  color: white;
+  margin-top: 1rem;
+}
+
+.loginForm button:hover {
+  background-color: rgb(85, 85, 255);
+  transform: translateY(-2px); 
+}
+
+.regForm{
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 120px;
+}
+
+.regForm form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.regForm button{
+  width: 300px;
+  height: 30px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-color: rgb(109, 109, 255);
+  border: none;
+  border-radius: 7px;
+  color: white;
+  margin-top: 1rem;
+}
+
+.regForm button:hover {
+  background-color: rgb(85, 85, 255); 
+  transform: translateY(-2px); 
+}
+
+.regForm input{
+  border-radius: 7px;
+  border: 1px gray solid;
+  height: 35px;
+  padding-left: 10px;
+}
+
+
+.loginForm a{
+  display: flex;
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: rgb(60, 106, 255);
+}
+
+input{
+  margin: 10px;
+  width: 300px;
+  height: 30px;
+}
+
+.googleContainer{
+  margin-top: 10px;
+  margin-right: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.continueWith{
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.error-message{
+  font-size: 10px;
+  color: red;
+  margin-bottom: 10px;
+}
+
+.reg-error-message{
+  font-size: 10px;
+  color: red;
+  margin-left: 1rem;
+  
+}
+
+.intro{
+  padding-top: 10rem;
+}
+
+.logo{
+  width: 20rem;
+}
+
+
+@media screen and (max-width: 2500px) {
+
+  .googleContainer{
+    margin-left: 3rem;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+
+
 }
