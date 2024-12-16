@@ -258,6 +258,7 @@ const resetView = () => {
               <li key={event.eventID} className="event-item">
                 <div className="eventContainer">
                   <div className="ul-container">
+                    <div className="eventName-eventDate">
                     <button
                       onClick={() => {
                         navigate("/Event", {
@@ -270,23 +271,36 @@ const resetView = () => {
                     >
                       {event.event_title}
                     </button>
-                  </div>
+                  
                   <div className="date-btn-container">
                     <div className="date-container">
-                      <p>
+                      <p className="date-label">Date:</p>
+                      <p className="deet">
                         {" "}
                         {new Date(event.eventStart_date).toLocaleDateString()}
                       </p>
-                      <p>
+                      <p className="deet">
                         {" "}~
                         {new Date(event.eventEnd_date).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="time-container">
-                      <p>
-                      {new Date(`${event.eventStart_date}T${event.eventStart_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <div className="time-label">Event Time: </div>
+                      <p className="deet">
+                      {new Date(event.eventStart_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}~
+                      </p>
+                      <p className="deet">
+                      {new Date(event.eventEnd_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                       </p>
                     </div>
+                    </div>
+                    </div>
+
+
+<div className="cat-btn">
+                        <p className="cat-deet">  {categories.find((cat) => cat.categoryID === event.categoryID)?.category_name || "No Category"}
+                        </p>
+
                     <div className="btnContainer">
                       <button
                         onClick={() => {
@@ -306,6 +320,7 @@ const resetView = () => {
                       >
                         DELETE
                       </button>
+                    </div>
                     </div>
                   </div>
                 </div>

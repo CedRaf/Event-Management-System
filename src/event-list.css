@@ -84,34 +84,34 @@
 }
 
 .editBtn{
-  padding: 0.3rem 1rem;
-  font-size: 1rem;
-  background-color: gray;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+
+background-color: transparent;
+
+  color:black;
+border: none;
+
   cursor: pointer;
-  margin-left:1rem;
+
 
 }
 
 .editBtn:hover{
-  background-color: #31519b;
+  border-bottom: 1px black solid;
 }
 
 .deleteBtn{
-  padding: 0.3rem 1rem;
-  font-size: 1rem;
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+  background-color: transparent;
+
+  color:black;
+border: none;
+
   cursor: pointer;
   margin-left:1rem;
+  margin-right: 1rem;
 }
 
 .deleteBtn:hover{
-  background-color: #a71d2a;
+  border-bottom: 1px black solid;
 }
 
 .event-item{
@@ -124,7 +124,10 @@ padding: 1rem;
 
 .date-btn-container{
   display: flex;
-  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: .5rem;
 }
 
 .search-add-btn{
@@ -402,8 +405,58 @@ padding: 1rem;
 
 .date-container{
   display: flex;
+  align-items: center;
+  justify-content: left;
 }
 
+.time-container{
+  display: flex;
+  margin-left: 1rem;
+}
+
+.eventName-eventDate{
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+
+.category-label{
+  margin-left: .5rem;
+  margin-right: .5rem;
+}
+
+.date-label{
+  margin-right: .5rem;
+}
+
+.time-label{
+  margin-right: .5rem;
+}
+
+
+.deet{
+  color: gray;
+  font-size: .2rem;
+  font-weight: none;
+}
+
+
+.cat-deet{
+  border-radius: 50px;
+  background-color: #31519b;
+  width: 100px;
+
+  padding: .5rem;
+  text-align: center;
+  color: white;
+}
+
+.cat-btn{
+  display: flex;
+}
 
 @media screen and (max-width: 1300px) {
 

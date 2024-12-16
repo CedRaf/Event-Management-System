@@ -107,14 +107,7 @@ function Calendar() {
       return;
     }
 
-    if (
-      new Date(newEvent.eventStart_date) < new Date() ||
-      new Date(newEvent.eventEnd_date) < new Date()
-    ) {
-      alert("Event date cannot be in the past");
-      return;
-    }
-
+    
     const eventStart = new Date(
       newEvent.eventStart_date + "T" + newEvent.eventStart_time
     );
@@ -122,6 +115,8 @@ function Calendar() {
       newEvent.eventEnd_date + "T" + newEvent.eventEnd_time
     );
 
+    const now = new Date()
+    
     const newEventData = {
       event_title: newEvent.event_title,
       event_description: newEvent.event_description,
@@ -131,7 +126,14 @@ function Calendar() {
       userID: user.userID,
       categoryID: 1,
     };
-
+    
+    if (
+      new Date(eventStart) < now ||
+      new Date(eventEnd) < now
+    ) {
+      alert("Event date cannot be in the past");
+      return;
+    }
     try {
       const response = await axios.get(
         `http://localhost:3000/eventCategory/find/${newEvent.category}`,
