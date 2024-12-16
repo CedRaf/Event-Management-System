@@ -39,7 +39,7 @@ function Sidebar() {
           onClick={() => navigate("/profile")}
           style={{ cursor: "pointer" }}
         >
-          <p className="profile-name">Hello,{user?.userName||"Guest"}!</p>
+          <p className="profile-name">Hello, {user?.userName||"Guest"}!</p>
         </div>
       )}
 
