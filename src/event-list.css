@@ -41,6 +41,9 @@
 
 .event-creation{
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   top: 50%;
   left: 60%;
   transform: translate(-50%, -50%);
@@ -49,8 +52,27 @@
   background-color: white;
   padding: 1rem 1.5rem;
   border-radius: 1rem;
-  width: 40%;
+  width: 70%;
 }
+
+
+
+.eventForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.eventForm input, select{
+  width: 19rem;
+  height: 2rem;
+  padding: .5rem;
+  border: rgb(184, 184, 184) 1px solid;
+  border-radius: 6px;
+}
+
 
 .dateLabel{
   margin-right: 16rem;
@@ -105,9 +127,17 @@ padding: 1rem;
   
 }
 
+.search-add-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
 .event-input-container {
   display: flex;
-  flex-direction: row;
+
+  justify-content: center;
   align-items: center;
 }
 
@@ -235,25 +265,10 @@ padding: 1rem;
 }
 
 
-.add-event-form {
-  display: flex;
-  flex-direction: column;
-  padding-right:3rem;
-}
-
-.add-event-form input {
-  width: 100%;
-  height: 40px;
-  font-size: 1rem;
-  padding: 0 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
 
 
 .toggle-create-event {
-  margin-top:2rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -264,7 +279,6 @@ padding: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-bottom: 10px;
   margin-left: 0.8rem;
 }
 
@@ -352,6 +366,30 @@ padding: 1rem;
 
 .edit-form button:hover{
   background-color: #31519b;
+}
+
+.cancel-submit-container button{
+  padding: 0.3rem 1rem;
+  font-size: 1rem;
+  background-color: #5286ff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  width:100px;
+  margin-left:1rem;
+}
+
+@media screen and (max-width: 1300px) {
+
+  .toggle-create-event{
+    font-size: .8rem;
+  height: 1.8rem;
+    
+  }
+
+
 }
 
 
